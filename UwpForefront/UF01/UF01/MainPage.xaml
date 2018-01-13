@@ -1,0 +1,51 @@
+﻿<Page
+  x:Class="UF01.MainPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:UF01"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  
+  xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
+  xmlns:contract5NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,5)"
+  
+  mc:Ignorable="d">
+
+  <Grid contract5NotPresent:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+        contract5Present:Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+          >
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <Rectangle x:Name="colorRectangle" Width="200" Height="200"
+         contract5NotPresent:Fill="{x:Bind ((SolidColorBrush)((FrameworkElement)colorComboBox.SelectedItem).Tag), Mode=OneWay}">
+      <contract5Present:Rectangle.Fill>
+        <SolidColorBrush contract5Present:Color="{x:Bind colorPicker.Color, Mode=OneWay}"/>
+      </contract5Present:Rectangle.Fill>
+    </Rectangle>
+
+    <contract5Present:ColorPicker x:Name="colorPicker"
+       Grid.Column="1" VerticalAlignment="Center"
+       Color="{x:Bind SampleData.SampleColor, Mode=TwoWay}"/>
+
+    <contract5NotPresent:ComboBox x:Name="colorComboBox"
+        PlaceholderText="Pick a color" Grid.Column="1" VerticalAlignment="Center"
+        SelectionChanged="colorComboBox_SelectionChanged">
+      <ComboBoxItem>Red
+        <ComboBoxItem.Tag><SolidColorBrush Color="Red"/></ComboBoxItem.Tag>
+      </ComboBoxItem>
+      <ComboBoxItem>Blue
+        <ComboBoxItem.Tag><SolidColorBrush Color="Blue"/></ComboBoxItem.Tag>
+      </ComboBoxItem>
+      <ComboBoxItem>Green
+        <ComboBoxItem.Tag><SolidColorBrush Color="Green"/></ComboBoxItem.Tag>
+      </ComboBoxItem>
+    </contract5NotPresent:ComboBox>
+
+    <AppBarButton Icon="Forward" Click="AppBarButton_Click" />
+
+  </Grid>
+</Page>
