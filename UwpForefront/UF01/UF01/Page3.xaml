@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="UF01.Page3"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UF01"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  
+  xmlns:isColorPickerPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsTypePresent(Windows.UI.Xaml.Controls.ColorPicker)"
+  xmlns:isColorPickerNotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsTypeNotPresent(Windows.UI.Xaml.Controls.ColorPicker)"
+  
+    mc:Ignorable="d">
+
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <Rectangle x:Name="colorRectangle" Width="200" Height="200">
+      <Rectangle.Fill>
+        <SolidColorBrush Color="{x:Bind SampleData.SampleColor, Mode=OneWay}"/>
+      </Rectangle.Fill>
+    </Rectangle>
+
+    <isColorPickerPresent:ColorPicker x:Name="colorPicker"
+      Grid.Column="1" VerticalAlignment="Center"
+      Color="{x:Bind SampleData.SampleColor, Mode=TwoWay}" />
+
+    <isColorPickerNotPresent:ComboBox x:Name="colorComboBox"
+              PlaceholderText="Pick a color" Grid.Column="1" VerticalAlignment="Center"
+              SelectionChanged="colorComboBox_SelectionChanged">
+      <ComboBoxItem>Red
+        <ComboBoxItem.Tag>
+          <Color>Red</Color>
+        </ComboBoxItem.Tag>
+      </ComboBoxItem>
+      <ComboBoxItem>Blue
+        <ComboBoxItem.Tag>
+          <Color>Blue</Color>
+        </ComboBoxItem.Tag>
+      </ComboBoxItem>
+      <ComboBoxItem>Green
+        <ComboBoxItem.Tag>
+          <Color>Green</Color>
+        </ComboBoxItem.Tag>
+      </ComboBoxItem>
+    </isColorPickerNotPresent:ComboBox>
+
+    <AppBarButton Icon="Back" Click="AppBarButton_Click" />
+  </Grid>
+</Page>

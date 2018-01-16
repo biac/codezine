@@ -14,28 +14,35 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
+// 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
 namespace UF01
 {
   /// <summary>
   /// それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
   /// </summary>
-  public sealed partial class MainPage : Page
+  public sealed partial class Page3 : Page
   {
     private SampleData SampleData => (App.Current as App).SampleData;
 
-    public MainPage()
+    public Page3()
     {
       this.InitializeComponent();
 
       Windows.UI.ViewManagement.ApplicationView.GetForCurrentView()
-        .Title = "SDKのバージョンでプロパティ設定を使い分け";
+        .Title = "UIコントロールの有無で使い分け";
     }
 
     private void AppBarButton_Click(object sender, RoutedEventArgs e)
     {
-      this.Frame.Navigate(typeof(Page2));
+      if (this.Frame.CanGoBack)
+        this.Frame.GoBack();
+    }
+
+    private void colorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      this.SampleData.SampleColor
+        = (Color)(colorComboBox.SelectedItem as FrameworkElement).Tag;
     }
   }
 }

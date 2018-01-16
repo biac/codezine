@@ -28,18 +28,26 @@ namespace UF01
     public Page2()
     {
       this.InitializeComponent();
+
+      Windows.UI.ViewManagement.ApplicationView.GetForCurrentView()
+        .Title = "SDKのバージョンでUIコントロールを使い分け";
     }
 
-    private void AppBarButton_Click(object sender, RoutedEventArgs e)
+    private void AppBarButtonB_Click(object sender, RoutedEventArgs e)
     {
       if (this.Frame.CanGoBack)
         this.Frame.GoBack();
     }
 
+    private void AppBarButtonF_Click(object sender, RoutedEventArgs e)
+    {
+      this.Frame.Navigate(typeof(Page3));
+    }
+
     private void colorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
       this.SampleData.SampleColor
-        = (Color)(colorComboBox.SelectedItem as FrameworkElement).Tag;
+        = ((SolidColorBrush)(colorComboBox.SelectedItem as FrameworkElement).Tag).Color;
     }
   }
 }

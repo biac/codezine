@@ -11,39 +11,9 @@
   
   mc:Ignorable="d">
 
-  <Grid contract5NotPresent:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-        contract5Present:Background="{ThemeResource SystemControlAcrylicWindowBrush}"
+  <Grid contract5NotPresent:Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+        contract5Present:Background="{ThemeResource SystemControlAccentAcrylicWindowAccentMediumHighBrush}"
           >
-
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition/>
-      <ColumnDefinition/>
-    </Grid.ColumnDefinitions>
-
-    <Rectangle x:Name="colorRectangle" Width="200" Height="200"
-         contract5NotPresent:Fill="{x:Bind ((SolidColorBrush)((FrameworkElement)colorComboBox.SelectedItem).Tag), Mode=OneWay}">
-      <contract5Present:Rectangle.Fill>
-        <SolidColorBrush contract5Present:Color="{x:Bind colorPicker.Color, Mode=OneWay}"/>
-      </contract5Present:Rectangle.Fill>
-    </Rectangle>
-
-    <contract5Present:ColorPicker x:Name="colorPicker"
-       Grid.Column="1" VerticalAlignment="Center"
-       Color="{x:Bind SampleData.SampleColor, Mode=TwoWay}"/>
-
-    <contract5NotPresent:ComboBox x:Name="colorComboBox"
-        PlaceholderText="Pick a color" Grid.Column="1" VerticalAlignment="Center"
-        SelectionChanged="colorComboBox_SelectionChanged">
-      <ComboBoxItem>Red
-        <ComboBoxItem.Tag><SolidColorBrush Color="Red"/></ComboBoxItem.Tag>
-      </ComboBoxItem>
-      <ComboBoxItem>Blue
-        <ComboBoxItem.Tag><SolidColorBrush Color="Blue"/></ComboBoxItem.Tag>
-      </ComboBoxItem>
-      <ComboBoxItem>Green
-        <ComboBoxItem.Tag><SolidColorBrush Color="Green"/></ComboBoxItem.Tag>
-      </ComboBoxItem>
-    </contract5NotPresent:ComboBox>
 
     <AppBarButton Icon="Forward" Click="AppBarButton_Click" />
 
