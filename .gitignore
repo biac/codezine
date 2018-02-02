@@ -7,3 +7,6 @@
 /UwpForefront/UF01/UF01/obj
 *.pfx
 /UwpForefront/UF01/.vs/UF01
+/UwpForefront/UF02/UF02UwpDesktop/bin
+/UwpForefront/UF02/UF02UwpDesktop/obj
+/UwpForefront/UF02/UF02UwpDesktop/UF02UwpDesktop.csproj.user
