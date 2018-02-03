@@ -13,21 +13,38 @@ namespace UF02UwpDesktop
   /// </summary>
   public partial class MainWindow : Window
   {
-    private Version _osVersion;
+    private static readonly Version _osVersion  
+      = (new Func<Version>(() => {
+        using (var mc = new System.Management.ManagementClass("Win32_OperatingSystem"))
+        using (var moc = mc.GetInstances())
+          foreach (System.Management.ManagementObject mo in moc)
+          {
+            var v = mo["Version"] as string;
+            if (!string.IsNullOrWhiteSpace(v))
+              return new Version(v);
+          }
+
+        return new Version("0.0.0.0");
+      }))();
+
 
 
     public MainWindow()
     {
-      _osVersion = GetOsVersion();
       if (_osVersion.Major < 10)
         MessageBox.Show("このアプリは、Windows 10 でなければ正常に動作しません。",
           "動作不可", MessageBoxButton.OK, MessageBoxImage.Error);
       else if (_osVersion.Build < 14393)
         MessageBox.Show("このアプリは、Windows 10 build 14393 未満では一部の機能が動作しません。",
           "動作不完全", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+      // ※注：↑簡易的にここに書いたけれど、本来はAppクラスにMainメソッドを追加して、
+      //         Appクラスをインスタンス化する前に行うべきです
+      //         http://www.atmarkit.co.jp/ait/articles/1511/04/news027.html
 
       InitializeComponent();
+      this.Loaded += MainWindow_Loaded;
 
+      //// お試し：
       //// My Picture フォルダーのファイル一覧を取得してみる
       //Task.Run(async () =>
       //{
@@ -35,22 +52,6 @@ namespace UF02UwpDesktop
       //  var myPictures = string.Join("\n", files.Select(f => f.Name));
       //  MessageBox.Show(myPictures);
       //});
-
-      this.Loaded += MainWindow_Loaded;
-    }
-
-    private Version GetOsVersion()
-    {
-      using (var mc = new System.Management.ManagementClass("Win32_OperatingSystem"))
-      using (var moc = mc.GetInstances())
-        foreach (System.Management.ManagementObject mo in moc)
-        {
-          var v = mo["Version"] as string;
-          if (!string.IsNullOrWhiteSpace(v))
-            return new Version(v);
-        }
-
-      return new Version("0.0.0.0");
     }
 
 #if DEBUG
@@ -65,9 +66,6 @@ namespace UF02UwpDesktop
 #endif
 
 #if DEBUG
-      if (_osVersion.Major < 10)
-        return;
-
       // 以下、説明用のコード (このアプリの動作には関係がない)
 
       // JapanesePhoneticAnalyzer は Windows 8.1 から使える
@@ -129,34 +127,33 @@ namespace UF02UwpDesktop
       string inputText = (sender as TextBox).Text;
 
       // 文字列全体の読み仮名を取得する（Win10全バージョン）
-      string yomi = await GetReadingAndDisplay(inputText);
+      string yomi = await GetReadingAsync(inputText);
+      YomiText.Text = yomi;
 
       if (_osVersion.Build >= 14393)
       {
         // 形態素分解して読み仮名を個別に取得する（14393以降）
-        await GetRubyAndDisplay(inputText);
+        await GetRubyAndDisplayAsync(inputText);
       }
 
       // 読み仮名から漢字に変換（Win10全バージョン）
-      await ReconvertAndDisplay(yomi);
+      ListBox1.ItemsSource = await ReconvertAsync(yomi);
     }
 
-    private async Task<string> GetReadingAndDisplay(string inputText)
+    private async Task<string> GetReadingAsync(string inputText)
     {
       // 読み仮名を取得するためのクラス
       var trcg = new Windows.Data.Text.TextReverseConversionGenerator("ja");
-
+      
       // 文字列全体の読み仮名を取得する（Win10全バージョン）
       var yomi = await trcg.ConvertBackAsync(inputText);
-
-      YomiText.Text = yomi;
 
       return yomi;
     }
 
     // 14393以前では、このメソッドを最初に呼び出そうとした時にTypeLoadException例外が出る
     // (14393以前ではTextPhoneme型がない)
-    private async Task GetRubyAndDisplay(string inputText)
+    private async Task GetRubyAndDisplayAsync(string inputText)
     {
       // 読み仮名を取得するためのクラス
       var trcg = new Windows.Data.Text.TextReverseConversionGenerator("ja");
@@ -175,13 +172,13 @@ namespace UF02UwpDesktop
       }
     }
 
-    private async Task ReconvertAndDisplay(string yomi)
+    private async Task<IReadOnlyList<string>> ReconvertAsync(string yomi)
     {
       // 読み仮名から漢字に変換（Win10全バージョン）
       var tcg = new Windows.Data.Text.TextConversionGenerator("ja");
       IReadOnlyList<string> candidatesList = await tcg.GetCandidatesAsync(yomi);
 
-      ListBox1.ItemsSource = candidatesList;
+      return candidatesList;
     }
 
 
