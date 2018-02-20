@@ -1,0 +1,33 @@
+﻿<Window x:Class="WpfSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfSample"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="480" Width="640"
+         >
+  <Grid>
+    <DataGrid x:Name="DataGrid1"
+              AutoGenerateColumns="False" FontSize="16">
+      <DataGrid.Columns>
+        <DataGridTextColumn  Header="CategoryID" Binding="{Binding ItemArray[0]}"/>
+        <DataGridTextColumn  Header="CategoryName" Binding="{Binding ItemArray[1]}" />
+        <DataGridTextColumn  Header="Description" Binding="{Binding ItemArray[2]}">
+          <DataGridTextColumn.ElementStyle>
+            <Style>
+              <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            </Style>
+          </DataGridTextColumn.ElementStyle>
+        </DataGridTextColumn>
+        <DataGridTemplateColumn Header="Picture">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <Image Height="120" Width="172" Source="{Binding ItemArray[3]}" />
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+  </Grid>
+</Window>

@@ -1,0 +1,44 @@
+﻿<Page
+  x:Class="UwpSample.MainPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:UwpSample"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:data="using:System.Data"
+  mc:Ignorable="d">
+
+  <Grid Background="{ThemeResource SystemControlAccentAcrylicWindowAccentMediumHighBrush}">
+    <GridView Background="#ddffffff" Foreground="Black" FontFamily="Yu Gothic" FontSize="16"
+              ItemsSource="{x:Bind _rows}" >
+      <GridView.Header>
+        <StackPanel Orientation="Horizontal" Height="32"
+                    Background="{ThemeResource SystemControlAccentDark2AcrylicElementAccentDark2MediumHighBrush}"
+                    >
+          <StackPanel.Resources>
+            <Style TargetType="TextBlock">
+              <Setter Property="Foreground" Value="White" />
+              <Setter Property="FontWeight" Value="Bold" />
+              <Setter Property="TextAlignment" Value="Center" />
+              <Setter Property="VerticalAlignment" Value="Bottom" />
+            </Style>
+          </StackPanel.Resources>
+          <TextBlock Width="30">#</TextBlock>
+          <TextBlock Width="120">Category</TextBlock>
+          <TextBlock Width="300">Description</TextBlock>
+          <TextBlock Width="172">Picture</TextBlock>
+        </StackPanel>
+      </GridView.Header>
+      <GridView.ItemTemplate>
+        <DataTemplate x:DataType="data:DataRow">
+          <StackPanel Orientation="Horizontal" Height="120">
+            <TextBlock Text="{x:Bind ItemArray[0].ToString()}" Width="30" TextAlignment="Center" />
+            <TextBlock Text="{x:Bind ItemArray[1]}" Width="120" TextTrimming="CharacterEllipsis" />
+            <TextBlock Text="{x:Bind ItemArray[2]}" Width="300" TextWrapping="Wrap" />
+            <Image Source="{x:Bind local:MainPage.CastToImageSource(ItemArray[4])}" Width="172" Height="120" />
+          </StackPanel>
+        </DataTemplate>
+      </GridView.ItemTemplate>
+    </GridView>
+  </Grid>
+</Page>

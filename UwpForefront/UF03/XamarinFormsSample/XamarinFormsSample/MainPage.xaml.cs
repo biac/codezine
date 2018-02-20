@@ -1,0 +1,57 @@
+﻿using System.Data;
+using System.IO;
+using Xamarin.Forms;
+
+namespace XamarinFormsSample
+{
+  public partial class MainPage : ContentPage
+  {
+    public MainPage()
+    {
+      InitializeComponent();
+    }
+
+    protected override void OnAppearing()
+    {
+      base.OnAppearing();
+
+      // SQL Server にログオンする方法の使い分け:
+      // UWP のときは、エンタープライズ認証 (Windows 認証)
+      // それ以外のときは、SQL Server のユーザー認証
+      bool useEnterpriseAuthentication = (Device.RuntimePlatform == Device.UWP);
+
+      //try
+      //{
+
+      // SQL Server からデータを取得
+      var sqlClient = DependencyService.Get<ISqlClientFactoryDS>().Instance;
+      DataTable dt = UF03StdLib.Northwind.GetCategories(sqlClient, useEnterpriseAuthentication);
+
+      // バイト配列を ImageSource に変換してテーブルに追加
+      dt.Columns.Add("ImageSource", typeof(ImageSource));
+      foreach (DataRow r in dt.Rows)
+        r["ImageSource"] = ByteArrayToImageSource(r["Picture"]);
+
+      ListView1.ItemsSource = dt.Rows;
+
+      //  Label1.Text = $"dt.Rows.Count={dt.Rows.Count}";
+      //}
+      //catch (Exception ex)
+      //{
+      //  Label1.Text = ex.ToString();
+      //}
+    }
+
+
+    private static ImageSource ByteArrayToImageSource(object byteArray)
+    {
+      if (byteArray is byte[] b)
+      {
+        // Northwind の画像データは、先頭に78バイトの「ゴミ」がくっついている
+        const int SkipLength = 78;
+        return ImageSource.FromStream(() => new MemoryStream(b, SkipLength, b.Length - SkipLength));
+      }
+      return null;
+    }
+  }
+}

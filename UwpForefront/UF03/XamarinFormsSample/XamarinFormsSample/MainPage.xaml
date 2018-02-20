@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:XamarinFormsSample"
+             x:Class="XamarinFormsSample.MainPage">
+
+  <StackLayout>
+    <!--<Label x:Name="Label1" Text="Welcome to Xamarin.Forms!" 
+           VerticalOptions="Center" 
+           HorizontalOptions="Center" />-->
+    <ListView x:Name="ListView1" RowHeight="120">
+      <ListView.Header>
+        <StackLayout Orientation="Horizontal" BackgroundColor="CadetBlue" HeightRequest="32">
+          <StackLayout.Resources>
+            <ResourceDictionary>
+              <Style TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+              </Style>
+            </ResourceDictionary>
+          </StackLayout.Resources>
+          <Label WidthRequest="30">#</Label>
+          <Label WidthRequest="120">Category</Label>
+          <Label WidthRequest="300">Description</Label>
+          <Label WidthRequest="172">Picture</Label>
+        </StackLayout>
+      </ListView.Header>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <StackLayout Orientation="Horizontal">
+              <Label Text="{Binding ItemArray[0]}" WidthRequest="30"
+                     HorizontalTextAlignment="Center" />
+              <Label Text="{Binding ItemArray[1]}" WidthRequest="120" />
+              <Label Text="{Binding ItemArray[2]}" WidthRequest="300" />
+              <Image Source="{Binding ItemArray[4]}" WidthRequest="172" HeightRequest="120"/>
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </StackLayout>
+</ContentPage>
