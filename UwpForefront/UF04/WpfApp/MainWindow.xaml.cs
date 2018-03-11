@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 
 
@@ -22,27 +25,11 @@ using UwpLanguage = Windows.Globalization.Language;
 
 // UWP の SoftwareBitmap
 using UwpSoftwareBitmap = Windows.Graphics.Imaging.SoftwareBitmap;
-using UwpBitmapDecoder = Windows.Graphics.Imaging.BitmapDecoder;
-using UwpBitmapPixelFormat = Windows.Graphics.Imaging.BitmapPixelFormat;
-using UwpBitmapAlphaMode = Windows.Graphics.Imaging.BitmapAlphaMode;
-using UwpInMemoryRandomAccessStream = Windows.Storage.Streams.InMemoryRandomAccessStream;
-using UwpDataWriter = Windows.Storage.Streams.DataWriter;
-
-// UWP の MediaCapture
-using UwpMediaCapture = Windows.Media.Capture.MediaCapture;
-using UwpMediaCaptureInitializationSettings
-  = Windows.Media.Capture.MediaCaptureInitializationSettings;
 
 // UWP のデバイス
 using UwpDeviceInformation = Windows.Devices.Enumeration.DeviceInformation;
 using UwpDeviceClass = Windows.Devices.Enumeration.DeviceClass;
 //
-using System.Windows.Threading;
-
-using System.IO;
-using System.Threading;
-using System.Windows.Interop;
-using Microsoft.Win32;
 
 namespace WpfApp
 {
@@ -51,10 +38,7 @@ namespace WpfApp
   /// </summary>
   public partial class MainWindow : Window
   {
-    //private UwpOcrEngine _ocrEngine
-    //  = UwpOcrEngine.TryCreateFromUserProfileLanguages();
-
-    private UwpMediaCapture _mediaCapture;
+    private UwpMediaCaptureWrapper _mediaCapture;
 
     private DispatcherTimer _dispatcherTimer;
 
@@ -66,11 +50,24 @@ namespace WpfApp
 
       this.Loaded += MainWindow_Loaded;
 
-      this.Closed += async (s, e) =>
+      this.Closed += (s, e) =>
       {
-        StopTimer();
-        while (_isRunning)
-          await Task.Delay(100);
+        //var task = Task.Run(async() =>
+        //  {
+        //  StopTimer();
+        //  while (_isRunning)
+        //    await Task.Delay(100);
+        //  //if (_mediaCapture != null)
+        //  //  _mediaCapture.Dispose();
+        //  if (_qq != null)
+        //    _qq.Dispose();
+        //});
+        //task.Wait();
+        if (_dispatcherTimer != null)
+        {
+          _dispatcherTimer.Stop();
+          _dispatcherTimer = null;
+        }
         if (_mediaCapture != null)
           _mediaCapture.Dispose();
       };
@@ -129,9 +126,9 @@ namespace WpfApp
           //                MessageBoxButton.OK, MessageBoxImage.Information);
           return false;
         }
-        //var qq = devices.ToList();
-        //qq.AddRange(qq);
-        this.CameraComboBox.ItemsSource = devices;
+        var qq = devices.ToList();
+        qq.AddRange(qq);
+        this.CameraComboBox.ItemsSource = qq;// devices;
         this.CameraComboBox.DisplayMemberPath = nameof(UwpDeviceInformation.Name);
         this.CameraComboBox.SelectedValuePath = nameof(UwpDeviceInformation.Id);
         this.CameraComboBox.SelectedIndex = 0;
@@ -154,23 +151,26 @@ namespace WpfApp
 
     private async Task InitializeMediaCaptureAsync()
     {
-      _mediaCapture = new UwpMediaCapture();
+      _mediaCapture = await UwpMediaCaptureWrapper.GetInstanceAsync(CameraComboBox.SelectedValue as string);
 
-      _mediaCapture.Failed += (s, e) =>
-      {
-        MessageBox.Show("キャプチャ失敗\n" + e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Stop);
-      };
 
-      var setting = new UwpMediaCaptureInitializationSettings()
-      {
-        VideoDeviceId = CameraComboBox.SelectedValue as string,
-        StreamingCaptureMode = Windows.Media.Capture.StreamingCaptureMode.Video,
-      };
-      await _mediaCapture.InitializeAsync(setting);
-      _mediaCapture.VideoDeviceController.Brightness.TrySetAuto(true);
-      _mediaCapture.VideoDeviceController.Contrast.TrySetAuto(true);
-      _mediaCapture.VideoDeviceController.Focus.TrySetAuto(true);
-      _mediaCapture.VideoDeviceController.WhiteBalance.TrySetAuto(true);
+      //_mediaCapture = new UwpMediaCapture();
+
+      //_mediaCapture.Failed += (s, e) =>
+      //{
+      //  MessageBox.Show("キャプチャ失敗\n" + e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Stop);
+      //};
+
+      //var setting = new UwpMediaCaptureInitializationSettings()
+      //{
+      //  VideoDeviceId = CameraComboBox.SelectedValue as string,
+      //  StreamingCaptureMode = Windows.Media.Capture.StreamingCaptureMode.Video,
+      //};
+      //await _mediaCapture.InitializeAsync(setting);
+      //_mediaCapture.VideoDeviceController.Brightness.TrySetAuto(true);
+      //_mediaCapture.VideoDeviceController.Contrast.TrySetAuto(true);
+      //_mediaCapture.VideoDeviceController.Focus.TrySetAuto(true);
+      //_mediaCapture.VideoDeviceController.WhiteBalance.TrySetAuto(true);
     }
 
     private async void ReinitializeMediaCaptureAsync()
@@ -184,6 +184,7 @@ namespace WpfApp
       while (_isRunning)
         await Task.Delay(100);
 
+      //_mediaCapture.Dispose();
       _mediaCapture.Dispose();
       await InitializeMediaCaptureAsync();
 
@@ -220,32 +221,32 @@ namespace WpfApp
       {
         _isRunning = true;
 
-        //var encProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreatePng();
-        var encProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreateBmp();
-        //encProperties.Width = (uint)ImageGrid.ActualWidth;
-        //encProperties.Height = (uint)ImageGrid.ActualHeight;
+        ////var encProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreatePng();
+        //var encProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreateBmp();
+        ////encProperties.Width = (uint)ImageGrid.ActualWidth;
+        ////encProperties.Height = (uint)ImageGrid.ActualHeight;
 
-        using (var randomAccessStream = new UwpInMemoryRandomAccessStream())
-        {
-          await _mediaCapture.CapturePhotoToStreamAsync(encProperties, randomAccessStream);
-          randomAccessStream.Seek(0);
+        //using (var randomAccessStream = new UwpInMemoryRandomAccessStream())
+        //{
+        //  await _mediaCapture.CapturePhotoToStreamAsync(encProperties, randomAccessStream);
+        //  randomAccessStream.Seek(0);
 
-          //ビットマップにして表示
-          var bmp = new BitmapImage();
-          using (Stream stream = randomAccessStream.AsStream())
-          {
-            bmp.BeginInit();
-            bmp.CacheOption = BitmapCacheOption.OnLoad;
-            bmp.StreamSource = stream;
-            bmp.EndInit();
-          }
-          this.Image1.Source = BitmapFrame.Create(bmp); //bmp;
-          // ☝ streamから直接BitmapFrameを作れる!?
-        }
+        //  //ビットマップにして表示
+        //  var bitmap = new BitmapImage();
+        //  using (Stream stream = randomAccessStream.AsStream())
+        //  {
+        //    bitmap.BeginInit();
+        //    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+        //    bitmap.StreamSource = stream;
+        //    bitmap.EndInit();
+        //  }
+        //  this.Image1.Source = BitmapFrame.Create(bitmap);
+        //}
+        this.Image1.Source = await _mediaCapture.CapturePhotoAsync();
       }
-      catch (Exception ex)
+      catch
       {
-        // 場合によっては、ここで…
+        // MediaCapture を再作成してみる
         ReinitializeMediaCaptureAsync();
       }
       finally
@@ -260,19 +261,12 @@ namespace WpfApp
     private UwpSoftwareBitmap _lastRecognizedBitmap;
     private async Task RecognizeImageAsync()
     {
-
       UwpSoftwareBitmap bitmap = await GetSoftwareBitmapFromImageAsync();
       if (bitmap == null)
         return;
       _lastRecognizedBitmap = bitmap;
 
       await RecognizeBitmapAsync(bitmap);
-
-      //var ocrEngine = UwpOcrEngine.TryCreateFromLanguage(this.LangComboBox.SelectedItem as UwpLanguage);
-      //var ocrResult = await ocrEngine.RecognizeAsync(bitmap);
-      ////this.RecognizedTextTextBox.Text = ocrResult.Text;
-      //foreach (var ocrLine in ocrResult.Lines)
-      //  this.RecognizedTextTextBox.Text += (ocrLine.Text + "\n");
     }
 
     private async Task ReRecognizeAsync()
@@ -301,32 +295,34 @@ namespace WpfApp
       if (sourceBitmap == null)
         return null;
 
-      // BitmapImage を BMP 形式のバイト配列に変換
-      byte[] bitmap;
-      var encoder = new BmpBitmapEncoder();
-      encoder.Frames.Add(sourceBitmap);
-      using (var memoryStream = new MemoryStream())
-      {
-        encoder.Save(memoryStream);
-        bitmap = memoryStream.ToArray();
-      }
+      return await UwpSoftwareBitmapHelper.ConvertFrom(sourceBitmap);
 
-      // バイト配列を UWP の IRandomAccessStream に変換
-      var randomAccessStream = new UwpInMemoryRandomAccessStream();
-      var outputStream = randomAccessStream.GetOutputStreamAt(0);
-      var dw = new UwpDataWriter(outputStream);
-      //var task = new Task(() => dw.WriteBytes(bitmap));
-      //task.Start();
-      //await task;
-      //await Task.Run(() => dw.WriteBytes(bitmap));
-      dw.WriteBytes(bitmap);
-      await dw.StoreAsync();
-      await outputStream.FlushAsync();
+      //// BitmapImage を BMP 形式のバイト配列に変換
+      //byte[] bitmap;
+      //var encoder = new BmpBitmapEncoder();
+      //encoder.Frames.Add(sourceBitmap);
+      //using (var memoryStream = new MemoryStream())
+      //{
+      //  encoder.Save(memoryStream);
+      //  bitmap = memoryStream.ToArray();
+      //}
 
-      // IRandomAccessStream を SoftwareBitmap に変換
-      var decoder = await UwpBitmapDecoder.CreateAsync(randomAccessStream);
-      var softwareBitmap = await decoder.GetSoftwareBitmapAsync(UwpBitmapPixelFormat.Bgra8, UwpBitmapAlphaMode.Premultiplied);
-      return softwareBitmap;
+      //// バイト配列を UWP の IRandomAccessStream に変換
+      //var randomAccessStream = new UwpInMemoryRandomAccessStream();
+      //var outputStream = randomAccessStream.GetOutputStreamAt(0);
+      //var dw = new UwpDataWriter(outputStream);
+      ////var task = new Task(() => dw.WriteBytes(bitmap));
+      ////task.Start();
+      ////await task;
+      ////await Task.Run(() => dw.WriteBytes(bitmap));
+      //dw.WriteBytes(bitmap);
+      //await dw.StoreAsync();
+      //await outputStream.FlushAsync();
+
+      //// IRandomAccessStream を SoftwareBitmap に変換
+      //var decoder = await UwpBitmapDecoder.CreateAsync(randomAccessStream);
+      //var softwareBitmap = await decoder.GetSoftwareBitmapAsync(UwpBitmapPixelFormat.Bgra8, UwpBitmapAlphaMode.Premultiplied);
+      //return softwareBitmap;
     }
 
 
@@ -335,95 +331,16 @@ namespace WpfApp
     #region Event Handlers
     private void CameraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      ReinitializeMediaCaptureAsync();
+      if(this.MonitorCameraButton.IsChecked == true)
+        ReinitializeMediaCaptureAsync();
     }
 
     private async void LangComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-      //if(this.CaptureButton.IsChecked == true 
-      //  || this.OpenFileButton.IsChecked == true
-      //  || this.PasteButton.IsChecked == true)
-      //  await RecognizeImageAsync();
-      await ReRecognizeAsync();
-    }
+    => await ReRecognizeAsync();
 
 
-    //private void OpenFileButton_Checked(object sender, RoutedEventArgs e)
-    //  => EnterFileMode();
-    //private void OpenFileButton_Unchecked(object sender, RoutedEventArgs e)
-    //  => ExitFileMode();
-
-    //private void PasteButton_Checked(object sender, RoutedEventArgs e)
-    //  => EnterClipboardMode();
-    //private void PasteButton_Unchecked(object sender, RoutedEventArgs e)
-    //  => ExitClipboardMode();
     #endregion
 
-    #region Change UI Mode
-    //private async void EnterCaptureMode()
-    //{
-    //  await disableControlsAsync();
-    //  await RecognizeImageAsync();
-
-    //  async Task disableControlsAsync()
-    //  {
-    //    CameraComboBox.IsEnabled = false;
-    //    OpenFileButton.IsChecked = false;
-    //    PasteButton.IsChecked = false;
-    //    StopTimer();
-    //    while (_isRunning)
-    //      await Task.Delay(100);
-    //  }
-    //}
-    //private void ExitCaptureMode()
-    //{
-    //  enableControls();
-
-    //  void enableControls()
-    //  {
-    //    CameraComboBox.IsEnabled = true;
-    //    StartTimer();
-    //  }
-    //}
-
-    //private async void EnterClipboardMode()
-    //{
-    //  await disableControlsAsync();
-
-    //  // クリップボードから画像を取り込む
-    //  BitmapFrame bitmapFrame = GetBitmapFromClipboard();
-    //  if (bitmapFrame == null)
-    //  {
-    //    this.PasteButton.IsChecked = false;
-    //    return;
-    //  }
-
-    //  this.Image1.Source = bitmapFrame;
-    //  await RecognizeImageAsync();
-
-    //  async Task disableControlsAsync()
-    //  {
-    //    this.CameraComboBox.IsEnabled = false;
-    //    //this.CaptureButton.IsChecked = false;
-    //    //this.CaptureButton.IsEnabled = false;
-    //    //this.OpenFileButton.IsChecked = false;
-    //    StopTimer();
-    //    while (_isRunning)
-    //      await Task.Delay(100);
-    //  }
-    //}
-
-    //private void ExitClipboardMode()
-    //{
-    //  enableControls();
-
-    //  void enableControls()
-    //  {
-    //    this.CameraComboBox.IsEnabled = true;
-    //    //this.CaptureButton.IsEnabled = true;
-    //    StartTimer();
-    //  }
-    //}
 
     private BitmapFrame GetBitmapFromClipboard()
     {
@@ -452,44 +369,6 @@ namespace WpfApp
       return bitmapFrame;
     }
 
-    //private async void EnterFileMode()
-    //{
-    //  await disableControlsAsync();
-
-    //  // ファイルから画像を読み込む
-    //  BitmapFrame bitmapFrame = GetBitmapFromFile();
-    //  if (bitmapFrame == null)
-    //  {
-    //    this.PasteButton.IsChecked = false;
-    //    return;
-    //  }
-
-    //  this.Image1.Source = bitmapFrame;
-    //  await RecognizeImageAsync();
-
-    //  async Task disableControlsAsync()
-    //  {
-    //    this.CameraComboBox.IsEnabled = false;
-    //    //this.CaptureButton.IsChecked = false;
-    //    //this.CaptureButton.IsEnabled = false;
-    //    this.PasteButton.IsChecked = false;
-    //    StopTimer();
-    //    while (_isRunning)
-    //      await Task.Delay(100);
-    //  }
-    //}
-
-    //private void ExitFileMode()
-    //{
-    //  enableControls();
-
-    //  void enableControls()
-    //  {
-    //    this.CameraComboBox.IsEnabled = true;
-    //    //this.CaptureButton.IsEnabled = true;
-    //    StartTimer();
-    //  }
-    //}
 
     private BitmapFrame GetBitmapFromFile()
     {
@@ -498,7 +377,6 @@ namespace WpfApp
       dialog.Filter = "画像ファイル(*.png;*.jpg;*.jpeg;*.gif;*.bmp)|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
       if (dialog.ShowDialog() != true)
       {
-        //this.OpenFileButton.IsChecked = false;
         return null;
       }
 
@@ -507,28 +385,13 @@ namespace WpfApp
       encoder.Frames.Add(BitmapFrame.Create(source));
       return encoder.Frames[0];
     }
-    #endregion
 
     private void MonitorCameraButton_Checked(object sender, RoutedEventArgs e)
-      => StartTimer();
+      => ReinitializeMediaCaptureAsync();//StartTimer();
 
     private void MonitorCameraButton_Unchecked(object sender, RoutedEventArgs e)
       => StopTimer();
 
-    //private void CaputureCameraButtan_Click(object sender, RoutedEventArgs e)
-    //{
-
-    //}
-
-    //private void CaptureCameraButtan_Click(object sender, RoutedEventArgs e)
-    //{
-
-    //}
-
-    //private void CaptureFileButton_Click(object sender, RoutedEventArgs e)
-    //{
-
-    //}
 
     private void DisableOcrButtons()
     {

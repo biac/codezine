@@ -9,7 +9,6 @@
         MinHeight="300" MinWidth="300">
   <Window.Resources>
     <Style TargetType="Label">
-      <!--<Setter Property="FontSize" Value="12"/>-->
       <Setter Property="Padding" Value="4,0,0,0" />
     </Style>
   </Window.Resources>
@@ -37,18 +36,6 @@
                     IsChecked="True"
                     Margin="0,5,0,0">カメラのモニター</ToggleButton>
 
-
-      <!--<ToggleButton x:Name="CaptureButton"
-                    Checked="CaptureButton_Checked" Unchecked="CaptureButton_Unchecked"
-                    Margin="0,15,0,0">XXXカメラ画像をキャプチャXXX</ToggleButton>-->
-      <!--<ToggleButton x:Name="OpenFileButton"
-                    Checked="OpenFileButton_Checked" Unchecked="OpenFileButton_Unchecked"
-                    Margin="0,10,0,0">XXXファイルを開くXXX</ToggleButton>-->
-      <!--<ToggleButton x:Name="PasteButton"
-                    Checked="PasteButton_Checked" Unchecked="PasteButton_Unchecked"
-                    Margin="0,10,0,0">XXXクリップボードから貼り付けXXX</ToggleButton>-->
-
-
       <Label Margin="0,10,0,0">OCR</Label>
       <ComboBox x:Name="LangComboBox" SelectionChanged="LangComboBox_SelectionChanged" />
       <Button x:Name="OcrCameraButtan"
@@ -62,7 +49,6 @@
               Margin="0,5,0,0">クリップボードの画像をOCR</Button>
 
       <Label Margin="0,10,0,0">認識した文字列</Label>
-      <!--<ListBox x:Name="RecognizedListBox" MinHeight="50" />-->
     </StackPanel>
     <TextBox x:Name="RecognizedTextTextBox" Grid.Row="1" Grid.Column="1" 
              IsReadOnly="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" />
