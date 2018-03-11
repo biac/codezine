@@ -29,19 +29,38 @@
     </Grid>
 
     <StackPanel Grid.Column="1" Background="Azure" Orientation="Vertical">
-      <Label>カメラ</Label>
+      <Label x:Name="CameraLabel">カメラ</Label>
       <ComboBox x:Name="CameraComboBox" SelectionChanged="CameraComboBox_SelectionChanged" />
-      <Label Margin="0,5,0,0">認識言語</Label>
-      <ComboBox x:Name="LangComboBox" SelectionChanged="LangComboBox_SelectionChanged" />
-      <ToggleButton x:Name="CaptureButton"
+      <ToggleButton x:Name="MonitorCameraButton"
+                    Checked="MonitorCameraButton_Checked"
+                    Unchecked="MonitorCameraButton_Unchecked"
+                    IsChecked="True"
+                    Margin="0,5,0,0">カメラのモニター</ToggleButton>
+
+
+      <!--<ToggleButton x:Name="CaptureButton"
                     Checked="CaptureButton_Checked" Unchecked="CaptureButton_Unchecked"
-                    Margin="0,15,0,0">カメラ画像をキャプチャ</ToggleButton>
-      <ToggleButton x:Name="OpenFileButton"
+                    Margin="0,15,0,0">XXXカメラ画像をキャプチャXXX</ToggleButton>-->
+      <!--<ToggleButton x:Name="OpenFileButton"
                     Checked="OpenFileButton_Checked" Unchecked="OpenFileButton_Unchecked"
-                    Margin="0,10,0,0">ファイルを開く</ToggleButton>
-      <ToggleButton x:Name="PasteButton"
+                    Margin="0,10,0,0">XXXファイルを開くXXX</ToggleButton>-->
+      <!--<ToggleButton x:Name="PasteButton"
                     Checked="PasteButton_Checked" Unchecked="PasteButton_Unchecked"
-                    Margin="0,10,0,0">クリップボードから貼り付け</ToggleButton>
+                    Margin="0,10,0,0">XXXクリップボードから貼り付けXXX</ToggleButton>-->
+
+
+      <Label Margin="0,10,0,0">OCR</Label>
+      <ComboBox x:Name="LangComboBox" SelectionChanged="LangComboBox_SelectionChanged" />
+      <Button x:Name="OcrCameraButtan"
+              Click="OcrCameraButtan_Click"
+              Margin="0,5,0,0">カメラの画像をOCR</Button>
+      <Button x:Name="OcrFileButton"
+              Click="OcrFileButton_Click"
+              Margin="0,5,0,0">画像ファイルをOCR</Button>
+      <Button x:Name="OcrClipboardButton"
+              Click="OcrClipboardButton_Click"
+              Margin="0,5,0,0">クリップボードの画像をOCR</Button>
+
       <Label Margin="0,10,0,0">認識した文字列</Label>
       <!--<ListBox x:Name="RecognizedListBox" MinHeight="50" />-->
     </StackPanel>

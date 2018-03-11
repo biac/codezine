@@ -71,7 +71,8 @@ namespace WpfApp
         StopTimer();
         while (_isRunning)
           await Task.Delay(100);
-        _mediaCapture.Dispose();
+        if (_mediaCapture != null)
+          _mediaCapture.Dispose();
       };
 
       //this.SizeChanged += (s, e) =>
@@ -108,8 +109,8 @@ namespace WpfApp
         this.LangComboBox.SelectedValuePath = nameof(UwpLanguage.LanguageTag);
 
 
-            var ocrEngine
-            = UwpOcrEngine.TryCreateFromUserProfileLanguages();
+        var ocrEngine
+        = UwpOcrEngine.TryCreateFromUserProfileLanguages();
         this.LangComboBox.SelectedValue = ocrEngine.RecognizerLanguage.LanguageTag;
       }
 
@@ -118,15 +119,19 @@ namespace WpfApp
         var devices = await UwpDeviceInformation.FindAllAsync(UwpDeviceClass.VideoCapture);
         if (devices.Count == 0)
         {
+          //this.CaptureButton.Visibility = Visibility.Collapsed;
+
           this.CameraComboBox.Visibility = Visibility.Collapsed;
-          this.CaptureButton.Visibility = Visibility.Collapsed;
+          this.CameraLabel.Visibility = Visibility.Collapsed;
+          this.MonitorCameraButton.Visibility = Visibility.Collapsed;
+          this.OcrCameraButtan.Visibility = Visibility.Collapsed;
           //MessageBox.Show("カメラがありません", "No Camera",
           //                MessageBoxButton.OK, MessageBoxImage.Information);
           return false;
         }
-        var qq = devices.ToList();
-        qq.AddRange(qq);
-        this.CameraComboBox.ItemsSource = qq;//devices;
+        //var qq = devices.ToList();
+        //qq.AddRange(qq);
+        this.CameraComboBox.ItemsSource = devices;
         this.CameraComboBox.DisplayMemberPath = nameof(UwpDeviceInformation.Name);
         this.CameraComboBox.SelectedValuePath = nameof(UwpDeviceInformation.Id);
         this.CameraComboBox.SelectedIndex = 0;
@@ -142,7 +147,7 @@ namespace WpfApp
         {
           Interval = TimeSpan.FromMilliseconds(333),
         };
-        _dispatcherTimer.Tick += new EventHandler(OnTimerTick);
+        _dispatcherTimer.Tick += new EventHandler(OnTimerTickAsync);
         _dispatcherTimer.Start();
       }
     }
@@ -188,8 +193,11 @@ namespace WpfApp
 
     private void StartTimer()
     {
-      if(_dispatcherTimer != null)
+      if (_dispatcherTimer != null)
+      {
+        _lastRecognizedBitmap = null;
         _dispatcherTimer.Start();
+      }
     }
 
     private void StopTimer()
@@ -202,8 +210,8 @@ namespace WpfApp
 
 
     private bool _isRunning = false;
-    // OnTimerTick() はタイマー割り込みでしか呼び出されないから、ルーズな排他制御で十分。
-    private async void OnTimerTick(object sender, EventArgs ea)
+    // OnTimerTick() は基本的にタイマー割り込みでしか呼び出されないから、ルーズな排他制御で十分。
+    private async void OnTimerTickAsync(object sender, EventArgs ea)
     {
       if (_isRunning)
         return;
@@ -248,28 +256,50 @@ namespace WpfApp
     }
 
 
-    private static AsyncLock _recognizeLock = new AsyncLock();
-    // ここは複数のイベントハンドラから呼び出されるので、真面目な排他制御が必要
+
+    private UwpSoftwareBitmap _lastRecognizedBitmap;
     private async Task RecognizeImageAsync()
     {
-      using (await _recognizeLock.LockAsync())
-      {
-        this.RecognizedTextTextBox.Text = string.Empty;
 
-        UwpSoftwareBitmap bitmap = await GetSoftwareBitmapFromImageAsync();
+      UwpSoftwareBitmap bitmap = await GetSoftwareBitmapFromImageAsync();
+      if (bitmap == null)
+        return;
+      _lastRecognizedBitmap = bitmap;
 
-        var ocrEngine = UwpOcrEngine.TryCreateFromLanguage(this.LangComboBox.SelectedItem as UwpLanguage);
-        var ocrResult = await ocrEngine.RecognizeAsync(bitmap);
-        //this.RecognizedTextTextBox.Text = ocrResult.Text;
-        foreach (var ocrLine in ocrResult.Lines)
-          this.RecognizedTextTextBox.Text += (ocrLine.Text + "\n");
-      }
+      await RecognizeBitmapAsync(bitmap);
+
+      //var ocrEngine = UwpOcrEngine.TryCreateFromLanguage(this.LangComboBox.SelectedItem as UwpLanguage);
+      //var ocrResult = await ocrEngine.RecognizeAsync(bitmap);
+      ////this.RecognizedTextTextBox.Text = ocrResult.Text;
+      //foreach (var ocrLine in ocrResult.Lines)
+      //  this.RecognizedTextTextBox.Text += (ocrLine.Text + "\n");
+    }
+
+    private async Task ReRecognizeAsync()
+    {
+      UwpSoftwareBitmap bitmap = _lastRecognizedBitmap;
+      if (bitmap != null)
+        await RecognizeBitmapAsync(bitmap);
+    }
+
+    private async Task RecognizeBitmapAsync(UwpSoftwareBitmap bitmap)
+    {
+      this.RecognizedTextTextBox.Text = string.Empty;
+
+      var ocrEngine = UwpOcrEngine.TryCreateFromLanguage(this.LangComboBox.SelectedItem as UwpLanguage);
+      var ocrResult = await ocrEngine.RecognizeAsync(bitmap);
+
+      //this.RecognizedTextTextBox.Text = ocrResult.Text;
+      foreach (var ocrLine in ocrResult.Lines)
+        this.RecognizedTextTextBox.Text += (ocrLine.Text + "\n");
     }
 
     private async Task<UwpSoftwareBitmap> GetSoftwareBitmapFromImageAsync()
     {
       // 表示している BitmapImage
       var sourceBitmap = this.Image1.Source as BitmapFrame;
+      if (sourceBitmap == null)
+        return null;
 
       // BitmapImage を BMP 形式のバイト配列に変換
       byte[] bitmap;
@@ -310,93 +340,90 @@ namespace WpfApp
 
     private async void LangComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      if(this.CaptureButton.IsChecked == true 
-        || this.OpenFileButton.IsChecked == true
-        || this.PasteButton.IsChecked == true)
-        await RecognizeImageAsync();
+      //if(this.CaptureButton.IsChecked == true 
+      //  || this.OpenFileButton.IsChecked == true
+      //  || this.PasteButton.IsChecked == true)
+      //  await RecognizeImageAsync();
+      await ReRecognizeAsync();
     }
 
-    private void CaptureButton_Checked(object sender, RoutedEventArgs e)
-      => EnterCaptureMode();
-    private void CaptureButton_Unchecked(object sender, RoutedEventArgs e)
-      => ExitCaptureMode();
 
-    private void OpenFileButton_Checked(object sender, RoutedEventArgs e)
-      => EnterFileMode();
-      private void OpenFileButton_Unchecked(object sender, RoutedEventArgs e)
-      => ExitFileMode();
+    //private void OpenFileButton_Checked(object sender, RoutedEventArgs e)
+    //  => EnterFileMode();
+    //private void OpenFileButton_Unchecked(object sender, RoutedEventArgs e)
+    //  => ExitFileMode();
 
-    private void PasteButton_Checked(object sender, RoutedEventArgs e)
-      => EnterClipboardMode();
-    private void PasteButton_Unchecked(object sender, RoutedEventArgs e)
-      => ExitClipboardMode();
+    //private void PasteButton_Checked(object sender, RoutedEventArgs e)
+    //  => EnterClipboardMode();
+    //private void PasteButton_Unchecked(object sender, RoutedEventArgs e)
+    //  => ExitClipboardMode();
     #endregion
 
     #region Change UI Mode
-    private async void EnterCaptureMode()
-    {
-      await disableControlsAsync();
-      await RecognizeImageAsync();
+    //private async void EnterCaptureMode()
+    //{
+    //  await disableControlsAsync();
+    //  await RecognizeImageAsync();
 
-      async Task disableControlsAsync()
-      {
-        CameraComboBox.IsEnabled = false;
-        OpenFileButton.IsChecked = false;
-        PasteButton.IsChecked = false;
-        StopTimer();
-        while (_isRunning)
-          await Task.Delay(100);
-      }
-    }
-    private void ExitCaptureMode()
-    {
-      enableControls();
+    //  async Task disableControlsAsync()
+    //  {
+    //    CameraComboBox.IsEnabled = false;
+    //    OpenFileButton.IsChecked = false;
+    //    PasteButton.IsChecked = false;
+    //    StopTimer();
+    //    while (_isRunning)
+    //      await Task.Delay(100);
+    //  }
+    //}
+    //private void ExitCaptureMode()
+    //{
+    //  enableControls();
 
-      void enableControls()
-      {
-        CameraComboBox.IsEnabled = true;
-        StartTimer();
-      }
-    }
+    //  void enableControls()
+    //  {
+    //    CameraComboBox.IsEnabled = true;
+    //    StartTimer();
+    //  }
+    //}
 
-    private async void EnterClipboardMode()
-    {
-      await disableControlsAsync();
+    //private async void EnterClipboardMode()
+    //{
+    //  await disableControlsAsync();
 
-      // クリップボードから画像を取り込む
-      BitmapFrame bitmapFrame = GetBitmapFromClipboard();
-      if (bitmapFrame == null)
-      {
-        this.PasteButton.IsChecked = false;
-        return;
-      }
+    //  // クリップボードから画像を取り込む
+    //  BitmapFrame bitmapFrame = GetBitmapFromClipboard();
+    //  if (bitmapFrame == null)
+    //  {
+    //    this.PasteButton.IsChecked = false;
+    //    return;
+    //  }
 
-      this.Image1.Source = bitmapFrame;
-      await RecognizeImageAsync();
+    //  this.Image1.Source = bitmapFrame;
+    //  await RecognizeImageAsync();
 
-      async Task disableControlsAsync()
-      {
-        this.CameraComboBox.IsEnabled = false;
-        this.CaptureButton.IsChecked = false;
-        this.CaptureButton.IsEnabled = false;
-        this.OpenFileButton.IsChecked = false;
-        StopTimer();
-        while (_isRunning)
-          await Task.Delay(100);
-      }
-    }
+    //  async Task disableControlsAsync()
+    //  {
+    //    this.CameraComboBox.IsEnabled = false;
+    //    //this.CaptureButton.IsChecked = false;
+    //    //this.CaptureButton.IsEnabled = false;
+    //    //this.OpenFileButton.IsChecked = false;
+    //    StopTimer();
+    //    while (_isRunning)
+    //      await Task.Delay(100);
+    //  }
+    //}
 
-    private void ExitClipboardMode()
-    {
-      enableControls();
+    //private void ExitClipboardMode()
+    //{
+    //  enableControls();
 
-      void enableControls()
-      {
-        this.CameraComboBox.IsEnabled = true;
-        this.CaptureButton.IsEnabled = true;
-        StartTimer();
-      }
-    }
+    //  void enableControls()
+    //  {
+    //    this.CameraComboBox.IsEnabled = true;
+    //    //this.CaptureButton.IsEnabled = true;
+    //    StartTimer();
+    //  }
+    //}
 
     private BitmapFrame GetBitmapFromClipboard()
     {
@@ -425,44 +452,44 @@ namespace WpfApp
       return bitmapFrame;
     }
 
-    private async void EnterFileMode()
-    {
-      await disableControlsAsync();
+    //private async void EnterFileMode()
+    //{
+    //  await disableControlsAsync();
 
-      // ファイルから画像を読み込む
-      BitmapFrame bitmapFrame = GetBitmapFromFile();
-      if (bitmapFrame == null)
-      {
-        this.PasteButton.IsChecked = false;
-        return;
-      }
+    //  // ファイルから画像を読み込む
+    //  BitmapFrame bitmapFrame = GetBitmapFromFile();
+    //  if (bitmapFrame == null)
+    //  {
+    //    this.PasteButton.IsChecked = false;
+    //    return;
+    //  }
 
-      this.Image1.Source = bitmapFrame;
-      await RecognizeImageAsync();
+    //  this.Image1.Source = bitmapFrame;
+    //  await RecognizeImageAsync();
 
-      async Task disableControlsAsync()
-      {
-        this.CameraComboBox.IsEnabled = false;
-        this.CaptureButton.IsChecked = false;
-        this.CaptureButton.IsEnabled = false;
-        this.PasteButton.IsChecked = false;
-        StopTimer();
-        while (_isRunning)
-          await Task.Delay(100);
-      }
-    }
+    //  async Task disableControlsAsync()
+    //  {
+    //    this.CameraComboBox.IsEnabled = false;
+    //    //this.CaptureButton.IsChecked = false;
+    //    //this.CaptureButton.IsEnabled = false;
+    //    this.PasteButton.IsChecked = false;
+    //    StopTimer();
+    //    while (_isRunning)
+    //      await Task.Delay(100);
+    //  }
+    //}
 
-    private void ExitFileMode()
-    {
-      enableControls();
+    //private void ExitFileMode()
+    //{
+    //  enableControls();
 
-      void enableControls()
-      {
-        this.CameraComboBox.IsEnabled = true;
-        this.CaptureButton.IsEnabled = true;
-        StartTimer();
-      }
-    }
+    //  void enableControls()
+    //  {
+    //    this.CameraComboBox.IsEnabled = true;
+    //    //this.CaptureButton.IsEnabled = true;
+    //    StartTimer();
+    //  }
+    //}
 
     private BitmapFrame GetBitmapFromFile()
     {
@@ -471,7 +498,7 @@ namespace WpfApp
       dialog.Filter = "画像ファイル(*.png;*.jpg;*.jpeg;*.gif;*.bmp)|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
       if (dialog.ShowDialog() != true)
       {
-        this.OpenFileButton.IsChecked = false;
+        //this.OpenFileButton.IsChecked = false;
         return null;
       }
 
@@ -481,5 +508,109 @@ namespace WpfApp
       return encoder.Frames[0];
     }
     #endregion
+
+    private void MonitorCameraButton_Checked(object sender, RoutedEventArgs e)
+      => StartTimer();
+
+    private void MonitorCameraButton_Unchecked(object sender, RoutedEventArgs e)
+      => StopTimer();
+
+    //private void CaputureCameraButtan_Click(object sender, RoutedEventArgs e)
+    //{
+
+    //}
+
+    //private void CaptureCameraButtan_Click(object sender, RoutedEventArgs e)
+    //{
+
+    //}
+
+    //private void CaptureFileButton_Click(object sender, RoutedEventArgs e)
+    //{
+
+    //}
+
+    private void DisableOcrButtons()
+    {
+      this.LangComboBox.IsEnabled = false;
+      this.OcrCameraButtan.IsEnabled = false;
+      this.OcrClipboardButton.IsEnabled = false;
+      this.OcrFileButton.IsEnabled = false;
+    }
+    private void EnableOcrButtons()
+    {
+      this.LangComboBox.IsEnabled = true;
+      this.OcrCameraButtan.IsEnabled = true;
+      this.OcrClipboardButton.IsEnabled = true;
+      this.OcrFileButton.IsEnabled = true;
+    }
+
+    private async void OcrCameraButtan_Click(object sender, RoutedEventArgs e)
+    {
+      DisableOcrButtons();
+
+      //if (!_dispatcherTimer.IsEnabled)
+      if (this.MonitorCameraButton.IsChecked == false)
+      {
+        // カメラのモニター画像が表示されていないので、1回キャプチャする
+        OnTimerTickAsync(this, new EventArgs());
+        do
+        {
+          await Task.Delay(100);
+        } while (_isRunning);
+      }
+      else
+      {
+        this.MonitorCameraButton.IsChecked = false;
+      }
+
+      await RecognizeImageAsync();
+
+      EnableOcrButtons();
+    }
+
+    private async void OcrFileButton_Click(object sender, RoutedEventArgs e)
+    {
+      DisableOcrButtons();
+
+      // ファイルから画像を読み込む
+      BitmapFrame bitmapFrame = GetBitmapFromFile();
+      if (bitmapFrame == null)
+      {
+        EnableOcrButtons();
+        return;
+      }
+
+      this.MonitorCameraButton.IsChecked = false;
+      while (_isRunning)
+        await Task.Delay(100);
+
+      this.Image1.Source = bitmapFrame;
+      await RecognizeImageAsync();
+
+      EnableOcrButtons();
+    }
+
+    private async void OcrClipboardButton_Click(object sender, RoutedEventArgs e)
+    {
+      DisableOcrButtons();
+
+      // クリップボードから画像を取り込む
+      BitmapFrame bitmapFrame = GetBitmapFromClipboard();
+      if (bitmapFrame == null)
+      {
+        EnableOcrButtons();
+        return;
+      }
+
+      this.MonitorCameraButton.IsChecked = false;
+      while (_isRunning)
+        await Task.Delay(100);
+
+      this.Image1.Source = bitmapFrame;
+      await RecognizeImageAsync();
+
+      EnableOcrButtons();
+    }
   }
 }
