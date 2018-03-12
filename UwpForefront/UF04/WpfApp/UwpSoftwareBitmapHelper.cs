@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 // UWP の SoftwareBitmap
 using UwpSoftwareBitmap = Windows.Graphics.Imaging.SoftwareBitmap;
@@ -11,9 +10,6 @@ using UwpBitmapPixelFormat = Windows.Graphics.Imaging.BitmapPixelFormat;
 using UwpBitmapAlphaMode = Windows.Graphics.Imaging.BitmapAlphaMode;
 using UwpInMemoryRandomAccessStream = Windows.Storage.Streams.InMemoryRandomAccessStream;
 using UwpDataWriter = Windows.Storage.Streams.DataWriter;
-//
-using System.Windows.Media.Imaging;
-using System.IO;
 
 namespace WpfApp
 {

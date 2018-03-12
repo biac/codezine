@@ -30,7 +30,7 @@ namespace WpfApp
 
       _mediaCapture.Failed += (s, e) =>
       {
-        MessageBox.Show("キャプチャ失敗\n" + e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Stop);
+        MessageBox.Show("キャプチャ失敗\n" + e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
       };
 
       var setting = new UwpMediaCaptureInitializationSettings()
@@ -47,10 +47,7 @@ namespace WpfApp
 
     public async Task<BitmapFrame> CapturePhotoAsync()
     {
-      //var encProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreatePng();
       var encProperties = Windows.Media.MediaProperties.ImageEncodingProperties.CreateBmp();
-      //encProperties.Width = (uint)ImageGrid.ActualWidth;
-      //encProperties.Height = (uint)ImageGrid.ActualHeight;
 
       using (var randomAccessStream = new UwpInMemoryRandomAccessStream())
       {
