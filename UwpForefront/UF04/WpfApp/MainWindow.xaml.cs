@@ -29,21 +29,50 @@ namespace WpfApp
 
       this.Loaded += MainWindow_Loaded;
       this.Closed += MainWindow_Closed;
+
+      Application.Current.DispatcherUnhandledException += (s, e) =>
+      {
+        var ex = e.Exception;
+
+        switch (ex.HResult)
+        {
+          case -1072875854: // C00D 36B2
+            // 現在の状態では、要求は無効です。\n deviceActivateCount
+          case -1072873822: // C00D 3EA2
+            // ビデオ録画デバイスは存在しません。 (HRESULT からの例外:0xC00D3EA2)
+
+            e.Handled = true; 
+            _isRunning = false;
+            ReInitializeMediaCaptureAsync();
+            break;
+
+          default:
+#if DEBUG
+            //if( sがMediaCaptureだったら… )
+            e.Handled = true; //…としても、継続はムリっぽい orz
+            _isRunning = false;
+            ReInitializeMediaCaptureAsync();
+#endif
+            break;
+        }
+
+      };
     }
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs ea)
     {
-      SetLanguageList();
-      bool hasCamera = await SetCameraListAsync();
+      setLanguageList();
+      bool hasCamera = await setCameraListAsync();
       if (hasCamera)
       {
         await InitializeMediaCaptureAsync();
-        InitializeTimer();
+        setBrightnessControl();
+        initializeTimer();
       }
       return;
 
       #region local functions in MainWindow_Loaded
-      void SetLanguageList()
+      void setLanguageList()
       {
         IReadOnlyList<UwpLanguage> langList = UwpOcrEngine.AvailableRecognizerLanguages;
         this.LangComboBox.ItemsSource = langList;
@@ -55,32 +84,27 @@ namespace WpfApp
         this.LangComboBox.SelectedValue = ocrEngine.RecognizerLanguage.LanguageTag;
       }
 
-      async Task<bool> SetCameraListAsync()
+      async Task<bool> setCameraListAsync()
       {
         var devices = await UwpDeviceInformation.FindAllAsync(UwpDeviceClass.VideoCapture);
         if (devices.Count == 0)
         {
-          HideCameraUI();
+          hideCameraUI();
           return false;
         }
-        IEnumerable<UwpDeviceInformation> xx = devices;
-
-        //TODO: テスト用
-        var qq = devices.ToList();
-        qq.AddRange(qq);
-
-        SetupCameraComboBox(qq);
+        setupCameraComboBox(devices);
         return true;
 
-        void HideCameraUI()
+        void hideCameraUI()
         {
           this.CameraLabel.Visibility = Visibility.Collapsed;
           this.CameraComboBox.Visibility = Visibility.Collapsed;
           this.MonitorCameraButton.Visibility = Visibility.Collapsed;
+          this.CameraControlGrid.Visibility = Visibility.Collapsed;
           this.OcrCameraButtan.Visibility = Visibility.Collapsed;
         }
 
-        void SetupCameraComboBox(IReadOnlyList<UwpDeviceInformation> deviceList)
+        void setupCameraComboBox(IReadOnlyList<UwpDeviceInformation> deviceList)
         {
           this.CameraComboBox.ItemsSource = deviceList;
           this.CameraComboBox.DisplayMemberPath = nameof(UwpDeviceInformation.Name);
@@ -89,7 +113,24 @@ namespace WpfApp
         }
       }
 
-      void InitializeTimer()
+      void setBrightnessControl()
+      {
+        // [明るさ] スライダーを設定
+        var brightCtl = _mediaCapture.BrightnessControl;
+        this.BrightSlider.Minimum = brightCtl.Capabilities.Min;
+        this.BrightSlider.Maximum = brightCtl.Capabilities.Max;
+        if (brightCtl.TryGetValue(out double bright))
+          this.BrightSlider.Value = bright;
+
+        // [コントラスト] スライダーを設定
+        var contrastCtl = _mediaCapture.ContrastControl;
+        this.ContrastSlider.Minimum = contrastCtl.Capabilities.Min;
+        this.ContrastSlider.Maximum = contrastCtl.Capabilities.Max;
+        if (contrastCtl.TryGetValue(out double contrast))
+          this.ContrastSlider.Value = contrast;
+      }
+
+      void initializeTimer()
       {
         // CapturePhotoToStreamAsync() が、どうも毎秒1回程度しかキャプチャさせてくれないようだ。
         // タイマー動作にする必要はなかったかもしれない。
@@ -106,13 +147,10 @@ namespace WpfApp
 
     private void MainWindow_Closed(object sender, EventArgs e)
     {
-      if (_dispatcherTimer != null)
-      {
-        _dispatcherTimer.Stop();
-        _dispatcherTimer = null;
-      }
-      if (_mediaCapture != null)
-        _mediaCapture.Dispose();
+      _dispatcherTimer?.Stop();
+      _dispatcherTimer = null;
+
+      _mediaCapture?.Dispose();
     }
 
 
@@ -150,10 +188,45 @@ namespace WpfApp
     }
 
     private void MonitorCameraButton_Checked(object sender, RoutedEventArgs e)
-      => ReInitializeMediaCaptureAsync();
+    {
+      ReInitializeMediaCaptureAsync();
+
+      if(this.CameraControlGrid != null)
+        this.CameraControlGrid.Visibility = Visibility.Visible;
+    }
 
     private void MonitorCameraButton_Unchecked(object sender, RoutedEventArgs e)
-      => StopTimer();
+    {
+      StopTimer();
+
+      this.ErrorMessageGrid.Visibility = Visibility.Collapsed;
+      this.CameraControlGrid.Visibility = Visibility.Hidden;
+    }
+
+    private async void BrightSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+      e.Handled = true;
+      await Task.Run(async () =>
+      {
+        using (await _mediaCaptureLock.LockAsync())
+        {
+          _mediaCapture.BrightnessControl.TrySetValue(e.NewValue);
+        }
+      });
+    }
+
+    private async void ContrastSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+      e.Handled = true;
+      await Task.Run(async () =>
+      {
+        using (await _mediaCaptureLock.LockAsync())
+        {
+          _mediaCapture.ContrastControl.TrySetValue(e.NewValue);
+        }
+      });
+    }
+
 
     private async void LangComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
       => await ReRecognizeAsync();

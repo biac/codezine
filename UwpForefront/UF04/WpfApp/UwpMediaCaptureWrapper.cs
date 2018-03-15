@@ -6,17 +6,27 @@ using System.Windows.Media.Imaging;
 
 // UWP の MediaCapture
 using UwpMediaCapture = Windows.Media.Capture.MediaCapture;
-using UwpMediaCaptureInitializationSettings
-  = Windows.Media.Capture.MediaCaptureInitializationSettings;
+using UwpMediaCaptureFailedEventHandler = Windows.Media.Capture.MediaCaptureFailedEventHandler;
+using UwpMediaCaptureInitializationSettings = Windows.Media.Capture.MediaCaptureInitializationSettings;
+using UwpMediaDeviceControl = Windows.Media.Devices.MediaDeviceControl;
+using UwpStreamingCaptureMode = Windows.Media.Capture.StreamingCaptureMode;
 using UwpInMemoryRandomAccessStream = Windows.Storage.Streams.InMemoryRandomAccessStream;
 
 namespace WpfApp
 {
   public class UwpMediaCaptureWrapper : IDisposable
   {
-    private UwpMediaCapture _mediaCapture;
+    public event UwpMediaCaptureFailedEventHandler Failed;
+
+    public UwpMediaDeviceControl BrightnessControl => _uwpMediaCapture.VideoDeviceController.Brightness;
+
+    public UwpMediaDeviceControl ContrastControl => _uwpMediaCapture.VideoDeviceController.Contrast;
+
+
+    private UwpMediaCapture _uwpMediaCapture;
 
     private UwpMediaCaptureWrapper() { /* avoid instance */}
+
     public static async Task<UwpMediaCaptureWrapper> GetInstanceAsync(string videoDeviceId)
     {
       var instance = new UwpMediaCaptureWrapper();
@@ -24,25 +34,28 @@ namespace WpfApp
       return instance;
     }
 
+
+
     private async Task InitializeMediaCaptureAsync(string videoDeviceId)
     {
-      _mediaCapture = new UwpMediaCapture();
+      _uwpMediaCapture = new UwpMediaCapture();
 
-      _mediaCapture.Failed += (s, e) =>
+      _uwpMediaCapture.Failed += (s, e) =>
       {
-        MessageBox.Show("キャプチャ失敗\n" + e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        //MessageBox.Show("キャプチャ失敗\n" + e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        Failed?.Invoke(s, e);
       };
 
       var setting = new UwpMediaCaptureInitializationSettings()
       {
         VideoDeviceId = videoDeviceId,
-        StreamingCaptureMode = Windows.Media.Capture.StreamingCaptureMode.Video,
+        StreamingCaptureMode = UwpStreamingCaptureMode.Video,
       };
-      await _mediaCapture.InitializeAsync(setting);
-      _mediaCapture.VideoDeviceController.Brightness.TrySetAuto(true);
-      _mediaCapture.VideoDeviceController.Contrast.TrySetAuto(true);
-      _mediaCapture.VideoDeviceController.Focus.TrySetAuto(true);
-      _mediaCapture.VideoDeviceController.WhiteBalance.TrySetAuto(true);
+      await _uwpMediaCapture.InitializeAsync(setting);
+      _uwpMediaCapture.VideoDeviceController.Brightness.TrySetAuto(true);
+      _uwpMediaCapture.VideoDeviceController.Contrast.TrySetAuto(true);
+      _uwpMediaCapture.VideoDeviceController.Focus.TrySetAuto(true);
+      _uwpMediaCapture.VideoDeviceController.WhiteBalance.TrySetAuto(true);
     }
 
     public async Task<BitmapFrame> CapturePhotoAsync()
@@ -51,7 +64,7 @@ namespace WpfApp
 
       using (var randomAccessStream = new UwpInMemoryRandomAccessStream())
       {
-        await _mediaCapture.CapturePhotoToStreamAsync(encProperties, randomAccessStream);
+        await _uwpMediaCapture.CapturePhotoToStreamAsync(encProperties, randomAccessStream);
         randomAccessStream.Seek(0);
 
         //ビットマップにして返す
@@ -79,7 +92,7 @@ namespace WpfApp
       {
         if (disposing)
         {
-          _mediaCapture.Dispose();
+          _uwpMediaCapture.Dispose();
         }
 
         // TODO: アンマネージ リソース (アンマネージ オブジェクト) を解放し、下のファイナライザーをオーバーライドします。
@@ -104,7 +117,5 @@ namespace WpfApp
       // GC.SuppressFinalize(this);
     }
     #endregion
-
-
   }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -25,6 +22,9 @@ namespace WpfApp
     {
       while (_isRunning)
         await Task.Delay(100);
+
+      if (this.Image1.Source == null)
+        return;
 
       // 表示している画像を SoftwareBitmap として取得
       UwpSoftwareBitmap bitmap

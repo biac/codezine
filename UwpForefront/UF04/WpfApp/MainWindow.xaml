@@ -6,10 +6,12 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
-        MinHeight="300" MinWidth="300">
+        MinHeight="350" MinWidth="350">
   <Window.Resources>
     <Style TargetType="Label">
       <Setter Property="Padding" Value="4,0,0,0" />
+      <Setter Property="Foreground" Value="CadetBlue" />
+      <Setter Property="FontWeight" Value="Bold" />
     </Style>
   </Window.Resources>
   
@@ -24,7 +26,18 @@
     </Grid.RowDefinitions>
 
     <Grid x:Name="ImageGrid" Background="Gray" Grid.RowSpan="2">
-      <Image x:Name="Image1"  />
+      <Image x:Name="Image1" />
+    </Grid>
+    
+    <Grid x:Name="ErrorMessageGrid" Background="#ccffffff" Grid.RowSpan="2"
+          Visibility="Collapsed">
+      <Border Grid.Column="1" BorderBrush="IndianRed" BorderThickness="1" VerticalAlignment="Center" MaxWidth="200" Padding="10">
+        <StackPanel Orientation="Vertical" >
+          <Label Foreground="IndianRed">MediaCapture ERROR:</Label>
+          <TextBlock x:Name="ErrorMessageText" Foreground="IndianRed" TextWrapping="Wrap" Margin="5" >(error message)</TextBlock>
+          <Label x:Name="RetryLabel" Foreground="IndianRed" Visibility="Hidden">Retrying...</Label>
+        </StackPanel>
+      </Border>
     </Grid>
 
     <StackPanel Grid.Column="1" Background="Azure" Orientation="Vertical">
@@ -34,19 +47,37 @@
                     Checked="MonitorCameraButton_Checked"
                     Unchecked="MonitorCameraButton_Unchecked"
                     IsChecked="True"
-                    Margin="0,5,0,0">カメラのモニター</ToggleButton>
+                    Margin="0,5,0,0">モニター ON / OFF</ToggleButton>
+      <Grid x:Name="CameraControlGrid" Margin="0,5,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <Label Padding="0" HorizontalAlignment="Right">明るさ</Label>
+        <Slider x:Name="BrightSlider" Grid.Column="1"
+                AutoToolTipPrecision="0" AutoToolTipPlacement="TopLeft"
+                ValueChanged="BrightSlider_ValueChanged" />
+        <Label Grid.Row="1" Padding="0" HorizontalAlignment="Right">コントラスト</Label>
+        <Slider x:Name="ContrastSlider" Grid.Column="1" Grid.Row="1"
+                AutoToolTipPrecision="0" AutoToolTipPlacement="TopLeft"
+                ValueChanged="ContrastSlider_ValueChanged" />
+      </Grid>
 
       <Label Margin="0,10,0,0">OCR</Label>
       <ComboBox x:Name="LangComboBox" SelectionChanged="LangComboBox_SelectionChanged" />
       <Button x:Name="OcrCameraButtan"
               Click="OcrCameraButtan_Click"
-              Margin="0,5,0,0">カメラの画像をOCR</Button>
+              Margin="0,5,0,0">カメラの画像</Button>
       <Button x:Name="OcrFileButton"
               Click="OcrFileButton_Click"
-              Margin="0,5,0,0">画像ファイルをOCR</Button>
+              Margin="0,5,0,0">画像ファイル</Button>
       <Button x:Name="OcrClipboardButton"
               Click="OcrClipboardButton_Click"
-              Margin="0,5,0,0">クリップボードの画像をOCR</Button>
+              Margin="0,5,0,0">クリップボードの画像</Button>
 
       <Label Margin="0,10,0,0">認識した文字列</Label>
     </StackPanel>
