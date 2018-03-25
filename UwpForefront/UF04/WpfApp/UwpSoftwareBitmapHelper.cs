@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-// UWP の SoftwareBitmap
+// UWPのSoftwareBitmap関連のエイリアス（UWP APIの使用箇所を明確にするため）
 using UwpSoftwareBitmap = Windows.Graphics.Imaging.SoftwareBitmap;
 using UwpBitmapDecoder = Windows.Graphics.Imaging.BitmapDecoder;
 using UwpBitmapPixelFormat = Windows.Graphics.Imaging.BitmapPixelFormat;
@@ -17,28 +17,35 @@ namespace WpfApp
   {
     public static async Task<UwpSoftwareBitmap> ConvertFrom(BitmapFrame sourceBitmap)
     {
-      // BitmapFrame を BMP 形式のバイト配列に変換
-      byte[] bitmap;
-      var encoder = new BmpBitmapEncoder();
+      // BitmapFrameをBMP形式のバイト配列に変換
+      byte[] bitmapBytes;
+      var encoder = new BmpBitmapEncoder(); // ここは.NET用のエンコーダーを使う
       encoder.Frames.Add(sourceBitmap);
       using (var memoryStream = new MemoryStream())
       {
         encoder.Save(memoryStream);
-        bitmap = memoryStream.ToArray();
+        bitmapBytes = memoryStream.ToArray();
       }
 
-      // バイト配列を UWP の IRandomAccessStream に変換
-      var randomAccessStream = new UwpInMemoryRandomAccessStream();
-      var outputStream = randomAccessStream.GetOutputStreamAt(0);
-      var dw = new UwpDataWriter(outputStream);
-      dw.WriteBytes(bitmap);
-      await dw.StoreAsync();
-      await outputStream.FlushAsync();
+      // バイト配列をUWPのIRandomAccessStreamに変換
+      using (var randomAccessStream = new UwpInMemoryRandomAccessStream())
+      {
+        using (var outputStream = randomAccessStream.GetOutputStreamAt(0))
+        using (var writer = new UwpDataWriter(outputStream))
+        {
+          writer.WriteBytes(bitmapBytes);
+          await writer.StoreAsync();
+          await outputStream.FlushAsync();
+        }
 
-      // IRandomAccessStream を SoftwareBitmap に変換
-      var decoder = await UwpBitmapDecoder.CreateAsync(randomAccessStream);
-      var softwareBitmap = await decoder.GetSoftwareBitmapAsync(UwpBitmapPixelFormat.Bgra8, UwpBitmapAlphaMode.Premultiplied);
-      return softwareBitmap;
+        // IRandomAccessStreamをSoftwareBitmapに変換
+        // （ここはUWP APIのデコーダーを使う）
+        var decoder = await UwpBitmapDecoder.CreateAsync(randomAccessStream);
+        var softwareBitmap 
+          = await decoder.GetSoftwareBitmapAsync(UwpBitmapPixelFormat.Bgra8,
+                                                 UwpBitmapAlphaMode.Premultiplied);
+        return softwareBitmap;
+      }
     }
   }
 }

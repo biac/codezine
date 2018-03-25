@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media.Imaging;
 
 // UWP の MediaCapture
@@ -42,7 +41,6 @@ namespace WpfApp
 
       _uwpMediaCapture.Failed += (s, e) =>
       {
-        //MessageBox.Show("キャプチャ失敗\n" + e.Message, "Failed", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         Failed?.Invoke(s, e);
       };
 
@@ -78,7 +76,6 @@ namespace WpfApp
         }
         return BitmapFrame.Create(bitmap);
       }
-
     }
 
 

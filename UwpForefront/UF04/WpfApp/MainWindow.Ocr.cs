@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 
 // UWP の OCR
 using UwpOcrEngine = Windows.Media.Ocr.OcrEngine;
-//using UwpOcrResult = Windows.Media.Ocr.OcrResult;
+using UwpOcrResult = Windows.Media.Ocr.OcrResult;
 using UwpLanguage = Windows.Globalization.Language;
 
 // UWP の SoftwareBitmap
@@ -14,8 +14,6 @@ namespace WpfApp
 {
   public partial class MainWindow
   {
-    #region OCR
-
     private UwpSoftwareBitmap _lastRecognizedBitmap;
 
     private async Task RecognizeImageAsync()
@@ -33,7 +31,11 @@ namespace WpfApp
         return;
 
       // 認識言語を変えて再認識させたいときのために保持
-      _lastRecognizedBitmap = bitmap;
+      if (_lastRecognizedBitmap != bitmap)
+      {
+        _lastRecognizedBitmap?.Dispose();
+        _lastRecognizedBitmap = bitmap;
+      }
 
       // SoftwareBitmap を OCR に掛ける
       await RecognizeBitmapAsync(bitmap);
@@ -54,12 +56,10 @@ namespace WpfApp
       this.RecognizedTextTextBox.Text = string.Empty;
 
       var ocrEngine = UwpOcrEngine.TryCreateFromLanguage(this.LangComboBox.SelectedItem as UwpLanguage);
-      var ocrResult = await ocrEngine.RecognizeAsync(bitmap);
+      UwpOcrResult ocrResult = await ocrEngine.RecognizeAsync(bitmap);
 
       foreach (var ocrLine in ocrResult.Lines)
         this.RecognizedTextTextBox.Text += (ocrLine.Text + "\n");
     }
-
-    #endregion
   }
 }

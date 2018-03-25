@@ -36,15 +36,13 @@ namespace UwpApp
   /// </summary>
   public sealed partial class MainPage : Page
   {
-
-
-
     public MainPage()
     {
       this.InitializeComponent();
 
       // 画面遷移がないので、サスペンド対応はここでやってしまう
-      App.Current.Suspending += async (s, e) => {
+      App.Current.Suspending += async (s, e) =>
+      {
         var deferral = e.SuspendingOperation.GetDeferral();
         await CleanupCameraAsync();
         deferral.Complete();
@@ -72,7 +70,9 @@ namespace UwpApp
       {
         await InitializeMediaCaptureAsync();
       }
+
       return;
+
 
       #region local functions in OnNavigatedTo
 
@@ -119,8 +119,6 @@ namespace UwpApp
 
 
 
-
-
     private void HideCameraUI()
     {
       this.CamereUIPanel.Visibility = Visibility.Collapsed;
@@ -142,6 +140,7 @@ namespace UwpApp
       this.OcrClipboardButton.IsEnabled = false;
       this.OcrFileButton.IsEnabled = false;
     }
+
     private void EnableOcrButtons()
     {
       this.LangComboBox.IsEnabled = true;
@@ -150,9 +149,17 @@ namespace UwpApp
       this.OcrFileButton.IsEnabled = true;
     }
 
+    private async Task SetImage(SoftwareBitmap bitmap)
+    {
+      this.Image1.Source = await SoftwareBitmapHelper.CreateBitmapSourceAsync(bitmap);
+
+      this.OverlayCanvas.Width = bitmap.PixelWidth;
+      this.OverlayCanvas.Height = bitmap.PixelHeight;
+    }
 
 
 
+    #region event handlers
 
     private async void CameraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -162,7 +169,7 @@ namespace UwpApp
       // モニター中だったら、カメラを切り替えるために再初期化する
       this.CameraControlGrid.Opacity = 0.0;
       await CleanupCameraAsync();
-      if(await InitializeMediaCaptureAsync())
+      if (await InitializeMediaCaptureAsync())
         this.CameraControlGrid.Opacity = 1.0;
     }
 
@@ -174,9 +181,6 @@ namespace UwpApp
       this.MonitorCameraButton.IsEnabled = false;
       if (await InitializeMediaCaptureAsync())
       {
-        //this.Image1.Source = null;
-        //_lastRecognizedBitmap?.Dispose();
-        //_lastRecognizedBitmap = null;
         this.CameraControlGrid.Opacity = 1.0;
       }
       this.MonitorCameraButton.IsEnabled = true;
@@ -195,104 +199,20 @@ namespace UwpApp
 
     private void BrightSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
     {
-        _mediaCapture?.VideoDeviceController
-          .Brightness.TrySetValue(e.NewValue);
+      _mediaCapture?.VideoDeviceController
+        .Brightness.TrySetValue(e.NewValue);
     }
 
     private void ContrastSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
     {
-        _mediaCapture?.VideoDeviceController
-          .Contrast.TrySetValue(e.NewValue);
+      _mediaCapture?.VideoDeviceController
+        .Contrast.TrySetValue(e.NewValue);
     }
 
     private async void LangComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      //if (_mediaCapture != null)
-      //  return; // モニター中
-
       await ReRecognizeAsync();
     }
-
-
-
-    private async Task SetImage(SoftwareBitmap bitmap)
-    {
-      this.Image1.Source = await SoftwareBitmapHelper.CreateBitmapSourceAsync(bitmap);
-
-      this.OverlayCanvas.Width = bitmap.PixelWidth;
-      this.OverlayCanvas.Height = bitmap.PixelHeight;
-    }
-
-    //private async Task<SoftwareBitmapSource> CreateBitmapSourceAsync(SoftwareBitmap bitmap)
-    //{
-    //  //if (bitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8
-    //  //      || bitmap.BitmapAlphaMode == BitmapAlphaMode.Straight)
-    //  //{
-    //  //  bitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
-    //  //}
-    //  var source = new SoftwareBitmapSource();
-    //  await source.SetBitmapAsync(bitmap);
-    //  return source;
-    //}
-
-
-    //private SoftwareBitmap _lastRecognizedBitmap;
-
-    //// SoftwareBitmap を OCR に掛ける
-    //private async Task RecognizeBitmapAsync(SoftwareBitmap bitmap)
-    //{
-    //  this.RecognizedTextTextBox.Text = string.Empty;
-
-    //  // 認識言語を変えて再認識させたいときのために保持
-    //  if(_lastRecognizedBitmap != null && _lastRecognizedBitmap != bitmap)
-    //    _lastRecognizedBitmap.Dispose();
-    //  _lastRecognizedBitmap = bitmap;
-
-    //  var ocrEngine = OcrEngine.TryCreateFromLanguage(this.LangComboBox.SelectedItem as Language);
-    //  OcrResult ocrResult = await ocrEngine.RecognizeAsync(bitmap);
-
-    //  DisplayOcrResult(ocrResult);
-    //}
-
-    //private void DisplayOcrResult(OcrResult result)
-    //{
-
-    //  foreach (var ocrLine in result.Lines)
-    //    this.RecognizedTextTextBox.Text += (ocrLine.Text + "\n");
-
-    //  this.OverlayCanvas.Children.Clear();
-    //  foreach (var ocrLine in result.Lines)
-    //    foreach(var word in ocrLine.Words)
-    //    {
-    //      Rect r = word.BoundingRect;
-    //      Rectangle rect = new Rectangle()
-    //      {
-    //        Width = r.Width,
-    //        Height = r.Height,
-    //        Fill = new SolidColorBrush(Color.FromArgb(0x40, 0,0xff,0)),
-    //        Stroke = new SolidColorBrush(Color.FromArgb(0x60, 0, 0xff, 0)),
-    //        StrokeThickness = 1.0,
-    //      };
-    //      this.OverlayCanvas.Children.Add(rect);
-    //      Canvas.SetLeft(rect, r.Left);
-    //      Canvas.SetTop(rect, r.Top);
-    //    }
-    //  this.OverlayCanvas.RenderTransform = new RotateTransform()
-    //  {
-    //    Angle = result.TextAngle?? 0.0,
-    //    CenterX = this.OverlayCanvas.Width / 2.0,
-    //    CenterY = this.OverlayCanvas.Height / 2.0
-    //  };
-
-    //}
-
-    //private async Task ReRecognizeAsync()
-    //{
-    //  if(_lastRecognizedBitmap != null)
-    //    await RecognizeBitmapAsync(_lastRecognizedBitmap);
-    //}
-
-
 
     private async void OcrCameraButtun_Click(object sender, RoutedEventArgs e)
     {
@@ -301,14 +221,7 @@ namespace UwpApp
 
       bool isTemp = (_mediaCapture == null);
       if (isTemp)
-      {
         await InitializeMediaCaptureAsync();
-        //if (_mediaCapture == null)
-        //{
-        //  EnableOcrButtons();
-        //  return;
-        //}
-      }
 
       var bitmap = await CaputureAsync();
       if (bitmap != null)
@@ -319,38 +232,11 @@ namespace UwpApp
 
         if (isTemp)
           await CleanupCameraAsync();
+
         this.MonitorCameraButton.IsChecked = false;
       }
       EnableOcrButtons();
     }
-
-    //private async Task<SoftwareBitmap> ConvertToSoftwareBitmap(IRandomAccessStream stream)
-    //{
-    //  BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-    //  SoftwareBitmap bitmap = await decoder.GetSoftwareBitmapAsync();
-    //  //if (bitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8
-    //  //      || bitmap.BitmapAlphaMode == BitmapAlphaMode.Straight)
-    //  //{
-    //  //  bitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
-    //  //}
-    //  //return bitmap;
-    //  return SoftwareBitmapHelper.CorrectFormat(bitmap);
-    //}
-
-    //private SoftwareBitmap CorrectFormat(SoftwareBitmap bitmap)
-    //{
-    //  // Imageコントロールに表示できるのは、Bgra8フォーマットで
-    //  // BitmapAlphaModeはStraightでないもの。
-    //  if (bitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8
-    //        || bitmap.BitmapAlphaMode == BitmapAlphaMode.Straight)
-    //  {
-    //    var newBitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
-    //    bitmap.Dispose();
-    //    return newBitmap;
-    //  }
-    //  return bitmap;
-    //}
-
 
     private async void OcrFileButton_Click(object sender, RoutedEventArgs e)
     {
@@ -359,8 +245,6 @@ namespace UwpApp
 
       var picker = new Windows.Storage.Pickers.FileOpenPicker();
       picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-      //picker.SuggestedStartLocation =
-      //    Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
       picker.FileTypeFilter.Add(".jpg");
       picker.FileTypeFilter.Add(".jpeg");
       picker.FileTypeFilter.Add(".png");
@@ -378,18 +262,7 @@ namespace UwpApp
 
       using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read))
       {
-        //// Create the decoder from the stream
-        //BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-
-        //// Get the SoftwareBitmap representation of the file
-        //var bitmap = await decoder.GetSoftwareBitmapAsync();
-        //if (bitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8
-        //      || bitmap.BitmapAlphaMode == BitmapAlphaMode.Straight)
-        //{
-        //  bitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
-        //}
         var bitmap = await SoftwareBitmapHelper.ConvertToSoftwareBitmap(stream);
-
         await SetImage(bitmap);
         await RecognizeBitmapAsync(bitmap);
       }
@@ -414,18 +287,7 @@ namespace UwpApp
 
           using (var stream = await sr.OpenReadAsync())
           {
-            //// Create the decoder from the stream
-            //BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-
-            //// Get the SoftwareBitmap representation of the file
-            //var bitmap = await decoder.GetSoftwareBitmapAsync();
-            //if (bitmap.BitmapPixelFormat != BitmapPixelFormat.Bgra8
-            //    || bitmap.BitmapAlphaMode == BitmapAlphaMode.Straight)
-            //{
-            //  bitmap = SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
-            //}
             var bitmap = await SoftwareBitmapHelper.ConvertToSoftwareBitmap(stream);
-
             await SetImage(bitmap);
             await RecognizeBitmapAsync(bitmap);
           }
@@ -438,5 +300,6 @@ namespace UwpApp
       }
       EnableOcrButtons();
     }
+#endregion
   }
 }

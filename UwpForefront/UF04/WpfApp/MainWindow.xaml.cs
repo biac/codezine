@@ -51,11 +51,6 @@ namespace WpfApp
           default:
 #if DEBUG
             MessageBox.Show($"DispatcherUnhandledException[{ex.HResult}]: {ex.Message}", "ERROR", MessageBoxButton.OK, MessageBoxImage.Stop);
-
-            //if( sがMediaCaptureだったら… )
-            e.Handled = true; //…としても、継続はムリっぽい orz
-            _isRunning = false;
-            ReInitializeMediaCaptureAsync();
 #endif
             break;
         }

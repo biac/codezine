@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Globalization;
@@ -25,9 +22,11 @@ namespace UwpApp
       this.OverlayCanvas.Children.Clear();
 
       // 認識言語を変えて再認識させたいときのために保持
-      if (_lastRecognizedBitmap != null && _lastRecognizedBitmap != bitmap)
-        _lastRecognizedBitmap.Dispose();
-      _lastRecognizedBitmap = bitmap;
+      if (_lastRecognizedBitmap != bitmap)
+      {
+        _lastRecognizedBitmap?.Dispose();
+        _lastRecognizedBitmap = bitmap;
+      }
 
       // 言語を指定してOCRエンジンのインスタンスを作る
       var ocrEngine = OcrEngine.TryCreateFromLanguage(this.LangComboBox.SelectedItem as Language);
@@ -68,6 +67,7 @@ namespace UwpApp
         }
 
       // 領域を描画したキャンバスを回転させる
+      // ※ OverlayCanvasの位置はサイズは、Imageコントロールに合わせてある
       this.OverlayCanvas.RenderTransform = new RotateTransform()
       {
         Angle = result.TextAngle ?? 0.0,

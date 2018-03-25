@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
@@ -32,7 +29,7 @@ namespace UwpApp
       return bitmap;
     }
 
-
+    // SoftwareBitmapからSoftwareBitmapSourceを作る（Imageコントロールでの表示用）
     public static async Task<SoftwareBitmapSource> CreateBitmapSourceAsync(SoftwareBitmap bitmap)
     {
       var source = new SoftwareBitmapSource();

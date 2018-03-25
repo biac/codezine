@@ -7,8 +7,6 @@ namespace WpfApp
 {
   public partial class MainWindow
   {
-    #region MediaCapture
-
     private UwpMediaCaptureWrapper _mediaCapture;
 
     private DispatcherTimer _dispatcherTimer;
@@ -80,8 +78,8 @@ namespace WpfApp
     }
 
     private bool _isRunning = false;
-    // OnTimerTick() は基本的にタイマー割り込みでしか呼び出されないから、ルーズな排他制御で十分。
-    // …と思っていたけど、TrySetValue を追加したので、そこと CapturePhotoAsync はアトミックにしておかないとまずそう。
+    // OnTimerTickAsync() はタイマー割り込みでしか呼び出されないから、ルーズな排他制御で十分。
+    // …と思っていたけど、TrySetValue を追加したので、そこと CapturePhotoAsync はアトミックにしておかないとまずそう。なので、AsyncLock追加
     static AsyncLock _mediaCaptureLock = new AsyncLock();
 
     private async void OnTimerTickAsync(object sender, EventArgs ea)
@@ -142,7 +140,5 @@ namespace WpfApp
         _isRunning = false;
       }
     }
-
-    #endregion
   }
 }

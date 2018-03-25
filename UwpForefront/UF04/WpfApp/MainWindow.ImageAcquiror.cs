@@ -8,8 +8,6 @@ namespace WpfApp
 {
   public partial class MainWindow
   {
-    #region acquiring images
-
     private BitmapFrame GetBitmapFromClipboard()
     {
       // クリップボードから画像を取り込む
@@ -53,7 +51,5 @@ namespace WpfApp
       encoder.Frames.Add(BitmapFrame.Create(source));
       return encoder.Frames[0];
     }
-
-    #endregion
   }
 }

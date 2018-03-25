@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
-using Windows.Media;
 using Windows.Media.Capture;
 using Windows.Media.Core;
 using Windows.Media.Devices;
-using Windows.Media.Effects;
 using Windows.Media.MediaProperties;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -18,10 +13,6 @@ namespace UwpApp
   partial class MainPage
   {
     MediaCapture _mediaCapture;
-    //bool isPreviewing;
-    //DisplayRequest displayRequest = new DisplayRequest();
-    //int _initializeRetryCount = 0;
-    //const int RETRY_COUNT_MAX = 10;
 
     async Task<bool> InitializeMediaCaptureAsync()
     {
@@ -31,7 +22,7 @@ namespace UwpApp
       this.ErrorMessageGrid.Visibility = Visibility.Collapsed;
 
       if (_mediaCapture != null)
-        await CleanupCameraAsync(); //通った!
+        await CleanupCameraAsync();
 
       _mediaCapture = new MediaCapture();
       _mediaCapture.Failed += MediaCapture_Failed;
@@ -60,56 +51,26 @@ namespace UwpApp
       }
       catch (Exception ex)
       {
-        //if (this.MonitorCameraButton.IsChecked != true)
-        //{
-        //  _mediaCapture = null;
-        //  return false; // 通ったか?
-        //}
-
         switch (ex.HResult)
         {
-          //case -1072875854: // C00D 36B2 // 通ったか?
-          //                  // 現在の状態では、要求は無効です。\n deviceActivateCount
-          case -1072873822: // C00D 3EA2 // 通ったか?
+          case -1072875854: // C00D 36B2
+            // 現在の状態では、要求は無効です。\n deviceActivateCount
+          case -1072873822: // C00D 3EA2
             // ビデオ録画デバイスは存在しません。
             // (休止からのリジューム時に出ることがある)
-
-            //case -2147467261: // 8000 4003 // 通った!
-            //  // Object reference not set to an instance of an object.
-
-            //  if (_initializeRetryCount++ < RETRY_COUNT_MAX)
-            //  {
-            //    ShowErrorMessage((uint)ex.HResult, ex.Message, true); // 通った!
-            //    await Task.Delay(500);
-            //    await CleanupCameraAsync();
-            //    await Task.Delay(500);
-            //    return await InitializeMediaCaptureAsync();
-            //  }
-            //  else
-            //  {
-            //    ShowErrorMessage((uint)ex.HResult, ex.Message, false); // 通ったか?
-            //    _mediaCapture = null;
-            //    return false;
-            //  }
 
             // Failedハンドラでメッセージ表示済み。何もせず抜ける
             break;
 
           // リトライ不能ケース
-          case -1072875772: // C00D 3704 // 通った!
+          case -1072875772: // C00D 3704 
             // ハードウェア リソースがないため、ハードウェア MFT はストリーミングを開始できませんでした。
-
-            //ShowErrorMessage((uint)ex.HResult, ex.Message);
-            //this.ErrorMessageText.Text +=
-            //  "\n\nカメラを使っているアプリが他にあるなら、そのアプリを閉じてから、[プレビュー ON / OFF] ボタンを入れなおしてみてください。";
-            //await CleanupCameraAsync();
 
             // Failedハンドラでメッセージ表示済み。何もせず抜ける
             break;
 
           default:
-            ShowErrorMessage((uint)ex.HResult, ex.Message, false); // 通った!
-            //_mediaCapture = null;
+            ShowErrorMessage((uint)ex.HResult, ex.Message, false);
             await CleanupCameraAsync();
 #if DEBUG
             await (new Windows.UI.Popups.MessageDialog($"{ex.Message} [{ex.HResult:X}]", "catch (Exception ex)"))
@@ -119,9 +80,8 @@ namespace UwpApp
         }
       }
 
-
-      //_initializeRetryCount = 0;
-      return true; // 通った!
+      _initializeRetryCount = 0;
+      return true;
 
 
       void setBrightnessControl()
@@ -158,6 +118,10 @@ namespace UwpApp
     } // InitializeMediaCaptureAsync
 
 
+
+    int _initializeRetryCount = 0;
+    const int RETRY_COUNT_MAX = 10;
+
     private async void MediaCapture_Failed(MediaCapture sender, MediaCaptureFailedEventArgs e)
     {
       await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
@@ -165,21 +129,28 @@ namespace UwpApp
         switch (e.Code)
         {
           // リトライ可能ケース
-          case 0xC00D36B2: // 通ったか?
-                           // 現在の状態では、要求は無効です。\n deviceActivateCount
-          case 0xC00D3EA2: // 通った!
+          case 0xC00D36B2:
+            // 現在の状態では、要求は無効です。\n deviceActivateCount
+          case 0xC00D3EA2:
             // ビデオ録画デバイスは存在しません。
             // (休止からのリジューム時に出ることがある)
 
-            ShowErrorMessage(e.Code, e.Message, true);
-            await Task.Delay(500);
-            await CleanupCameraAsync();
-            await Task.Delay(500);
-            await InitializeMediaCaptureAsync();
+            if (_initializeRetryCount++ < RETRY_COUNT_MAX)
+            {
+              ShowErrorMessage(e.Code, e.Message, true);
+              await Task.Delay(500);
+              await CleanupCameraAsync();
+              await Task.Delay(500);
+              await InitializeMediaCaptureAsync();
+            }
+            else
+            {
+              ShowErrorMessage(e.Code, e.Message, false);
+            }
             break;
 
           // リトライ不能ケース
-          case 0xC00D3704: // 通った!
+          case 0xC00D3704:
             // ハードウェア リソースがないため、ハードウェア MFT はストリーミングを開始できませんでした。
             ShowErrorMessage(e.Code, e.Message);
             this.ErrorMessageText.Text +=
