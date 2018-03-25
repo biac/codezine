@@ -47,7 +47,7 @@
                     Checked="MonitorCameraButton_Checked"
                     Unchecked="MonitorCameraButton_Unchecked"
                     IsChecked="True"
-                    Margin="0,5,0,0">モニター ON / OFF</ToggleButton>
+                    Margin="0,5,0,0">プレビュー ON / OFF</ToggleButton>
       <Grid x:Name="CameraControlGrid" Margin="0,5,0,0">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />

@@ -40,6 +40,8 @@ namespace WpfApp
             // 現在の状態では、要求は無効です。\n deviceActivateCount
           case -1072873822: // C00D 3EA2
             // ビデオ録画デバイスは存在しません。 (HRESULT からの例外:0xC00D3EA2)
+          case -2147024893: // 8007 0003
+            // 指定されたパスが見つかりません。
 
             e.Handled = true; 
             _isRunning = false;
@@ -48,6 +50,8 @@ namespace WpfApp
 
           default:
 #if DEBUG
+            MessageBox.Show($"DispatcherUnhandledException[{ex.HResult}]: {ex.Message}", "ERROR", MessageBoxButton.OK, MessageBoxImage.Stop);
+
             //if( sがMediaCaptureだったら… )
             e.Handled = true; //…としても、継続はムリっぽい orz
             _isRunning = false;

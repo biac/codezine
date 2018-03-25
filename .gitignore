@@ -4,6 +4,7 @@
 
 *.user
 *.pfx
+*.bak
 
 .vs/
 bin/
