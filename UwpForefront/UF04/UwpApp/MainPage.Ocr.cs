@@ -67,7 +67,7 @@ namespace UwpApp
         }
 
       // 領域を描画したキャンバスを回転させる
-      // ※ OverlayCanvasの位置はサイズは、Imageコントロールに合わせてある
+      // ※ OverlayCanvasの位置とサイズは、Imageコントロールに合わせてある
       this.OverlayCanvas.RenderTransform = new RotateTransform()
       {
         Angle = result.TextAngle ?? 0.0,

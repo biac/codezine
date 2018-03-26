@@ -45,7 +45,6 @@ namespace UwpApp
       catch (UnauthorizedAccessException)
       {
         HideCameraUI();
-        //_mediaCapture = null;
         await CleanupCameraAsync();
         return false;
       }
@@ -58,11 +57,6 @@ namespace UwpApp
           case -1072873822: // C00D 3EA2
             // ビデオ録画デバイスは存在しません。
             // (休止からのリジューム時に出ることがある)
-
-            // Failedハンドラでメッセージ表示済み。何もせず抜ける
-            break;
-
-          // リトライ不能ケース
           case -1072875772: // C00D 3704 
             // ハードウェア リソースがないため、ハードウェア MFT はストリーミングを開始できませんでした。
 
@@ -182,8 +176,8 @@ namespace UwpApp
 
       try
       {
-        if (_mediaCapture.CameraStreamState == CameraStreamState.Streaming)
-          await _mediaCapture.StopPreviewAsync();
+        if (_mediaCapture?.CameraStreamState == CameraStreamState.Streaming)
+          await _mediaCapture?.StopPreviewAsync();
       }
       catch { }
 
