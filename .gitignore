@@ -5,11 +5,17 @@
 *.user
 *.pfx
 *.bak
+* - コピー
+* - コピー.*
+* - コピー (*
 
 .vs/
 bin/
 obj/
+BundleArtifacts/
 packages/
+AppPackages/
+
 
 /C#でTDD
 /UwpForefront/UF03/XamarinFormsSample.sln

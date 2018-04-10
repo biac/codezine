@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="UwpApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UwpApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <WebView x:Name="WebView1" Grid.Row="1"
+             NavigationStarting="WebView1_NavigationStarting"
+             NavigationCompleted="WebView1_NavigationCompleted"/>
+    <ProgressRing x:Name="Progress1" Grid.Row="1"
+                  Width="200" Height="200" />
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBlock VerticalAlignment="Center" Margin="10,0,5,0">URL</TextBlock>
+      <TextBox x:Name="UrlTextBox" Grid.Column="1" HorizontalAlignment="Stretch"
+               />
+      <Button Click="Button_Click" Grid.Column="2" Padding="10,0" VerticalAlignment="Stretch">GO</Button>
+      <StackPanel Grid.Column="3" Orientation="Horizontal"
+                  Background="AliceBlue">
+        <StackPanel.Resources>
+          <Style TargetType="RadioButton">
+            <Setter Property="GroupName" Value="CardSource" />
+            <Setter Property="MinWidth" Value="70" />
+          </Style>
+        </StackPanel.Resources>
+        <TextBlock VerticalAlignment="Center"
+                   Margin="20,0,10,0">カード生成</TextBlock>
+        <RadioButton x:Name="CardNone" IsChecked="True">なし</RadioButton>
+        <RadioButton x:Name="CardByCode" >コード</RadioButton>
+        <RadioButton x:Name="CardByJson" Margin="0,0,10,0">JSON</RadioButton>
+      </StackPanel>
+    </Grid>
+
+  </Grid>
+</Page>

@@ -1,0 +1,61 @@
+﻿{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "backgroundImage": "http://bluewatersoft.cocolog-nifty.com/blog/IMG_0252d.png",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "3",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Timeline",
+                  "weight": "bolder",
+                  "color": "light",
+                  "size": "large"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "at {{time}}",
+                  "size": "small",
+                  "spacing": "none",
+                  "separator": true,
+                  "color": "attention",
+                  "horizontalAlignment": "right"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "5",
+              "items": [
+                {
+                  "type": "Image",
+                  "url": "http://bluewatersoft.jp/images/20160312_katagami_180.png",
+                  "size": "stretch"
+                }
+              ]
+            }
+
+          ]
+        },
+        {
+          "type": "TextBlock",
+          "text": "{{url}}",
+          "size": "medium",
+          "color": "light",
+          "wrap": true,
+          "maxLines": 5,
+          "spacing": "small"
+        }
+      ]
+    }
+  ]
+}
