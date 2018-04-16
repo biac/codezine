@@ -25,21 +25,14 @@ namespace UwpApp
     public MainPage()
     {
       this.InitializeComponent();
-
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
       base.OnNavigatedTo(e);
 
-      //_timelineHelper = await TimelineLIb.TimelineHelper.GetInstanceAsync();
-      //await tl.AddToTimeline("TEST", "test");
       if (e.Parameter is string url && !string.IsNullOrWhiteSpace(url))
-      {
-        this.UrlTextBox.Text = url;
-        this.WebView1.Navigate(new Uri(url));
-        //this.WebView1.Source = new Uri(url);
-      }
+        Navigate(url);
     }
 
 
@@ -63,8 +56,8 @@ namespace UwpApp
         return;
 
       this.UrlTextBox.Text = args.Uri.ToString();
-      //var tlh = TimelineLIb.TimelineHelper.GetInstance();
-      await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(args.Uri.ToString(), GetCardType());
+      await TimelineLIb.TimelineHelper.Current
+              .AddToTimelineAsync(args.Uri.ToString(), GetCardType());
     }
 
     private TimelineLIb.AdaptiveCardType GetCardType()
@@ -82,14 +75,12 @@ namespace UwpApp
     {
       if (this.WebView1.Source?.ToString() == url)
       {
-        //var tlh = TimelineLIb.TimelineHelper.GetInstance();
         await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(url, GetCardType());
       }
       else
       {
         this.UrlTextBox.Text = url;
         this.WebView1.Navigate(new Uri(url));
-        //this.WebView1.Source = new Uri(url);
       }
     }
 

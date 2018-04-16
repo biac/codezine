@@ -29,15 +29,6 @@ namespace WpfApp
 
       if (!_desktopBridgeHelpers.IsRunningAsUwp())
         this.CardTypePanel.Visibility = Visibility.Collapsed;
-
-      //Task.Run(async () =>
-      //{
-      //  var files
-      //    = await Windows.Storage.KnownFolders.PicturesLibrary.GetFilesAsync();
-      //  var myPictures = string.Join("\n", files.Select(f => f.Name));
-      //  MessageBox.Show(myPictures);
-      //});
-
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

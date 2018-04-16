@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.UserActivities;
+using Windows.UI;
 using Windows.UI.Shell;
-
 
 namespace TimelineLIb
 {
+  [System.Runtime.Serialization.DataContract]
   public enum AdaptiveCardType
   {
     None,
@@ -19,112 +16,127 @@ namespace TimelineLIb
     ByJson,
   }
 
-
-  public class TimelineHelper 
+  public class TimelineHelper
   {
-    //private UserActivityChannel _userActivityChannel;
-    //private UserActivity _userActivity;
     private UserActivitySession _userActivitySession;
 
-    //private static TimelineHelper _theInstance;
-
-    private TimelineHelper() {/*(avoid instance)*/}
-    //public static TimelineHelper GetInstance()
-    //{
-    //  if (_theInstance != null)
-    //    return _theInstance;
-
-    //  _theInstance = new TimelineHelper
-    //  {
-    //    _userActivityChannel = UserActivityChannel.GetDefault(),
-    //  };
-    //  return _theInstance;
-    //}
+    private TimelineHelper() {/* (avoid instance) */}
     public static TimelineHelper Current { get; } = new TimelineHelper();
-    //{
-    //  get
-    //  {
-    //    if (_theInstance == null)
-    //    {
-    //      _theInstance = new TimelineHelper
-    //      {
-    //        //_userActivityChannel = UserActivityChannel.GetDefault(),
-    //      };
-    //    }
-    //    return _theInstance;
-    //  }
-    //}
-
-
 
     public async Task AddToTimelineAsync(string url, AdaptiveCardType type = AdaptiveCardType.None)
     {
+      string activityId = url;  //ここでは URL を Activity ID とする
+
+      // 必須: UserActivity を生成する (登録済みなら取得する)
       var userActivityChannel = UserActivityChannel.GetDefault();
-      var userActivity
-            = await userActivityChannel
-                .GetOrCreateUserActivityAsync($"{url}");
+      UserActivity userActivity
+            = await userActivityChannel.GetOrCreateUserActivityAsync(activityId);
 
-      // Create the protocol, so when the clicks the Adaptive Card on the Timeline, it will directly launch to the correct image.
-      userActivity.ActivationUri = new Uri($"uf05.bluewatersoft.jp-timelinetest://url?{url}");
+      // タイムラインの表示を最新のものだけにするなら、既存のものを削除する
+      //await UserActivityChannel.GetDefault().DeleteActivityAsync(activityId);
 
-      // Set the display text to the User Activity(e.g. Pike Place market.)
-      userActivity.VisualElements.DisplayText = $"UF05 {DateTime.Now.ToString("HH:mm:ss")} {url}";
+      // 必須: タイムラインから呼び出されるときのパラメーターをセット
+      // (UserActivityState.Published=登録済みのアクティビティではセット済み。変更の必要なし)
+      // ※ Package.appxmanifest での宣言が必要
+      if (userActivity.State != UserActivityState.Published)
+        userActivity.ActivationUri = new Uri($"uf05.bluewatersoft.jp-timelinetest://url?{url}");
 
-      if (type == AdaptiveCardType.ByJson)
+      // 必須: AdaptiveCard 未使用時に表示される文字列をセット (タイムライン上での検索対象)
+      userActivity.VisualElements.DisplayText = $"UF05 {DateTime.Now.ToString("HH:mm:ss")}";
+
+      // オプション: AdaptiveCard 未使用時に表示される文字列(詳細)をセット (タイムライン上での検索対象)
+      if (userActivity.State != UserActivityState.Published)
+        userActivity.VisualElements.Description = url;
+
+      // オプション: AdaptiveCard を添付、または、背景色を設定
+      switch (type)
       {
-        // Fetch the adative card JSON
-        //var adaptiveCard 
-        //  = File.ReadAllText($@"{Package.Current.InstalledLocation.Path}\{nameof(TimelineLIb)}\AdaptiveCard.json");
-        string adaptiveCardJson;
-        //var assembly = typeof(TimelineHelper).GetTypeInfo().Assembly;
-        var assembly = this.GetType().GetTypeInfo().Assembly;
-        //using (var stream = assembly.GetManifestResourceStream("StandardClassLibrary1.AdaptiveCard.json"))
-        using (var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.AdaptiveCard.json"))
-        using (var reader = new StreamReader(stream))
-          adaptiveCardJson = reader.ReadToEnd();
-
-
-        // Replace the content.
-        //adaptiveCard = adaptiveCard.Replace("{{backgroundImage}}", "http://bluewatersoft.jp/images/ASP-NET-Banners-01.png");
-        //adaptiveCard = adaptiveCard.Replace("{{backgroundImage}}", "http://bluewatersoft.cocolog-nifty.com/blog/IMG_0252d.png");
-        //adaptiveCard = adaptiveCard.Replace("{{backgroundImage}}", "https://codezine.jp/static/common/images/no-image.png");
-        //adaptiveCard = adaptiveCard.Replace("{{backgroundImage}}", "http://bluewatersoft.jp/images/20160312_katagami_180.png");
-        adaptiveCardJson = adaptiveCardJson.Replace("{{time}}", $"{DateTime.Now.ToString("HH:mm:ss")}");
-        adaptiveCardJson = adaptiveCardJson.Replace("{{url}}", $"{url}");
-
-
-        // Assign the Adaptive Card to the user activity. 
-        userActivity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(adaptiveCardJson);
+        case AdaptiveCardType.ByJson:
+          userActivity.VisualElements.Content = CreateAdaptiveCardFromJson(url);
+          break;
+        case AdaptiveCardType.ByCode:
+          userActivity.VisualElements.Content = CreateAdaptiveCardByCode(url);
+          break;
+        default:
+          userActivity.VisualElements.Content = null;
+          userActivity.VisualElements.BackgroundColor = Color.FromArgb(0xFF, 0x40, 0x5D, 0x47);
+          break;
       }
-      else if (type == AdaptiveCardType.ByCode)
-      {
-        // NuGet package "AdaptiveCards" が必要
 
-        var card = new AdaptiveCards.AdaptiveCard();
+      // オプション: AdaptiveCard 左上のアイコンと文字列を変更する
+      if (userActivity.State != UserActivityState.Published)
+        userActivity.VisualElements.Attribution = new UserActivityAttribution()
+        {
+          IconUri = new Uri((new Uri(url)), "/favicon.ico"),
+          AlternateText = "Timeline TEST",
+        };
 
-        card.BackgroundImage = new Uri( "http://bluewatersoft.cocolog-nifty.com/blog/IMG_0252d.png");
-        card.Body.Add(
-         new AdaptiveCards.AdaptiveTextBlock
-         {
-           Text = "Timeline",
-           Size = AdaptiveCards.AdaptiveTextSize.Large,
-           Weight = AdaptiveCards.AdaptiveTextWeight.Bolder,
-           Color = AdaptiveCards.AdaptiveTextColor.Light,
-         });
-        card.Body.Add(
-         new AdaptiveCards.AdaptiveTextBlock
-         {
-           Text = $"at {DateTime.Now.ToString("HH:mm:ss")}",
-           Size = AdaptiveCards.AdaptiveTextSize.Small,
-           Spacing = AdaptiveCards.AdaptiveSpacing.None,
-           Separator = true,
-           Color = AdaptiveCards.AdaptiveTextColor.Attention,
-           HorizontalAlignment = AdaptiveCards.AdaptiveHorizontalAlignment.Right,
-         });
-        card.Body.Add(
+      // 必須: UserActivity を保存
+      await userActivity.SaveAsync();
+
+      // 必須: 以前の UserActivitySession があるなら破棄して、新しいセッションを保持
+      _userActivitySession?.Dispose();
+      _userActivitySession = userActivity.CreateSession();
+    }
+
+
+
+
+    // JSON で記述したカードのテンプレートから AdaptiveCard を作る
+    private IAdaptiveCard CreateAdaptiveCardFromJson(string url)
+    {
+      // JSON データを読み込む
+      string adaptiveCardJson;
+      var assembly = this.GetType().GetTypeInfo().Assembly;
+      using (var stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.AdaptiveCard.json"))
+      using (var reader = new StreamReader(stream))
+        adaptiveCardJson = reader.ReadToEnd();
+
+      // プレースホルダーを置き換え
+      adaptiveCardJson = adaptiveCardJson.Replace("{{time}}", $"{DateTime.Now.ToString("HH:mm:ss")}");
+      adaptiveCardJson = adaptiveCardJson.Replace("{{url}}", url);
+
+      // AdaptiveCard を生成して返す
+      return AdaptiveCardBuilder.CreateAdaptiveCardFromJson(adaptiveCardJson);
+    }
+
+    // コードで AdaptiveCard を組み立てる
+    private static IAdaptiveCard CreateAdaptiveCardByCode(string url)
+    {
+      // NuGet package "AdaptiveCards" が必要
+
+      var card = new AdaptiveCards.AdaptiveCard();
+
+      // 背景画像
+      card.BackgroundImage = new Uri("http://bluewatersoft.cocolog-nifty.com/blog/IMG_0252d.png");
+
+      // 一段目
+      card.Body.Add(
         new AdaptiveCards.AdaptiveTextBlock
         {
-          Text = $"{url}",
+          Text = "Timeline",
+          Size = AdaptiveCards.AdaptiveTextSize.Large,
+          Weight = AdaptiveCards.AdaptiveTextWeight.Bolder,
+          Color = AdaptiveCards.AdaptiveTextColor.Light,
+        });
+
+      // 二段目
+      card.Body.Add(
+        new AdaptiveCards.AdaptiveTextBlock
+        {
+          Text = $"at {DateTime.Now.ToString("HH:mm:ss")}",
+          Size = AdaptiveCards.AdaptiveTextSize.Small,
+          Spacing = AdaptiveCards.AdaptiveSpacing.None,
+          Separator = true,
+          Color = AdaptiveCards.AdaptiveTextColor.Attention,
+          HorizontalAlignment = AdaptiveCards.AdaptiveHorizontalAlignment.Right,
+        });
+
+      // 三段目 (何段でも追加可能。ただし、どこまで表示されるかは分からない)
+      card.Body.Add(
+        new AdaptiveCards.AdaptiveTextBlock
+        {
+          Text = url,
           Size = AdaptiveCards.AdaptiveTextSize.Medium,
           Color = AdaptiveCards.AdaptiveTextColor.Light,
           Wrap = true,
@@ -132,19 +144,7 @@ namespace TimelineLIb
           Spacing = AdaptiveCards.AdaptiveSpacing.Small,
         });
 
-        string json = card.ToJson();
-        // Assign the Adaptive Card to the user activity. 
-        userActivity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(json);
-      }
-
-      // Save the details user activity.
-      await userActivity.SaveAsync();
-
-      // Dispose of the session and create a new one ready for the next user activity.
-      _userActivitySession?.Dispose();
-
-      // ↓ 16299でビルドしてWPFだと、スレ違い例外が出る!!
-      _userActivitySession = userActivity.CreateSession();
+      return AdaptiveCardBuilder.CreateAdaptiveCardFromJson(card.ToJson());
     }
 
 

@@ -70,6 +70,9 @@ namespace UwpApp
         }
         // 現在のウィンドウがアクティブであることを確認します
         Window.Current.Activate();
+
+        // プレランチを「申請」します
+        Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
       }
     }
 
@@ -104,24 +107,14 @@ namespace UwpApp
       if (args.Kind == ActivationKind.Protocol
           && args is ProtocolActivatedEventArgs protocolEventArgs)
       {
-        //Frame rootFrame = Window.Current.Content as Frame;
-        //if (rootFrame == null)
-        //{
-        //  rootFrame = new Frame();
-        //  rootFrame.NavigationFailed += OnNavigationFailed;
-        //  Window.Current.Content = rootFrame;
-        //}
-
         switch (protocolEventArgs.Uri.Host)
         {
           case "url":
-            //rootFrame.Navigate(typeof(MainPage), $"{protocolEventArgs.Uri.Query.Substring(1)}");
             string url = protocolEventArgs.Uri.Query.Substring(1);
             MainPageNavigate(url);
             break;
           default:
-            //root.Navigate(typeof(MainPage));
-            break;
+            throw new ArgumentOutOfRangeException();
         }
         Window.Current.Activate();
       }
@@ -137,18 +130,10 @@ namespace UwpApp
         Window.Current.Content = rootFrame;
       }
 
-      var mainPage = rootFrame.Content as MainPage;
-      if (mainPage == null)
-      {
-        rootFrame.Navigate(typeof(MainPage), url);
-      }
-      else
-      {
+      if(rootFrame.Content is MainPage mainPage)
         mainPage.Navigate(url);
-      }
+      else
+        rootFrame.Navigate(typeof(MainPage), url);
     }
-
-
-
   }
 }
