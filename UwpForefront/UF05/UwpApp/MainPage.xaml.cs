@@ -31,6 +31,7 @@ namespace UwpApp
     {
       base.OnNavigatedTo(e);
 
+      // 引数に (空でない) 文字列が入っていたら URL として Web ページを表示する
       if (e.Parameter is string url && !string.IsNullOrWhiteSpace(url))
         Navigate(url);
     }
@@ -70,17 +71,20 @@ namespace UwpApp
     }
 
 
-
+    // 表示している Web ページを変更するメソッド
     internal async void Navigate(string url)
     {
       if (this.WebView1.Source?.ToString() == url)
       {
+        // すでに表示している URL なら、何もせずに「タイムライン」への登録だけ行う
         await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(url, GetCardType());
       }
       else
       {
+        // 現在表示している URL と異なっているなら、その Web ページを表示する
         this.UrlTextBox.Text = url;
         this.WebView1.Navigate(new Uri(url));
+        // ↑ Web ページの表示に成功すると「タイムライン」への登録が行われる
       }
     }
 

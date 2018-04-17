@@ -104,35 +104,44 @@ namespace UwpApp
 
     protected override void OnActivated(IActivatedEventArgs args)
     {
+      Frame rootFrame = Window.Current.Content as Frame;
+      if (rootFrame == null)
+      {
+        // 起動していないときにアクティベートされた場合は、Frame がないので
+        // 新しく Frame を生成する
+        rootFrame = new Frame();
+        rootFrame.NavigationFailed += OnNavigationFailed;
+        Window.Current.Content = rootFrame;
+      }
+
       if (args.Kind == ActivationKind.Protocol
           && args is ProtocolActivatedEventArgs protocolEventArgs)
       {
+        // プロトコルアクティベーションの場合
+        // その Uri プロパティがアクティベーション URI
         switch (protocolEventArgs.Uri.Host)
         {
           case "url":
+            // Query の先頭文字 ('?') を除いた部分が表示すべき URL
             string url = protocolEventArgs.Uri.Query.Substring(1);
             MainPageNavigate(url);
             break;
           default:
             throw new ArgumentOutOfRangeException();
         }
-        Window.Current.Activate();
       }
+      Window.Current.Activate();
     }
 
     void MainPageNavigate(string url)
     {
       Frame rootFrame = Window.Current.Content as Frame;
-      if (rootFrame == null)
-      {
-        rootFrame = new Frame();
-        rootFrame.NavigationFailed += OnNavigationFailed;
-        Window.Current.Content = rootFrame;
-      }
-
       if(rootFrame.Content is MainPage mainPage)
+        // すでに実行中で、しかも MainPage を表示している場合
         mainPage.Navigate(url);
+        // ↑この Navigate メソッドは、表示中のURLと同じURLが渡されたときは何もしない
       else
+        // 起動時、または、起動していても MainPage を表示していない場合
         rootFrame.Navigate(typeof(MainPage), url);
     }
   }

@@ -27,7 +27,7 @@ namespace TimelineLIb
     {
       string activityId = url;  //ここでは URL を Activity ID とする
 
-      // 必須: UserActivity を生成する (登録済みなら取得する)
+      // 必須: UserActivity を生成する (登録済みなら取得になる)
       var userActivityChannel = UserActivityChannel.GetDefault();
       UserActivity userActivity
             = await userActivityChannel.GetOrCreateUserActivityAsync(activityId);
@@ -146,7 +146,5 @@ namespace TimelineLIb
 
       return AdaptiveCardBuilder.CreateAdaptiveCardFromJson(card.ToJson());
     }
-
-
   }
 }
