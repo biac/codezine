@@ -13,6 +13,28 @@ namespace WpfApp
   /// </summary>
   public partial class App : Application
   {
+    // NuGet パッケージ DesktopBridge.Helpers が必要
+    private static bool _isRunningAsUwp { get; } = (new DesktopBridge.Helpers()).IsRunningAsUwp();
+
+    // System.Management アセンブリへの参照追加が必要
+    private static readonly Version _osVersion
+      = (new Func<Version>(() => {
+        using (var mc = new System.Management.ManagementClass("Win32_OperatingSystem"))
+        using (var moc = mc.GetInstances())
+          foreach (System.Management.ManagementObject mo in moc)
+          {
+            var v = mo["Version"] as string;
+            if (!string.IsNullOrWhiteSpace(v))
+              return new Version(v);
+          }
+        return new Version("0.0.0.0");
+      }))();
+
+    public static bool IsTimelineAvailable { get; }
+      = _isRunningAsUwp && (_osVersion >= new Version("10.0.16299.0"));
+
+
+
     private static string _protocolActivationUrl;
 
     // http://www.atmarkit.co.jp/ait/articles/1511/04/news027.html

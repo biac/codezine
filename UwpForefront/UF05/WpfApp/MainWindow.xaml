@@ -12,10 +12,8 @@
       <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <Frame x:Name="WebView1" Grid.Row="1" NavigationUIVisibility="Hidden"
-           Navigating="WebView1_Navigating"
-             Navigated="WebView1_NavigationCompleted" 
-             NavigationFailed="WebView1_NavigationFailed"/>
+    <WebBrowser Name="WebView1" Grid.Row="1"
+                Navigating="WebView1_Navigating" Navigated="WebView1_Navigated"/>
     <ProgressBar x:Name="Progress1" Grid.Row="1" Background="Transparent"
                  Visibility="Hidden" IsIndeterminate="True" HorizontalAlignment="Stretch" Height="20" />
 

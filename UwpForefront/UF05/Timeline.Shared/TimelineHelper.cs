@@ -74,6 +74,9 @@ namespace TimelineLIb
       // 必須: UserActivity を保存
       await userActivity.SaveAsync();
 
+      // userActivity.CreateSession() は UI スレッドで呼び出さねばならない
+      // https://docs.microsoft.com/en-us/uwp/api/windows.applicationmodel.useractivities.useractivity.createsession
+
       // 必須: 以前の UserActivitySession があるなら破棄して、新しいセッションを保持
       _userActivitySession?.Dispose();
       _userActivitySession = userActivity.CreateSession();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,9 +21,6 @@ namespace WpfApp
   /// </summary>
   public partial class MainWindow : Window
   {
-    private DesktopBridge.Helpers _desktopBridgeHelpers 
-      = new DesktopBridge.Helpers();
-
     public MainWindow()
     {
       InitializeComponent();
@@ -30,8 +28,19 @@ namespace WpfApp
       // プロセス間通信のサーバーを起動
       IpcService.StartService();
 
-      if (!_desktopBridgeHelpers.IsRunningAsUwp())
+      // UWP Bridge での実行でないときは、アダプティブカードの選択肢を消す
+      if(!App.IsTimelineAvailable)
         this.CardTypePanel.Visibility = Visibility.Collapsed;
+
+      // JavaScript エラーのポップアップが出るのを抑止する
+      // https://stackoverflow.com/a/18289217
+      this.WebView1.Loaded += (s, e) =>
+      {
+        dynamic activeX = this.WebView1.GetType().InvokeMember("ActiveXInstance",
+                      BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                      null, this.WebView1, new object[] { });
+        activeX.Silent = true;
+      };
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -46,14 +55,27 @@ namespace WpfApp
       this.Progress1.Visibility = Visibility.Visible;
     }
 
-    private async void WebView1_NavigationCompleted(object sender, NavigationEventArgs e)
+    private async void WebView1_Navigated(object sender, NavigationEventArgs e)
     {
-      this.WebView1.Visibility = Visibility.Visible;
-      this.Progress1.Visibility = Visibility.Hidden;
-      this.UrlTextBox.Text = e.Uri.ToString();
+      // ここは別スレッドから呼ばれることがある
+      await this.Dispatcher.InvokeAsync(async () =>
+      {
+        this.WebView1.Visibility = Visibility.Visible;
+        this.Progress1.Visibility = Visibility.Hidden;
 
-      if (_desktopBridgeHelpers.IsRunningAsUwp())
-        await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(e.Uri.ToString(), GetCardType());
+        // https://stackoverflow.com/a/46132464/1327929
+        dynamic doc = this.WebView1.Document;
+        var url = doc.url as string;
+        if (url != null)
+        {
+          this.UrlTextBox.Text = url;
+          if (url.StartsWith("http"))
+          {
+            if (App.IsTimelineAvailable)
+              await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(url, GetCardType());
+          }
+        }
+      });
     }
 
     private TimelineLIb.AdaptiveCardType GetCardType()
@@ -65,19 +87,14 @@ namespace WpfApp
       return TimelineLIb.AdaptiveCardType.None;
     }
 
-    private void WebView1_NavigationFailed(object sender, NavigationFailedEventArgs e)
-    {
-      e.Handled = true;
 
-      this.WebView1.Visibility = Visibility.Visible;
-      this.Progress1.Visibility = Visibility.Hidden;
-    }
 
     internal async void Navigate(string url)
     {
       if (this.WebView1.Source?.ToString() == url)
       {
-        await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(url, GetCardType());
+        if (App.IsTimelineAvailable)
+          await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(url, GetCardType());
       }
       else
       {
@@ -85,5 +102,6 @@ namespace WpfApp
         this.WebView1.Navigate(new Uri(url));
       }
     }
+
   }
 }
