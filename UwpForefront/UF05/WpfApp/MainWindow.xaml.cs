@@ -27,6 +27,9 @@ namespace WpfApp
     {
       InitializeComponent();
 
+      // プロセス間通信のサーバーを起動
+      IpcService.StartService();
+
       if (!_desktopBridgeHelpers.IsRunningAsUwp())
         this.CardTypePanel.Visibility = Visibility.Collapsed;
     }
