@@ -10,7 +10,7 @@ namespace WpfApp
 {
   // サービスの定義
   [ServiceContract]
-  public interface INavigateService
+  public interface INavigationService
   {
     [OperationContract]
     void Navigate(string url);
@@ -20,7 +20,7 @@ namespace WpfApp
 
   // サーバー側
   [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-  public class IpcService : INavigateService
+  public class IpcService : INavigationService
   {
     public void Navigate(string url)
     {
@@ -49,9 +49,9 @@ namespace WpfApp
 
       _host = new ServiceHost(new IpcService(),
                               new Uri("net.pipe://localhost/UF05"));
-      _host.AddServiceEndpoint(typeof(INavigateService),
+      _host.AddServiceEndpoint(typeof(INavigationService),
                                new NetNamedPipeBinding(),
-                               "NavigateService");
+                               "NavigationService");
       _host.Open();
     }
   }
@@ -66,11 +66,11 @@ namespace WpfApp
       try
       {
         var channelFactory
-          = new ChannelFactory<INavigateService>(
+          = new ChannelFactory<INavigationService>(
               new NetNamedPipeBinding(),
-              new EndpointAddress("net.pipe://localhost/UF05/NavigateService"));
-        var navigateService = channelFactory.CreateChannel();
-        navigateService.Navigate(url);
+              new EndpointAddress("net.pipe://localhost/UF05/NavigationService"));
+        var navigationService = channelFactory.CreateChannel();
+        navigationService.Navigate(url);
         return true;
       }
       catch

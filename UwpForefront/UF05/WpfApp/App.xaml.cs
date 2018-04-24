@@ -13,12 +13,16 @@ namespace WpfApp
   /// </summary>
   public partial class App : Application
   {
-    // NuGet パッケージ DesktopBridge.Helpers が必要
-    private static bool _isRunningAsUwp { get; } = (new DesktopBridge.Helpers()).IsRunningAsUwp();
+    // UWP 上で動作しているか?
+    // ※ NuGet パッケージ DesktopBridge.Helpers が必要
+    private static bool _isRunningAsUwp { get; }
+      = (new DesktopBridge.Helpers()).IsRunningAsUwp();
 
-    // System.Management アセンブリへの参照追加が必要
-    private static readonly Version _osVersion
-      = (new Func<Version>(() => {
+    // Windows のバージョン
+    // ※ System.Management アセンブリへの参照追加が必要
+    private static Version _osVersion { get; }
+      = (new Func<Version>(() =>
+      {
         using (var mc = new System.Management.ManagementClass("Win32_OperatingSystem"))
         using (var moc = mc.GetInstances())
           foreach (System.Management.ManagementObject mo in moc)
@@ -30,6 +34,9 @@ namespace WpfApp
         return new Version("0.0.0.0");
       }))();
 
+    // 「タイムライン」が利用可能か?
+    // 「タイムライン」 API が使えるのは、Win10 1709 (16299) 以降
+    // 「タイムライン」から呼び出してもらえるのは、今回は UWP 上での動作時のみ
     public static bool IsTimelineAvailable { get; }
       = _isRunningAsUwp && (_osVersion >= new Version("10.0.16299.0"));
 
@@ -53,13 +60,16 @@ namespace WpfApp
       app.InitializeComponent();
       app.Run();
 
+      return; // 以下はローカル関数のみ
+
       string GetProtocolActivationUrl()
       {
         if (args.Length > 0
-            && args[0].Contains("uf05.bluewatersoft.jp-timelinetest:")
+            && args[0].StartsWith("uf05.bluewatersoft.jp-timelinetest:")
             && Uri.TryCreate(args[0], UriKind.Absolute, out var uri))
           return uri.Query.Substring(1);
-        return null;
+        else
+          return null;
       }
     }
 
