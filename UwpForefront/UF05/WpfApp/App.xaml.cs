@@ -42,14 +42,15 @@ namespace WpfApp
 
 
 
-    private static string _protocolActivationUrl;
 
     // http://www.atmarkit.co.jp/ait/articles/1511/04/news027.html
     [STAThread]
     public static void Main(string[] args)
     {
-      _protocolActivationUrl = GetProtocolActivationUrl();
-      if (IpcClient.RequestNavigation(_protocolActivationUrl))
+      // プロトコルアクティベーションで起動されたときの、表示すべきURL
+      string protocolActivationUrl = GetProtocolActivationUrl();
+
+      if (IpcClient.RequestNavigation(protocolActivationUrl))
       {
         // サーバーとの通信に成功した == 二重起動である
         // 二重起動の場合は、アプリを終了する
@@ -57,6 +58,7 @@ namespace WpfApp
       }
 
       App app = new App();
+      app.Startup += OnStartup;
       app.InitializeComponent();
       app.Run();
 
@@ -71,15 +73,21 @@ namespace WpfApp
         else
           return null;
       }
-    }
 
+      void OnStartup(object sender, StartupEventArgs e)
+      {
+        // App.xamlから「StartupUri="MainWindow.xaml"」の部分を削除しておく
 
-    private void OnStartup(object sender, StartupEventArgs e)
-    {
-      MainWindow mainWindow = new MainWindow();
-      mainWindow.Show();
-      if (_protocolActivationUrl != null)
-        mainWindow.Navigate(_protocolActivationUrl);
+        // プロセス間通信のサーバーを起動する
+        IpcServer.StartService();
+
+        // MainWindowを表示する
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.Show();
+        if (protocolActivationUrl != null)
+          // プロトコルアクティベーションのときは、そのURLを表示する
+          mainWindow.Navigate(protocolActivationUrl);
+      }
     }
   }
 }

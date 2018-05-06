@@ -16,12 +16,19 @@ namespace WpfApp
     void Navigate(string url);
   }
 
+  class IpcService
+  {
+    public const string HostAddress = "net.pipe://localhost/UF05";
+    public const string Endpoint = "NavigationService";
+  }
+
 
 
   // サーバー側
   [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-  public class IpcService : INavigationService
+  public class IpcServer : INavigationService
   {
+    // サービスの実装
     public void Navigate(string url)
     {
       if (App.Current.MainWindow is MainWindow mainWindow)
@@ -40,6 +47,7 @@ namespace WpfApp
       }
     }
 
+    // サーバーのインスタンスを保持する静的メンバー変数
     private static ServiceHost _host;
 
     public static void StartService()
@@ -47,11 +55,11 @@ namespace WpfApp
       if (_host != null)
         _host.Close();
 
-      _host = new ServiceHost(new IpcService(),
-                              new Uri("net.pipe://localhost/UF05"));
+      _host = new ServiceHost(new IpcServer(),
+                              new Uri(IpcService.HostAddress));
       _host.AddServiceEndpoint(typeof(INavigationService),
                                new NetNamedPipeBinding(),
-                               "NavigationService");
+                              IpcService.Endpoint);
       _host.Open();
     }
   }
@@ -68,8 +76,10 @@ namespace WpfApp
         var channelFactory
           = new ChannelFactory<INavigationService>(
               new NetNamedPipeBinding(),
-              new EndpointAddress("net.pipe://localhost/UF05/NavigationService"));
+              new EndpointAddress($"{IpcService.HostAddress}/{IpcService.Endpoint}"));
         var navigationService = channelFactory.CreateChannel();
+
+        // サービスを呼び出し
         navigationService.Navigate(url);
         return true;
       }

@@ -25,9 +25,6 @@ namespace WpfApp
     {
       InitializeComponent();
 
-      // プロセス間通信のサーバーを起動
-      IpcService.StartService();
-
       // UWP Bridge での実行でないときは、アダプティブカードの選択肢を消す
       if(!App.IsTimelineAvailable)
         this.CardTypePanel.Visibility = Visibility.Collapsed;
@@ -93,6 +90,8 @@ namespace WpfApp
     {
       if (this.WebView1.Source?.ToString() == url)
       {
+        // 表示しているのと同じ URL が指定されたので、
+        // Web ページは遷移させずに、ユーザーアクティビティの更新だけ行う
         if (App.IsTimelineAvailable)
           await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(url, GetCardType());
       }
@@ -102,6 +101,5 @@ namespace WpfApp
         this.WebView1.Navigate(new Uri(url));
       }
     }
-
   }
 }
