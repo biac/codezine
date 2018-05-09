@@ -61,12 +61,14 @@ namespace WpfApp
         this.Progress1.Visibility = Visibility.Hidden;
 
         // https://stackoverflow.com/a/46132464/1327929
-        dynamic doc = this.WebView1.Document;
+        // Web サイトからレスポンスが得られたかを確かめるには…、
+        dynamic doc = this.WebView1.Document; // 表示されたドキュメントを取得し、
         var url = doc.url as string;
         if (url != null)
         {
           this.UrlTextBox.Text = url;
-          if (url.StartsWith("http"))
+          if (url.StartsWith("http")) // その URL が "http" で始まっていればOK。
+                                      // ※不正なURLなどのときは "res://ieframe.dll/…" となる
           {
             if (App.IsTimelineAvailable)
               await TimelineLIb.TimelineHelper.Current.AddToTimelineAsync(url, GetCardType());
