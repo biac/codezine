@@ -12,6 +12,8 @@
 .vs/
 bin/
 obj/
+Debug/
+Release/
 BundleArtifacts/
 packages/
 AppPackages/
