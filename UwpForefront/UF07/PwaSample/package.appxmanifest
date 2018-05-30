@@ -21,10 +21,25 @@
         <uap:Rule Match="http://*.*" Type="include" WindowsRuntimeAccess="none" />
       </uap:ApplicationContentUriRules>
       <uap:VisualElements DisplayName="PwaSample" Description="PwaSample" BackgroundColor="transparent" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png">
+        <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png" Square310x310Logo="images\LargeTile.png" Square71x71Logo="images\SmallTile.png">
         </uap:DefaultTile>
-        <uap:SplashScreen Image="images\splashscreen.png" />
+        <uap:SplashScreen Image="images\splashscreen.png" BackgroundColor="#00a2e8" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.shareTarget">
+          <uap:ShareTarget>
+            <uap:SupportedFileTypes>
+              <uap:FileType>.jpg</uap:FileType>
+              <uap:FileType>.jpeg</uap:FileType>
+              <uap:FileType>.png</uap:FileType>
+              <uap:FileType>.gif</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:DataFormat>Text</uap:DataFormat>
+            <uap:DataFormat>Bitmap</uap:DataFormat>
+            <uap:DataFormat>WebLink</uap:DataFormat>
+          </uap:ShareTarget>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>
