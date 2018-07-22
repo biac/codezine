@@ -7,5 +7,5 @@ CodoZine 連載
 - UF04 = [第4回](https://codezine.jp/article/detail/10748): **日本語OCRによる文字認識**　～WPFなどの.NET FrameworkアプリやUWPアプリからWindows 10のOCRエンジンを使う (2018/04/11)
 - UF05 = [第5回](https://codezine.jp/article/detail/10790): **Windows 10 1803の新機能「タイムライン」とはなにか？**　～まずはUWPアプリから使ってみる (2018/04/23), [第6回](https://codezine.jp/article/detail/10810): **簡単になったUWP Bridge**　～Windows 10 1803の新機能「タイムライン」をWPFアプリに実装してみる (2018/05/10)
 - UF06 (欠番)
-- UF07 = [第7回](https://codezine.jp/article/detail/10837): **Windows 10 1803の新機能「PWA」とは？**　～PWAのUWPアプリ化を試してみる (2018/06)
+- UF07 = [第7回](https://codezine.jp/article/detail/10837): **Windows 10 1803の新機能「PWA」とは？**　～PWAのUWPアプリ化を試してみる (2018/06/25)
 

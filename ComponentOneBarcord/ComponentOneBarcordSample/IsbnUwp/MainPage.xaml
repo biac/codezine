@@ -1,0 +1,72 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:IsbnUwp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:c1XamlBarCode="using:C1.Xaml.BarCode"
+  xmlns:flexGrid="using:C1.Xaml.FlexGrid"
+    x:Class="IsbnUwp.MainPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!-- 画像データ取得用の BarCode コントロール -->
+    <c1XamlBarCode:C1BarCode  x:Name="HiddenBarCode" Text="978479815386"
+                              CaptionPosition="Above" CaptionGrouping="True"
+                              CodeType="EAN_13" />
+
+    <flexGrid:C1FlexGrid x:Name="flexgrid1" AutoGenerateColumns="False" 
+                         AllowResizing="Both" AllowDragging="Both" 
+                         AllowDrop="True" ColumnHeaderForeground="Black" 
+                         MinRowHeight="50" Background="AliceBlue" >
+      <flexGrid:C1FlexGrid.Columns>
+        <flexGrid:Column Header="書名" Width="*" Binding="{Binding Title,Mode=TwoWay}"  >
+          <flexGrid:Column.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Title,Mode=OneWay}" TextWrapping="Wrap"
+                         VerticalAlignment="Center" />
+            </DataTemplate>
+          </flexGrid:Column.CellTemplate>
+          <flexGrid:Column.CellEditingTemplate>
+            <DataTemplate>
+              <TextBox Text="{Binding Title,Mode=TwoWay}" TextWrapping="Wrap"
+                       VerticalAlignment="Stretch" />
+            </DataTemplate>
+          </flexGrid:Column.CellEditingTemplate>
+        </flexGrid:Column>
+        <flexGrid:Column Header="ISBN" Width="Auto" MinWidth="108" Binding="{Binding Isbn,Mode=TwoWay}" >
+          <flexGrid:Column.CellTemplate>
+            <DataTemplate>
+              <Grid VerticalAlignment="Center">
+                <c1XamlBarCode:C1BarCode  
+                  Text="{Binding IsbnWithoutCheckDigit,Mode=OneWay}"
+                  CaptionPosition="Above" CaptionGrouping="True"
+                  CodeType="EAN_13" />
+              </Grid>
+            </DataTemplate>
+          </flexGrid:Column.CellTemplate>
+          <flexGrid:Column.CellEditingTemplate>
+            <DataTemplate>
+              <Grid VerticalAlignment="Center">
+                <TextBox Text="{Binding Isbn, Mode=TwoWay}"  />
+              </Grid>
+            </DataTemplate>
+          </flexGrid:Column.CellEditingTemplate>
+        </flexGrid:Column>
+        <flexGrid:Column Binding="{Binding Price,Mode=TwoWay}" Header="価格" Width="Auto"/>
+      </flexGrid:C1FlexGrid.Columns>
+    </flexGrid:C1FlexGrid>
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" >
+      <Button Click="ExcelButton_Click" Margin="5">Excel 出力</Button>
+      <Button Click="PdfButton_Click" Margin="5">PDF 出力</Button>
+    </StackPanel>
+
+  </Grid>
+</Page>

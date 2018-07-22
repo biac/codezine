@@ -1,0 +1,38 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QrUwp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:c1XamlBarCode="using:C1.Xaml.BarCode"
+  xmlns:c1BarCode="using:C1.BarCode"
+    x:Class="QrUwp.MainPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*" x:Name="BarCodeAreaHeight"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <TextBox x:Name="InputTextBox" Margin="0,10,0,25" MaxWidth="300"
+             Header="表示する文字列"
+             PlaceholderText="QRコードに表示したい文字列を入力してください"/>
+
+    <c1XamlBarCode:C1BarCode x:Name="BarCode1" Grid.Row="1" 
+                             Text="{x:Bind InputTextBox.Text, Mode=OneWay}" 
+                             CodeType="QRCode" AutoSize="False" 
+                             Width="500" Height="500" BarHeight="500"
+                             HorizontalAlignment="Center" VerticalAlignment="Center">
+      <c1XamlBarCode:C1BarCode.QRCodeOptions>
+        <c1BarCode:QRCodeOptions ErrorLevel="High"  />
+      </c1XamlBarCode:C1BarCode.QRCodeOptions>
+    </c1XamlBarCode:C1BarCode>
+
+    <Button x:Name="SaveButton" Grid.Row="2" Margin="0,25,0,10"
+              Click="SaveButton_Click"
+              HorizontalAlignment="Center">画像を保存</Button>
+  </Grid>
+</Page>
