@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using C1.Xaml.BarCode;
+using C1.Xaml.Bitmap;
+using C1.Xaml.Document.Export;
+using C1.Xaml.Excel;
+using C1.Xaml.FlexReport;
+using System;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using C1.Xaml.Excel;
-using Windows.Storage.Pickers;
-using C1.Xaml.Bitmap;
-using C1.Xaml.BarCode;
-using C1.BarCode;
-using Windows.Storage.Streams;
-using C1.Xaml.FlexReport;
-using C1.Xaml.Document.Export;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -39,6 +31,7 @@ namespace IsbnUwp
     {
       base.OnNavigatedTo(e);
 
+      // FlexGrid にデータを表示
       this.flexgrid1.ItemsSource = Books.GetData();
     }
 

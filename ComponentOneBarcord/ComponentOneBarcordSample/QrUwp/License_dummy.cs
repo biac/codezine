@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QrUwp
+﻿namespace QrUwp
 {
   public static partial class License
   {
     // このライセンスキー文字列は、
-    // 「ComponentOne for UWPライセンス」の説明に従ってライセンスキーを取得して、置き換える
+    // 「ComponentOne for UWPライセンス」の説明に従ってライセンスキーを取得して、
+    // 置き換えてください。
     // （このままでは動作しません）
     // https://www.grapecity.co.jp/developer/license/componentone/uwp-license
     public static string Key { get; } =
