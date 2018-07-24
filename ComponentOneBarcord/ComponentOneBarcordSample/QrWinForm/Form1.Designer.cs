@@ -77,21 +77,22 @@
       this.panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
       this.panel2.Controls.Add(this.SaveButton);
       this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-      this.panel2.Location = new System.Drawing.Point(0, 284);
+      this.panel2.Location = new System.Drawing.Point(0, 286);
       this.panel2.Name = "panel2";
       this.panel2.Padding = new System.Windows.Forms.Padding(0, 25, 0, 0);
-      this.panel2.Size = new System.Drawing.Size(484, 52);
+      this.panel2.Size = new System.Drawing.Size(484, 50);
       this.panel2.TabIndex = 1;
       // 
       // SaveButton
       // 
       this.SaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.SaveButton.Location = new System.Drawing.Point(359, 17);
+      this.SaveButton.Location = new System.Drawing.Point(359, 15);
       this.SaveButton.Name = "SaveButton";
       this.SaveButton.Size = new System.Drawing.Size(100, 23);
       this.SaveButton.TabIndex = 0;
       this.SaveButton.Text = "画像を保存";
       this.SaveButton.UseVisualStyleBackColor = true;
+      this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
       // 
       // BarCodeArea
       // 
@@ -100,7 +101,7 @@
       this.BarCodeArea.Dock = System.Windows.Forms.DockStyle.Fill;
       this.BarCodeArea.Location = new System.Drawing.Point(0, 59);
       this.BarCodeArea.Name = "BarCodeArea";
-      this.BarCodeArea.Size = new System.Drawing.Size(484, 225);
+      this.BarCodeArea.Size = new System.Drawing.Size(484, 227);
       this.BarCodeArea.TabIndex = 2;
       // 
       // BarCode1

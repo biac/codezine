@@ -19,7 +19,7 @@
       <DataSource>
         <Name>BooksReport</Name>
         <DataProvider>ExternalObject</DataProvider>
-        <ConnectionString>C:\project-copy\CodeZine\ComponentOneBarcord\ComponentOneBarcordSample\BookData\bin\Debug\BookData.dll</ConnectionString>
+        <ConnectionString>..\..\BookData\bin\Debug\BookData.dll</ConnectionString>
         <RecordSource>BookData.Books;</RecordSource>
         <RecordSourceType>Text</RecordSourceType>
       </DataSource>

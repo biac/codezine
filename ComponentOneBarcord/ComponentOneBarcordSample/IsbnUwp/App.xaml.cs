@@ -73,6 +73,9 @@ namespace IsbnUwp
         }
         // 現在のウィンドウがアクティブであることを確認します
         Window.Current.Activate();
+
+        // プレランチを申請します
+        Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
       }
     }
 

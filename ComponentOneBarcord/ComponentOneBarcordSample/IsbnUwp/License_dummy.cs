@@ -8,6 +8,10 @@ namespace IsbnUwp
 {
   public static partial class License
   {
+    // このライセンスキー文字列は、
+    // 「ComponentOne for UWPライセンス」の説明に従ってライセンスキーを取得して、置き換える
+    // （このままでは動作しません）
+    // https://www.grapecity.co.jp/developer/license/componentone/uwp-license
     public static string Key { get; } =
         "ABYBFgIWB29JAHMAYgBuAFUAdwBwAGodFTVyyndYMg3iRRRVHTyjhw4x22esreNY" +
         "abCYWalo5xrq3rQTS9OtUNVFuzc8SH5Wi/uLkd4yL6j9laUzUMNKgMnbhy+prMbJ" +

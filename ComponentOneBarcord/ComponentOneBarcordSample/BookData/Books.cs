@@ -27,6 +27,10 @@ namespace BookData
   // IC1FlexReportRecordset と IC1FlexReportExternalRecordset を実装する必要がある
   // ※ FlexReport for UWP は、IList<T> で OK。このコードは、デザイナーを使うためだけに必要なもの。
 
+  // 詳細は、「GrapeCity.devlog」ブログの「動的に生成されるサンプルデータを利用した帳票デザイン」
+  // の中の「カスタムデータソース」の項を参照
+  // https://devlog.grapecity.co.jp/entry/2017/05/02/c1-flexreport-design
+
   public class Books : IC1FlexReportRecordset, IC1FlexReportExternalRecordset
   {
     private static List<Book> _books = new List<Book>() {

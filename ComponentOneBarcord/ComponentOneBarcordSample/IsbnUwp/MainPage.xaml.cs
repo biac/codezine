@@ -50,11 +50,13 @@ namespace IsbnUwp
       // Excel データの作成
       // https://docs.grapecity.com/help/c1/uwp/uwp_excel/#Step_2_of_4-_Adding_Content_to_a_C1XLBook.html
 
-      // 新しい Excel ワークブックを作成します
-      var _book = new C1XLBook();
+      // 新しい Excel ワークブックを作成
+      var xlBook = new C1XLBook();
+
       // デフォルトで作成されたシートを取得
-      XLSheet sheet = _book.Sheets[0];
-      // シートの中身を書き込み、セルの書式を設定します
+      XLSheet sheet = xlBook.Sheets[0];
+
+      // シートの中身を書き込みます
       int rowIndex = 0;
       // ヘッダー行
       sheet[rowIndex, 0].Value = "書名";
@@ -63,10 +65,11 @@ namespace IsbnUwp
       sheet.Columns[2].Width
         = C1XLBook.PixelsToTwips(this.HiddenBarCode.ActualWidth);
       sheet[rowIndex, 3].Value = "価格";
-      rowIndex++;
       // データ行
       foreach (var book in currentData)
       {
+        rowIndex++;
+
         // バーコードの画像を作る
         this.HiddenBarCode.Text = book.IsbnWithoutCheckDigit;
         C1Bitmap bitmap = new C1Bitmap();
@@ -77,7 +80,7 @@ namespace IsbnUwp
         }
 
         // 行の高さをバーコードの画像に合わせる
-        sheet.Rows[rowIndex].Height 
+        sheet.Rows[rowIndex].Height
           = C1XLBook.PixelsToTwips(this.HiddenBarCode.ActualHeight);
 
         // 1行分のデータとバーコード画像をセット
@@ -85,7 +88,6 @@ namespace IsbnUwp
         sheet[rowIndex, 1].Value = book.Isbn;
         sheet[rowIndex, 2].Value = bitmap;
         sheet[rowIndex, 3].Value = book.Price;
-        rowIndex++;
       }
 
       // Excel ファイルへの書き出し
@@ -94,14 +96,14 @@ namespace IsbnUwp
       {
         SuggestedStartLocation = PickerLocationId.DocumentsLibrary
       };
-      picker.FileTypeChoices.Add("Open XML Excel ファイル", new string[]{".xlsx",});
-      picker.FileTypeChoices.Add("BIFF Excel ファイル", new string[]{ ".xls",});
+      picker.FileTypeChoices.Add("Open XML Excel ファイル", new string[] { ".xlsx", });
+      picker.FileTypeChoices.Add("BIFF Excel ファイル", new string[] { ".xls", });
       picker.SuggestedFileName = "BarCodeControlSample";
       var file = await picker.PickSaveFileAsync();
       if (file != null)
       {
-          var fileFormat = Path.GetExtension(file.Path).Equals(".xls") ? FileFormat.OpenXmlTemplate : FileFormat.OpenXml;
-          await _book.SaveAsync(file, fileFormat);
+        var fileFormat = Path.GetExtension(file.Path).Equals(".xls") ? FileFormat.OpenXmlTemplate : FileFormat.OpenXml;
+        await xlBook.SaveAsync(file, fileFormat);
       }
     }
 
@@ -110,16 +112,14 @@ namespace IsbnUwp
       // 現在、FlexGrid に表示されている順のデータ
       var currentData = this.flexgrid1.Rows.Select(r => r.DataItem).Cast<Book>();
 
-
-      // FlexReport を読み込む
-      C1FlexReport rpt = new C1FlexReport();
+      // FlexReportの定義を読み込む
+      var rpt = new C1FlexReport();
       using (var stream = File.OpenRead("Assets/BooksReport.flxr"))
-          rpt.Load(stream, "BooksReport");
+        rpt.Load(stream, "BooksReport");
       // データを連結
-      rpt.DataSource.Recordset = currentData.ToList(); // IEnumerable<T>ではダメ
+      rpt.DataSource.Recordset = currentData.ToList(); // IEnumerable<T>は不可
       // レポートを生成
       await rpt.RenderAsync();
-
 
       // 印刷する場合
       //await rpt.ShowPrintUIAsync();
@@ -137,7 +137,7 @@ namespace IsbnUwp
         // 出力先となる PdfFilter オブジェクトを作成
         var filter = new PdfFilter();
         filter.StorageFile = file;
-        // Windows Forms 等では、filter.FileName = file.Path;
+        // Windows Forms 等では、filter.FileName = file.Path; とする
 
         // ファイルへ出力
         await rpt.RenderToFilterAsync(filter);

@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace IsbnUwp
 {
+  // 書籍
   public class Book
   {
+    // 書籍のタイトル
     public string Title { get; set; }
+    // ISBNコード
     public string Isbn { get; set; }
+    // 価格
     public string Price { get; set; }
 
+    // ISBNコードから末尾のチェックデジットを抜いたもの
     public string IsbnWithoutCheckDigit
-      => (Isbn?.Length > 12) ? Isbn.Substring(0, 12) : string.Empty;
+      => (Isbn?.Length > 12) ? Isbn.Substring(0, 12) : Isbn;
 
     public Book(string title, string isbn, string price)
     {
@@ -23,6 +24,7 @@ namespace IsbnUwp
     }
   }
 
+  // 書籍のデータストア
   public class Books
   {
     private static List<Book> _books;

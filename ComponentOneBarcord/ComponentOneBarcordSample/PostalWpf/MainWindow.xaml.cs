@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,26 @@ namespace PostalWpf
     public MainWindow()
     {
       InitializeComponent();
+    }
+
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    {
+      // ファイル保存ダイアログを出す
+      var saveFileDialog = new SaveFileDialog();
+      saveFileDialog.Filter = "PNG Image|*.png";
+      saveFileDialog.Title = "Save an Image File";
+      saveFileDialog.DefaultExt = ".png";
+      saveFileDialog.FileName = "BarCodeControlSample.png";
+      saveFileDialog.InitialDirectory
+        = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+      if (saveFileDialog.ShowDialog() ?? false)
+      {
+        // 画像をファイルに保存する
+        using (var st = saveFileDialog.OpenFile())
+        {
+          this.BarCode1.Save(st, C1.WPF.BarCode.ImageFormat.Png);
+        }
+      }
     }
   }
 }

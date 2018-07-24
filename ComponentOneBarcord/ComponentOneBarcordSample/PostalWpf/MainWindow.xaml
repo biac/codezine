@@ -6,8 +6,8 @@
   xmlns:c1="http://schemas.componentone.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PostalWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="500">
-    <Grid>
+        Title="MainWindow" Height="240" Width="480">
+  <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*" x:Name="BarCodeAreaHeight"/>
@@ -15,18 +15,25 @@
     </Grid.RowDefinitions>
 
     <Grid  MaxWidth="300"  Margin="0,10,0,25">
-        <Grid.ColumnDefinitions>
+      <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-      <Label>表示する郵便番号</Label>
-      <TextBox x:Name="InputTextBox" Grid.Column="1" Text="160-0006-SHOEISHA"
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <Label>表示するカスタマコード</Label>
+      <TextBox x:Name="InputTextBox" Grid.Column="1" Text="55000131-4-26-8"
                VerticalContentAlignment="Center"/>
     </Grid>
 
-    <c1:C1BarCode CodeType="JapanesePostal" Grid.Row="1" 
+    <c1:C1BarCode x:Name="BarCode1" CodeType="JapanesePostal" Grid.Row="1" 
                   Text="{Binding Path=Text, ElementName=InputTextBox}" 
-                  AutoSize="False" Width="300" Height="75"  BarHeight="50"
                   CaptionPosition="Below"  />
-    </Grid>
+    <!-- サイズを変えるなら、次のようなプロパティを設定する
+                  AutoSize="False" Width="300" Height="75"  BarHeight="50"
+    -->
+
+    <Button x:Name="SaveButton" Grid.Row="2" Margin="0,25,0,10"
+              Click="SaveButton_Click"
+              HorizontalAlignment="Center">画像を保存</Button>
+  </Grid>
 </Window>
