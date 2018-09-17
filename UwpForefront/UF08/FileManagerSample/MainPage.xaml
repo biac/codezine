@@ -1,0 +1,116 @@
+﻿<Page
+    x:Class="FileManagerSample.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FileManagerSample"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  >
+
+  <Page.Resources>
+
+    <!-- TreeViewのノードに適用するデータテンプレート -->
+    <!-- フォルダー用 -->
+    <DataTemplate x:Key="FolderTemplate" >
+      <TreeViewItem IsHitTestVisible="False" >
+        <StackPanel Orientation="Horizontal" >
+          <Image Width="20" Source="Assets/folder.png"/>
+          <TextBlock Text="{Binding Content.Name}" FontWeight="Bold" />
+        </StackPanel>
+      </TreeViewItem>
+    </DataTemplate>
+    <!-- ファイル用 -->
+    <DataTemplate x:Key="FileTemplate" >
+      <TreeViewItem  IsHitTestVisible="False" >
+        <StackPanel Orientation="Horizontal" >
+          <Image Width="20" Source="Assets/file.png"/>
+          <TextBlock Text="{Binding Content.Name}" />
+        </StackPanel>
+      </TreeViewItem>
+    </DataTemplate>
+
+    <!-- テンプレートセレクターのインスタンス -->
+    <local:StorageItemTemplateSelector
+            x:Key="StorageItemTemplateSelector"
+            FolderTemplate="{StaticResource FolderTemplate}"
+            FileTemplate="{StaticResource FileTemplate}" />
+
+    <!-- TreeViewに適用するスタイル -->
+    <Style TargetType="TreeView">
+      <Setter Property="IsTabStop" Value="False" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TreeView">
+            <TreeViewList x:Name="ListControl"
+                ItemTemplateSelector="{StaticResource StorageItemTemplateSelector}"
+                ItemContainerStyle="{StaticResource TreeViewItemStyle}"
+                CanDragItems="False" AllowDrop="False" CanReorderItems="False">
+              <TreeViewList.ItemContainerTransitions>
+                <TransitionCollection>
+                  <ContentThemeTransition />
+                  <ReorderThemeTransition />
+                  <EntranceThemeTransition IsStaggeringEnabled="False" />
+                </TransitionCollection>
+              </TreeViewList.ItemContainerTransitions>
+            </TreeViewList>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Page.Resources>
+
+  <Grid Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" MinWidth="100" />
+      <ColumnDefinition Width="20"/>
+      <ColumnDefinition Width="276" MinWidth="100" />
+    </Grid.ColumnDefinitions>
+
+    <TreeView x:Name="TreeView1" SelectionMode="Single"
+              Expanding="TreeView1_Expanding"
+              ItemInvoked="TreeView1_ItemInvoked"
+              />
+
+    <Grid Grid.Column="2" VerticalAlignment="Center" Margin="10">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid 
+        Background="{ThemeResource SystemControlAccentDark2AcrylicElementAccentDark2MediumHighBrush}"
+        BorderBrush="{ThemeResource SystemControlAccentDark1AcrylicElementAccentDark1Brush}"
+        BorderThickness="3" HorizontalAlignment="Left">
+        <Image Source="{x:Bind ItemInfo.Thumbnail}" MinWidth="256" MinHeight="192"/>
+      </Grid>
+
+      <StackPanel Grid.Row="1">
+        <TextBlock Text="{x:Bind ItemInfo.Name}" TextWrapping="Wrap" />
+        <TextBlock Text="{x:Bind ItemInfo.Path}" TextWrapping="Wrap" />
+        <TextBlock Text="{x:Bind ItemInfo.DisplayType}" />
+        <TextBlock Text="{x:Bind ItemInfo.Attributes}" />
+        <TextBlock Text="{x:Bind ItemInfo.DateCreatedString}" />
+        <TextBlock Text="{x:Bind ItemInfo.SizeString}" />
+      </StackPanel>
+    </Grid>
+
+    <!-- 左右スプリッタ -->
+    <toolkit:GridSplitter Grid.Column="1" Width="20" FontSize="13"
+                          Background="Transparent" Foreground="White"
+                          ResizeBehavior="BasedOnAlignment"
+                          ResizeDirection="Auto"
+                          >
+      <toolkit:GridSplitter.Element>
+        <Grid>
+          <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Text="&#xE784;" Foreground="White" FontFamily="Segoe MDL2 Assets"
+                     IsHitTestVisible="False"
+                     />
+        </Grid>
+      </toolkit:GridSplitter.Element>
+    </toolkit:GridSplitter>
+
+  </Grid>
+</Page>
