@@ -1,12 +1,12 @@
 ﻿<Application
-    x:Class="NewUI1703.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:NewUI1703"
-    RequestedTheme="Light">
+  x:Class="NewUI1703.App"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:NewUI1703"
+  RequestedTheme="Light">
 
-    <Application.Resources>
-        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
-    </Application.Resources>
+  <Application.Resources>
+    <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
+  </Application.Resources>
 
 </Application>

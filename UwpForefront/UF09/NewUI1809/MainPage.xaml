@@ -18,31 +18,30 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="4*" />
     </Grid.RowDefinitions>
-
+    
     <MenuBar Background="AliceBlue" >
       <MenuBarItem Title="File" AccessKey="F">
         <MenuFlyoutSubItem Text="New" AccessKey="N">
           <MenuFlyoutItem Text="Plain Text Document" AccessKey="P"
                           Command="{x:Bind _menuCommand}"
-                          CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" />
+                          CommandParameter="Plain Text Document" />
           <MenuFlyoutItem Text="Rich Text Document" AccessKey="R"
                           Command="{x:Bind _menuCommand}"
-                          CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" />
+                          CommandParameter="Rich Text Document" />
           <MenuFlyoutItem Text="Other Formats..." AccessKey="O"
                           Command="{x:Bind _menuCommand}"
-                          CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" />
+                          CommandParameter="Other Formats..." />
         </MenuFlyoutSubItem>
         <MenuFlyoutItem Text="Open..." AccessKey="O"
                         Command="{x:Bind _menuCommand}"
-                        CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" >
+                        CommandParameter="Open..." >
           <MenuFlyoutItem.Icon>
             <FontIcon Glyph="&#xE8E5;" />
           </MenuFlyoutItem.Icon>
         </MenuFlyoutItem>
         <MenuFlyoutItem Text="Save" AccessKey="S" Icon="Save"
                         Command="{x:Bind _menuCommand}"
-                        CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }"
-                        KeyboardAcceleratorPlacementTarget="{x:Bind rootGrid}">
+                        CommandParameter="Save">
           <MenuFlyoutItem.KeyboardAccelerators>
             <KeyboardAccelerator Key="S" Modifiers="Control"/>
           </MenuFlyoutItem.KeyboardAccelerators>
@@ -50,27 +49,25 @@
         <MenuFlyoutSeparator />
         <MenuFlyoutItem Text="Exit" AccessKey="X" 
                         Command="{x:Bind _menuCommand}"
-                        CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" />
+                        CommandParameter="Exit" />
       </MenuBarItem>
       <MenuBarItem Title="Edit" AccessKey="E">
         <MenuFlyoutItem Text="Undo" AccessKey="U" Icon="Undo"
                         Command="{x:Bind _menuCommand}"
-                        CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" />
+                        CommandParameter="Undo" />
         <MenuFlyoutItem Text="Cut" AccessKey="X" Icon="Cut"
                         Command="{x:Bind _menuCommand}"
-                        CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" />
+                        CommandParameter="Cut" />
         <MenuFlyoutItem Text="Copy" AccessKey="C" Icon="Copy"
                         Command="{x:Bind _menuCommand}"
-                        CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" 
-                        KeyboardAcceleratorPlacementTarget="{x:Bind rootGrid}">
+                        CommandParameter="Copy" >
           <MenuFlyoutItem.KeyboardAccelerators>
             <KeyboardAccelerator Key="C" Modifiers="Control"/>
           </MenuFlyoutItem.KeyboardAccelerators>
         </MenuFlyoutItem>
         <MenuFlyoutItem Text="Paste" AccessKey="P" Icon="Paste"
                         Command="{x:Bind _menuCommand}"
-                        CommandParameter="{Binding Text, RelativeSource={RelativeSource Self} }" 
-                        KeyboardAcceleratorPlacementTarget="{x:Bind rootGrid}">
+                        CommandParameter="Paste" >
           <MenuFlyoutItem.KeyboardAccelerators>
             <KeyboardAccelerator Key="V" Modifiers="Control"/>
           </MenuFlyoutItem.KeyboardAccelerators>
