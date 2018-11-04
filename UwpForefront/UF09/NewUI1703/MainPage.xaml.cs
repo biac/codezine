@@ -45,6 +45,7 @@ namespace NewUI1703
 
     private readonly ushort _osBuild = TKH.SystemInformation.OperatingSystemVersion.Build;
     private const ushort Ver1809 = 17763;
+    private const ushort Ver1803 = 17134;
 
     public MainPage()
     {
@@ -118,7 +119,7 @@ namespace NewUI1703
 
     private void SetupShortcutKey()
     {
-      if (_osBuild >= Ver1809)
+      if (_osBuild >= Ver1803)
       {
         this.MenuSave.KeyboardAccelerators.Add(new KeyboardAccelerator
         { Modifiers = VirtualKeyModifiers.Control, Key = VirtualKey.S });
