@@ -1,0 +1,157 @@
+﻿<Page
+  x:Class="ClipboardViewer.MainPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:ClipboardViewer"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  Background="{ThemeResource SystemControlAcrylicElementBrush}"
+  xmlns:wct="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  >
+
+  <Page.Resources>
+    <!-- GridView のアイテム表示用テンプレート -->
+    <DataTemplate x:Key="GridViewItemTemplate">
+      <Grid ToolTipService.ToolTip="{Binding TooltipText}"
+            Background="{ThemeResource SystemControlAltHighAcrylicElementBrush}"
+            BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush }"
+            BorderThickness="1" 
+        >
+        <!-- セル全体に Text と Bitmap -->
+        <Image Source="{Binding Bitmap}" Stretch="UniformToFill"
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding Text}"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                   TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+        <!-- 左下に Timestamp -->
+        <Grid Background="{ThemeResource SystemControlBackgroundBaseMediumLowRevealBorderBrush}"
+              Opacity="1.00" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+              Margin="5,0,0,5" Padding="5,0">
+          <TextBlock Text="{Binding TimestampTime}" Foreground="White" Opacity="0.85" />
+        </Grid>
+        <!-- 右上に削除アイコン  -->
+        <Grid Background="{ThemeResource SystemControlTransparentRevealBackgroundBrush}"
+              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0">
+          <AppBarButton IsCompact="True" Tag="{Binding}" Click="DeleteButton_Click"
+                        ToolTipService.ToolTip="削除"
+                        Width="28" Height="28" Opacity="0.75"
+                        Foreground="{ThemeResource SystemControlRevealFocusVisualBrush}" 
+                        Background="{ThemeResource SystemControlTransparentRevealBackgroundBrush}" >
+            <AppBarButton.Icon>
+              <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;">
+                <FontIcon.RenderTransform>
+                  <CompositeTransform TranslateY="-6"/>
+                </FontIcon.RenderTransform>
+              </FontIcon>
+            </AppBarButton.Icon>
+          </AppBarButton>
+        </Grid>
+      </Grid>
+    </DataTemplate>
+  </Page.Resources>
+
+  <Grid>
+    <wct:AdaptiveGridView Name="AdaptiveGridViewControl" Padding="0,0,0,15" 
+                          OneRowModeEnabled="False"
+                          ItemHeight="140" DesiredWidth="240"
+                          SelectionMode="Single" IsItemClickEnabled="True"
+                          ItemTemplate="{StaticResource GridViewItemTemplate}"
+                          SelectionChanged="AdaptiveGridViewControl_SelectionChanged"
+                          >
+      <wct:AdaptiveGridView.Header>
+        <wct:ScrollHeader Mode="QuickReturn">
+          <Grid 
+            Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}">
+            <wct:WrapPanel HorizontalSpacing="5" VerticalSpacing="5" Margin="10" >
+              <!-- 現在のクリップボードの内容 -->
+              <Grid x:Name="ClipboardCurrentGrid" Width="240" Height="135"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Background="{ThemeResource SystemControlAltHighAcrylicElementBrush}"
+                    BorderBrush="{ThemeResource SystemControlBackgroundAccentRevealBorderBrush }"
+                    BorderThickness="1"
+                    ToolTipService.ToolTip="{Binding TooltipText}">
+                <Image Source="{Binding Bitmap}" Stretch="UniformToFill"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Text}"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                           TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+              </Grid>
+
+              <!-- 情報表示とクリップボード全体の操作 -->
+              <Grid>
+                <Grid.Resources>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                  <Style TargetType="AppBarButton">
+                    <Setter Property="IsCompact" Value="True" />
+                    <Setter Property="Width" Value="28" />
+                    <Setter Property="Height" Value="28" />
+                    <Setter Property="Background"
+                            Value="{ThemeResource SystemControlTransparentRevealBackgroundBrush}" />
+                    <Setter Property="Foreground"
+                            Value="{ThemeResource SystemControlBackgroundBaseHighRevealBorderBrush}" />
+                  </Style>
+                  <Style TargetType="FontIcon">
+                    <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                    <Setter Property="RenderTransform">
+                      <Setter.Value>
+                        <CompositeTransform TranslateY="-6" />
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="5" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="5" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="IsHistoryEnabled:" />
+                <TextBlock x:Name="IsHistoryEnabledText" Grid.Column="2" Text="False" />
+
+                <TextBlock Text="IsRoamingEnabled:" Grid.Row="1" />
+                <TextBlock x:Name="IsRoamingEnabledText" Grid.Row="1" Grid.Column="2" Text="False" />
+
+                <TextBlock Text="クリップボードの設定を開く" Grid.Row="3" />
+                <AppBarButton Grid.Row="3" Grid.Column="2"
+                              Click="OpenSettingsButton_Click">
+                  <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE713;" />
+                  </AppBarButton.Icon>
+                </AppBarButton>
+
+                <TextBlock Text="クリップボードをクリアする" Grid.Row="4" />
+                <AppBarButton Grid.Row="4" Grid.Column="2"
+                              Click="ClearClipboardCurrentButton_Click" >
+                  <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE894;"/>
+                  </AppBarButton.Icon>
+                </AppBarButton>
+
+                <TextBlock Text="すべての履歴を削除する" Grid.Row="5" />
+                <AppBarButton Grid.Row="5" Grid.Column="2"
+                              Click="DeleteClipboardHistoryButton_Click" >
+                  <AppBarButton.Icon>
+                    <FontIcon  Glyph="&#xE74D;"/>
+                  </AppBarButton.Icon>
+                </AppBarButton>
+              </Grid>
+
+            </wct:WrapPanel>
+          </Grid>
+        </wct:ScrollHeader>
+      </wct:AdaptiveGridView.Header>
+    </wct:AdaptiveGridView>
+
+  </Grid>
+</Page>
