@@ -29,6 +29,9 @@ namespace ClipboardViewer
     {
       this.InitializeComponent();
 
+      // 説明用メソッドの呼び出し
+      //Data.ClipboardHistoryData.GetClipboardHistoryAsync();
+
       this.AdaptiveGridViewControl.ItemsSource = Data.ClipboardHistoryData.Items;
       this.ClipboardCurrentGrid.DataContext = Data.ClipboardCurrentData.Instance;
 
@@ -51,8 +54,11 @@ namespace ClipboardViewer
       bool notGetClipboardHistoryYet = Clipboard.IsHistoryEnabled();
       Clipboard.HistoryChanged += async (s, e) =>
       {
-        var result = await Data.ClipboardHistoryData.TryUpdateAsync();
-        notGetClipboardHistoryYet = (result != ClipboardHistoryItemsResultStatus.Success);
+        //var result = await Data.ClipboardHistoryData.TryUpdateAsync();
+        // notGetClipboardHistoryYet = (result != ClipboardHistoryItemsResultStatus.Success);
+        if (await Data.ClipboardHistoryData.TryUpdateAsync()
+            != ClipboardHistoryItemsResultStatus.Success)
+          notGetClipboardHistoryYet = true;
       };
 
       // ウインドウがフォーカスを受け取ったとき
@@ -127,8 +133,10 @@ namespace ClipboardViewer
     // 選択された履歴データを削除
     private void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
-      var selectedData = (sender as AppBarButton)?.Tag as Data.ClipboardHistoryData;
-      Clipboard.DeleteItemFromHistory(selectedData.HistoryItem);
+      //var selectedData = (sender as AppBarButton)?.Tag as Data.ClipboardHistoryData;
+
+      var historyData = (sender as AppBarButton).DataContext as Data.ClipboardHistoryData;
+      Clipboard.DeleteItemFromHistory(historyData.HistoryItem);
     }
 
     // 設定アプリのクリップボードのページを開く

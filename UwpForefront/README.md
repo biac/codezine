@@ -9,5 +9,5 @@ CodoZine 連載
 - UF06 (欠番)
 - UF07 = [第7回](https://codezine.jp/article/detail/10837): **Windows 10 1803の新機能「PWA」とは？**　～PWAのUWPアプリ化を試してみる (2018/06/25)
 - UF08 = [第8回](https://codezine.jp/article/detail/11072): **UWPアプリでファイルマネージャーを作ろう！**　～ついにWindows 10 1803で実現 (2018/09/27)
-- UF09 = [第9回](https://codezine.jp/article/detail/11188): **急速に進化するUWPアプリのUI**　～Windows 10 1809の新コントロール／DataGrid／旧バージョンへのバックポート (2018/11/xx)
-
+- UF09 = [第9回](https://codezine.jp/article/detail/11188): **急速に進化するUWPアプリのUI**　～Windows 10 1809の新コントロール／DataGrid／旧バージョンへのバックポート (2018/11/20)
+- UF10 = [第10回] (予定)

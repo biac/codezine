@@ -30,6 +30,8 @@ namespace ClipboardViewer.Data
         return $@"AvailableFormats:
 {string.Join("\n", AvailableFormats)}
 
+Text: {TextSize:#,##0}Bytes
+Bitmap: {BitmapSize:#,##0}Bytes ({BitmapWidth}x{BitmapHeight})
 IsFromRoamingClipboard: {IsFromRoamingClipboard}";
 //{string.Join("\n", ControlInfoDictionary.Select(kv => $"{kv.Key}: {kv.Value}"))}
 //{string.Join("\n", Properties.Select(kv => $"{kv.Key}: {kv.Value}"))}";
@@ -88,7 +90,7 @@ IsFromRoamingClipboard: {IsFromRoamingClipboard}";
     }
 
     private readonly string[] NotifyProperties
-      = { nameof(Text), nameof(Bitmap),
+      = { nameof(TextHead), nameof(Bitmap),
           //nameof(OriginalContent),
           nameof(AvailableFormats),
           nameof(IsFromRoamingClipboard), nameof(TooltipText), };

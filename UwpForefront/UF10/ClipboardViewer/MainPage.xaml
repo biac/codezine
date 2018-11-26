@@ -21,7 +21,7 @@
         <!-- セル全体に Text と Bitmap -->
         <Image Source="{Binding Bitmap}" Stretch="UniformToFill"
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBlock Text="{Binding Text}"
+        <TextBlock Text="{Binding TextHead}" Margin="5"
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                    TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
         <!-- 左下に Timestamp -->
@@ -33,7 +33,7 @@
         <!-- 右上に削除アイコン  -->
         <Grid Background="{ThemeResource SystemControlTransparentRevealBackgroundBrush}"
               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0">
-          <AppBarButton IsCompact="True" Tag="{Binding}" Click="DeleteButton_Click"
+          <AppBarButton IsCompact="True" Click="DeleteButton_Click"
                         ToolTipService.ToolTip="削除"
                         Width="28" Height="28" Opacity="0.75"
                         Foreground="{ThemeResource SystemControlRevealFocusVisualBrush}" 
@@ -73,7 +73,7 @@
                     ToolTipService.ToolTip="{Binding TooltipText}">
                 <Image Source="{Binding Bitmap}" Stretch="UniformToFill"
                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding Text}"
+                <TextBlock Text="{Binding TextHead}"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                            TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
               </Grid>

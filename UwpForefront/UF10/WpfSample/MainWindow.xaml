@@ -1,0 +1,93 @@
+﻿<Window x:Class="WpfSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfSample"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+  <Grid>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <ItemsControl x:Name="ItemsControl">
+        <ItemsControl.Template>
+          <ControlTemplate>
+            <Border Padding="5,5,5,15" Background="#88EEEEEE">
+              <ItemsPresenter />
+            </Border>
+          </ControlTemplate>
+        </ItemsControl.Template>
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <DataTemplate.Resources>
+              <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="LightGray" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Margin" Value="2,2,3,3" />
+                <Setter Property="Background" Value="#aaEFEFFF" />
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="{StaticResource WindowGlassBrush}" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="Margin" Value="1,1,2,2" />
+                    <Setter Property="Background" Value="White" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+              <Style TargetType="Image">
+                <Setter Property="Opacity" Value="0.5"/>
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1.0" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+              <Style TargetType="TextBlock">
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Image.Opacity" Value="1.0" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </DataTemplate.Resources>
+            <Border>
+              <Grid Width="240" Height="135" ToolTip="{Binding TooltipText}" >
+                <!-- セル全体に Text と Bitmap -->
+                <Image Source="{Binding Bitmap}" Stretch="UniformToFill"
+               HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                <TextBlock Text="{Binding TextHead}" Margin="5" 
+                   TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                <!-- 左下に Timestamp -->
+                <Grid Background="#aa444444"
+                      HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                      Margin="5,0,0,5">
+                  <TextBlock Text="{Binding TimestampTime}" Foreground="White" Opacity="0.85" Margin="5,0" />
+                </Grid>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+        <!--<ItemsControl.ItemContainerStyle>
+          <Style TargetType="ContentPresenter">
+            <Setter Property="Border.BorderBrush" Value="LightGray" />
+            <Setter Property="Border.BorderThickness" Value="1" />
+            <Setter Property="Border.Margin" Value="2,2,3,3" />
+
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Border.BorderBrush" Value="Red" />
+                <Setter Property="Border.BorderThickness" Value="2" />
+                <Setter Property="Border.Margin" Value="1,1,2,2" />
+                </Trigger>
+              </Style.Triggers>
+
+          </Style>
+        </ItemsControl.ItemContainerStyle>-->
+      </ItemsControl>
+    </ScrollViewer>
+  </Grid>
+</Window>
