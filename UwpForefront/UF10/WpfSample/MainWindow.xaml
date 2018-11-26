@@ -49,7 +49,7 @@
               <Style TargetType="TextBlock">
                 <Style.Triggers>
                   <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Image.Opacity" Value="1.0" />
+                    <Setter Property="Background" Value="#aaFFFFFF" />
                   </Trigger>
                 </Style.Triggers>
               </Style>
@@ -60,7 +60,8 @@
                 <Image Source="{Binding Bitmap}" Stretch="UniformToFill"
                HorizontalAlignment="Center" VerticalAlignment="Center"  />
                 <TextBlock Text="{Binding TextHead}" Margin="5" 
-                   TextWrapping="Wrap" TextTrimming="WordEllipsis" />
+                   TextWrapping="Wrap" TextTrimming="WordEllipsis"
+                           HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <!-- 左下に Timestamp -->
                 <Grid Background="#aa444444"
                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
@@ -71,22 +72,6 @@
             </Border>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
-        <!--<ItemsControl.ItemContainerStyle>
-          <Style TargetType="ContentPresenter">
-            <Setter Property="Border.BorderBrush" Value="LightGray" />
-            <Setter Property="Border.BorderThickness" Value="1" />
-            <Setter Property="Border.Margin" Value="2,2,3,3" />
-
-              <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Border.BorderBrush" Value="Red" />
-                <Setter Property="Border.BorderThickness" Value="2" />
-                <Setter Property="Border.Margin" Value="1,1,2,2" />
-                </Trigger>
-              </Style.Triggers>
-
-          </Style>
-        </ItemsControl.ItemContainerStyle>-->
       </ItemsControl>
     </ScrollViewer>
   </Grid>

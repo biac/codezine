@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.ServiceModel.Security;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 
@@ -11,30 +7,22 @@ namespace ClipboardViewer.Data
 {
   public class ClipboardCurrentData : AbstractClipboardData, INotifyPropertyChanged
   {
+    // 唯一のインスタンス
     public static ClipboardCurrentData Instance { get; } = new ClipboardCurrentData();
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    //// クリップボードのデータ
-    //public DataPackageView OriginalContent { get; private set; }
-    //public IReadOnlyList<string> AvailableFormats => OriginalContent.AvailableFormats;
-    //public bool IsFromRoamingClipboard => OriginalContent.Properties.IsFromRoamingClipboard;
-
+    // 表示用のデータ
+    // ツールチップの文字列
     public string TooltipText
     {
       get {
-        //if (OriginalContent.AvailableFormats == null
-        //    || OriginalContent.AvailableFormats?.Count == 0)
-        //  return null;
-
         return $@"AvailableFormats:
 {string.Join("\n", AvailableFormats)}
 
 Text: {TextSize:#,##0}Bytes
 Bitmap: {BitmapSize:#,##0}Bytes ({BitmapWidth}x{BitmapHeight})
 IsFromRoamingClipboard: {IsFromRoamingClipboard}";
-//{string.Join("\n", ControlInfoDictionary.Select(kv => $"{kv.Key}: {kv.Value}"))}
-//{string.Join("\n", Properties.Select(kv => $"{kv.Key}: {kv.Value}"))}";
       }
     }
 
@@ -85,16 +73,16 @@ IsFromRoamingClipboard: {IsFromRoamingClipboard}";
     private async Task ClearAsync()
     {
       var blankData = (new DataPackage()).GetView();
-      //OriginalContent = blankData;
       await base.SetDataAsync(blankData);
     }
 
+    // データ更新時、変更を通知するプロパティ名
     private readonly string[] NotifyProperties
       = { nameof(TextHead), nameof(Bitmap),
-          //nameof(OriginalContent),
           nameof(AvailableFormats),
           nameof(IsFromRoamingClipboard), nameof(TooltipText), };
 
+    // データバインディング先に変更を通知する
     private void Notify()
     {
       foreach (string p in NotifyProperties)

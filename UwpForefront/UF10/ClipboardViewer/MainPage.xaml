@@ -16,8 +16,7 @@
       <Grid ToolTipService.ToolTip="{Binding TooltipText}"
             Background="{ThemeResource SystemControlAltHighAcrylicElementBrush}"
             BorderBrush="{ThemeResource ButtonDisabledBorderThemeBrush }"
-            BorderThickness="1" 
-        >
+            BorderThickness="1" >
         <!-- セル全体に Text と Bitmap -->
         <Image Source="{Binding Bitmap}" Stretch="UniformToFill"
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -26,13 +25,16 @@
                    TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
         <!-- 左下に Timestamp -->
         <Grid Background="{ThemeResource SystemControlBackgroundBaseMediumLowRevealBorderBrush}"
-              Opacity="1.00" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+              Opacity="1.00"
+              HorizontalAlignment="Left" VerticalAlignment="Bottom"
               Margin="5,0,0,5" Padding="5,0">
-          <TextBlock Text="{Binding TimestampTime}" Foreground="White" Opacity="0.85" />
+          <TextBlock Text="{Binding TimestampTime}"
+                     Foreground="White" Opacity="0.85" />
         </Grid>
         <!-- 右上に削除アイコン  -->
         <Grid Background="{ThemeResource SystemControlTransparentRevealBackgroundBrush}"
-              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0">
+              HorizontalAlignment="Right" VerticalAlignment="Top"
+              Margin="0,5,5,0">
           <AppBarButton IsCompact="True" Click="DeleteButton_Click"
                         ToolTipService.ToolTip="削除"
                         Width="28" Height="28" Opacity="0.75"
@@ -57,13 +59,12 @@
                           ItemHeight="140" DesiredWidth="240"
                           SelectionMode="Single" IsItemClickEnabled="True"
                           ItemTemplate="{StaticResource GridViewItemTemplate}"
-                          SelectionChanged="AdaptiveGridViewControl_SelectionChanged"
-                          >
+                          SelectionChanged="AdaptiveGridViewControl_SelectionChanged">
       <wct:AdaptiveGridView.Header>
         <wct:ScrollHeader Mode="QuickReturn">
-          <Grid 
-            Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}">
-            <wct:WrapPanel HorizontalSpacing="5" VerticalSpacing="5" Margin="10" >
+          <Grid Background="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}">
+            <wct:WrapPanel HorizontalSpacing="5" VerticalSpacing="5"
+                           Margin="10" >
               <!-- 現在のクリップボードの内容 -->
               <Grid x:Name="ClipboardCurrentGrid" Width="240" Height="135"
                     HorizontalAlignment="Left" VerticalAlignment="Top"

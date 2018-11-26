@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 
@@ -30,11 +19,13 @@ namespace ClipboardViewer
       this.InitializeComponent();
 
       // 説明用メソッドの呼び出し
-      //Data.ClipboardHistoryData.GetClipboardHistoryAsync();
+      // Data.ClipboardHistoryData.GetClipboardHistoryAsync();
 
+      // データを画面にバインド
       this.AdaptiveGridViewControl.ItemsSource = Data.ClipboardHistoryData.Items;
       this.ClipboardCurrentGrid.DataContext = Data.ClipboardCurrentData.Instance;
 
+      // イベントハンドラーをセットアップ
       SetupEventHandlers();
     }
     
@@ -54,8 +45,6 @@ namespace ClipboardViewer
       bool notGetClipboardHistoryYet = Clipboard.IsHistoryEnabled();
       Clipboard.HistoryChanged += async (s, e) =>
       {
-        //var result = await Data.ClipboardHistoryData.TryUpdateAsync();
-        // notGetClipboardHistoryYet = (result != ClipboardHistoryItemsResultStatus.Success);
         if (await Data.ClipboardHistoryData.TryUpdateAsync()
             != ClipboardHistoryItemsResultStatus.Success)
           notGetClipboardHistoryYet = true;
@@ -87,7 +76,6 @@ namespace ClipboardViewer
         var result = await Data.ClipboardCurrentData.TryUpdateAsync();
         notGetClipboardCurrentYet = !result;
       };
-
 
       // クリップボード履歴の利用可否が切り替えられたとき
       this.IsHistoryEnabledText.Text = Clipboard.IsHistoryEnabled().ToString();
@@ -133,8 +121,6 @@ namespace ClipboardViewer
     // 選択された履歴データを削除
     private void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
-      //var selectedData = (sender as AppBarButton)?.Tag as Data.ClipboardHistoryData;
-
       var historyData = (sender as AppBarButton).DataContext as Data.ClipboardHistoryData;
       Clipboard.DeleteItemFromHistory(historyData.HistoryItem);
     }
@@ -143,6 +129,7 @@ namespace ClipboardViewer
     private async void OpenSettingsButton_Click(object sender, RoutedEventArgs e)
     {
       await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:clipboard"));
+      // https://www.tenforums.com/tutorials/78214-settings-pages-list-uri-shortcuts-windows-10-a.html
     }
 
     // クリップボードのクリア

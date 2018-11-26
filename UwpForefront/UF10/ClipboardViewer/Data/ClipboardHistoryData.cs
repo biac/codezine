@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace ClipboardViewer.Data
 {
@@ -21,7 +17,7 @@ namespace ClipboardViewer.Data
     public string Id => HistoryItem.Id;
     public DateTimeOffset Timestamp => HistoryItem.Timestamp;
 
-    // 表示用
+    // 表示用のデータ
     public string TimestampTime => Timestamp.ToString("HH:mm:ss");
     public string TooltipText
       => $@"AvailableFormats:
@@ -32,8 +28,6 @@ Bitmap: {BitmapSize:#,##0}Bytes ({BitmapWidth}x{BitmapHeight})
 IsFromRoamingClipboard: {IsFromRoamingClipboard}
 ID: {Id}
 Timestamp: {TimestampTime}";
-    //{string.Join("\n", ControlInfoDictionary.Select(kv => $"{kv.Key}: {kv.Value}"))}
-    //{string.Join("\n", Properties.Select(kv => $"{kv.Key}: {kv.Value}"))}";
 
 
     // 履歴を取得する基本的な流れ（説明用）
@@ -116,6 +110,9 @@ Timestamp: {TimestampTime}";
       Items.Clear();
       foreach (ClipboardHistoryItem item in result.Items)
         Items.Add(await CreateNewDataAsync(item));
+      // ※ このやり方では、UWPの場合はスクロールがリセットされてしまう。
+      //    スクロール位置を維持するためには、Clear() せずに、
+      //    新旧のデータを比較して1個ずつ追加・削除する。
 
       return ClipboardHistoryItemsResultStatus.Success;
     }

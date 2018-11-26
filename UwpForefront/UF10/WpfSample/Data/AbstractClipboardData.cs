@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using uwpDataTransfer = Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.Streams;
 //using Windows.UI.Xaml.Media.Imaging;
-// WPF からは UWP の BitmapImage クラスは使えない!
-// System.Windows.Media.Imaging の BitmapImage を使う。
+// ↑WPF からは UWP の BitmapImage クラスは使えない!
+// ↓System.Windows.Media.Imaging の BitmapImage を使う。
 using System.Windows.Media.Imaging;
 using System.IO;
 
@@ -27,12 +27,6 @@ namespace WpfSample.Data
 
     protected async Task SetDataAsync(uwpDataTransfer.DataPackageView content)
     {
-#if DEBUG
-      if (content.Properties.ApplicationName is string name
-           && name.Length > 0)
-        await (new Windows.UI.Popups.MessageDialog($"ApplicationName:{name}")).ShowAsync();
-#endif
-
       this.AvailableFormats = content.AvailableFormats?.ToList() ?? (new List<string>());
       this.IsFromRoamingClipboard = content.Properties.IsFromRoamingClipboard;
 
@@ -50,6 +44,7 @@ namespace WpfSample.Data
       this.Bitmap = new BitmapImage();
       if (content.Contains(uwpDataTransfer.StandardDataFormats.Bitmap)) //"Bitmap"
       {
+        // ビットマップデータの取り出し (ここは UWP と同じにはできない)
         RandomAccessStreamReference stRef = await content.GetBitmapAsync();
         using (IRandomAccessStreamWithContentType uwpStream = await stRef.OpenReadAsync())
         using (Stream stream = uwpStream.AsStreamForRead())
