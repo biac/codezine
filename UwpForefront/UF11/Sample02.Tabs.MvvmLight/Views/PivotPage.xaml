@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="Sample02.Tabs.MvvmLight.Views.PivotPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Style="{StaticResource PageStyle}"
+    xmlns:behaviors="using:Sample02.Tabs.MvvmLight.Behaviors"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:model="using:Sample02.Tabs.MvvmLight.Models"
+    xmlns:views="using:Sample02.Tabs.MvvmLight.Views"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Pivot x:Uid="PivotPage" x:Name="pivot">
+            <i:Interaction.Behaviors>
+                <behaviors:PivotBehavior />
+            </i:Interaction.Behaviors>
+            <PivotItem x:Uid="PivotItem_Main">
+                <Frame>
+                    <views:MainPage/>
+                </Frame>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_DataGrid">
+                <Frame>
+                    <views:DataGridPage/>
+                </Frame>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_WebView">
+                <Frame>
+                    <views:WebViewPage/>
+                </Frame>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_Map">
+                <Frame>
+                    <views:MapPage/>
+                </Frame>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_InkSmartCanvas">
+                <Frame>
+                    <views:InkSmartCanvasPage/>
+                </Frame>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_Chart">
+                <Frame>
+                    <views:ChartPage/>
+                </Frame>
+            </PivotItem>
+            <PivotItem x:Uid="PivotItem_Settings">
+                <Frame>
+                    <views:SettingsPage/>
+                </Frame>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>
