@@ -28,6 +28,9 @@ namespace Sample01.Hamburger.CodeBehind.Activation
             //Singleton<ToastNotificationsService>.Instance.ShowToastNotificationSample();
             // bw: ↑起動時のトースト通知デモは不要なので削除した
 
+            // bw: プレランチを「申請」します
+            Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
+
             await Task.CompletedTask;
         }
 
