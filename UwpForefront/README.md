@@ -1,5 +1,5 @@
 CodoZine 連載  
-# UWPアプリ開発の最前線
+# [UWPアプリ開発の最前線](https://codezine.jp/article/corner/731)
 
 - UF01 = [第1回](http://codezine.jp/article/detail/10623): **XAMLで条件分岐**　～UWPの複数バージョンに対処する「条件付きXAML」 (2018/01/25)
 - UF02 = [第2回](http://codezine.jp/article/detail/10654): **超簡単！ WPFなどの.NETのアプリからUWPのAPIを使う**　～日本語の読み仮名を取得するAPIを題材に (2018/03/06)
@@ -10,4 +10,5 @@ CodoZine 連載
 - UF07 = [第7回](https://codezine.jp/article/detail/10837): **Windows 10 1803の新機能「PWA」とは？**　～PWAのUWPアプリ化を試してみる (2018/06/25)
 - UF08 = [第8回](https://codezine.jp/article/detail/11072): **UWPアプリでファイルマネージャーを作ろう！**　～ついにWindows 10 1803で実現 (2018/09/27)
 - UF09 = [第9回](https://codezine.jp/article/detail/11188): **急速に進化するUWPアプリのUI**　～Windows 10 1809の新コントロール／DataGrid／旧バージョンへのバックポート (2018/11/20)
-- UF10 = [第10回](https://codezine.jp/article/detail/11229): **クリップボードビューアを作ろう！**　～Windows 10 1809の新機能「クリップボード履歴」にアクセス (2018/12/7)
+- UF10 = [第10回](https://codezine.jp/article/detail/11229): **クリップボードビューアを作ろう！**　～Windows 10 1809の新機能「クリップボード履歴」にアクセス (2018/12/07)
+- UF11 = [第11回](https://codezine.jp/article/detail/11282): **UWPアプリを作るとき、画面遷移やアーキテクチャで悩んだら!?**　～Windows Template Studioを使ってみよう (2019/01/09)
