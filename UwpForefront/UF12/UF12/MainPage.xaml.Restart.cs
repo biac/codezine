@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.ExtendedExecution;
@@ -19,15 +16,17 @@ namespace UF12
 
     private async void RestartButton_Click(object sender, RoutedEventArgs e)
     {
+      RestartButton.IsEnabled = false;
+      RestartDescriptionText.Text = "";
+
       using (var newSession = new ExtendedExecutionSession())
       {
         newSession.Reason = ExtendedExecutionReason.Unspecified;
         await newSession.RequestExtensionAsync();
         // ↑最小化されたときにサスペンドされるのを延期する（バックグラウンド実行）
+        //   ※バッテリー駆動時は最大10分まで
 
 
-        RestartButton.IsEnabled = false;
-        RestartDescriptionText.Text = "";
         await Task.Delay(3000); // 動作確認のため、しばらく遅らせる
 
         // 再起動を要求する
@@ -61,8 +60,9 @@ namespace UF12
             throw new ArgumentOutOfRangeException($"想定外のAppRestartFailureReason({result})");
 #endif
         }
-        RestartButton.IsEnabled = true;
       }
+
+      RestartButton.IsEnabled = true;
     }
   }
 }

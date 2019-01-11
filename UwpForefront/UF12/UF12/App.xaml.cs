@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Core.Preview;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace UF12
@@ -38,7 +27,9 @@ namespace UF12
 
     // 再起動時のパラメーターには、この文字列を先頭に付ける
     public const string RestartParamHeader = "$RestartParam$";
+
     public bool IsRestart { get; private set; }
+    public DateTimeOffset? PrelaunchTime { get; set; }
 
     /// <summary>
     /// アプリケーションがエンド ユーザーによって正常に起動されたときに呼び出されます。他のエントリ ポイントは、
@@ -76,6 +67,7 @@ namespace UF12
 
         // フレームを現在のウィンドウに配置します
         Window.Current.Content = rootFrame;
+
         this.SetupCloseRequestedHandler();
 
         if (e.PrelaunchActivated)
@@ -106,23 +98,11 @@ namespace UF12
           rootFrame.Navigate(typeof(MainPage), argument);
         }
 
-
         // 現在のウィンドウがアクティブであることを確認します
         Window.Current.Activate();
       }
-      //else // PrelaunchActivated
-      //{
-      //  //時刻を記録
-      //  PrelaunchTime = DateTimeOffset.Now;
-      //}
     }
 
-
-
-
-
-
-    public DateTimeOffset? PrelaunchTime { get; set; }
     public bool IsAutoStartup { get; private set; }
 
     protected override void OnActivated(IActivatedEventArgs args)
@@ -143,23 +123,7 @@ namespace UF12
         // 自動起動された場合
         IsAutoStartup = true;
         var startupArgs = args as StartupTaskActivatedEventArgs;
-        payload = startupArgs.TaskId; //ActivationKind.StartupTask.ToString();
-      }
-      else if (args.Kind == ActivationKind.Launch)
-      {
-        // 自動再起動時には、ここには来ない!!!
-        throw new InvalidProgramException();
-        //var launchArgs = args as LaunchActivatedEventArgs;
-        ////string argString = launchArgs.Arguments;
-        //if (args.PreviousExecutionState == ApplicationExecutionState.Terminated
-        //    //&& !string.IsNullOrEmpty(argString))
-        //    && launchArgs.Arguments is string argString
-        //    && argString.StartsWith(RestartParamHeader))
-        //{
-        //  // 自動再起動
-        //  IsRestart = true;
-        //  payload = argString.Replace(RestartParamHeader, string.Empty);
-        //}
+        payload = startupArgs.TaskId;
       }
 
       rootFrame.Navigate(typeof(MainPage), payload);
@@ -191,38 +155,5 @@ namespace UF12
       //TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
       deferral.Complete();
     }
-
-
-
-
-    //void SetupCloseRequestedHandler()
-    //{
-    //  // [×]ボタンのイベントハンドラー (1703以降)
-    //  // ※マニフェストに <rescap:Capability Name="confirmAppClose"/> が必要
-    //  SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += async (s, e) =>
-    //  {
-    //    // 閉じられるのをキャンセルする
-    //    e.Handled = true;
-
-    //    ContentDialog dialog = new ContentDialog
-    //    {
-    //      Title = "アプリを終了しますか?",
-    //      Content = "[×] ボタンが押されましたが、アプリを終了してもよいですか",
-    //      CloseButtonText = "キャンセル",
-    //      PrimaryButtonText = "終了",
-    //      //SecondaryButtonText = "Try it",
-    //      DefaultButton = ContentDialogButton.Primary
-    //    };
-    //    ContentDialogResult result = await dialog.ShowAsync();
-    //    if (result == ContentDialogResult.Primary)
-    //    {
-    //      // キャンセルしてしまっているので、
-    //      // 必要ならばあらためてアプリを終了させる。
-    //      App.Current.Exit();
-    //      // ↑Exitすると、OnSuspending等は実行されないので注意!
-    //    }
-    //  };
-    //}
-
   }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Core.Preview;
 using Windows.UI.Xaml.Controls;
 
@@ -25,7 +21,6 @@ namespace UF12
           Content = "[×] ボタンが押されましたが、アプリを終了してもよいですか",
           CloseButtonText = "キャンセル",
           PrimaryButtonText = "終了",
-          //SecondaryButtonText = "Try it",
           DefaultButton = ContentDialogButton.Primary
         };
         ContentDialogResult result = await dialog.ShowAsync();
