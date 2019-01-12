@@ -2,6 +2,7 @@
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -69,6 +70,11 @@ namespace UF12
         Window.Current.Content = rootFrame;
 
         this.SetupCloseRequestedHandler();
+
+        // App.Current.Exitで終了させた後の起動では、以前のウィンドウサイズが無視される。
+        // そこで、PreferredLaunchWindowingModeをAutoからPreferredLaunchViewSizeに変更して、
+        // 終了前に設定しておいたPreferredLaunchViewSizeを反映させる。
+        ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
         if (e.PrelaunchActivated)
         {
