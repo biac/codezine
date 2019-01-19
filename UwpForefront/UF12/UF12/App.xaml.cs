@@ -110,6 +110,7 @@ namespace UF12
     }
 
     public bool IsAutoStartup { get; private set; }
+    public bool IsCommandLineLaunch { get; private set; }
 
     protected override void OnActivated(IActivatedEventArgs args)
     {
@@ -130,6 +131,23 @@ namespace UF12
         IsAutoStartup = true;
         var startupArgs = args as StartupTaskActivatedEventArgs;
         payload = startupArgs.TaskId;
+      }
+      else if (args.Kind == ActivationKind.CommandLineLaunch)
+      {
+        // コマンドラインから起動された場合
+        IsCommandLineLaunch = true;
+        var startupArgs = args as CommandLineActivatedEventArgs;
+        var operation = startupArgs.Operation;
+
+        // 起動ディレクトリ
+        string activationPath = operation.CurrentDirectoryPath;
+        // コマンライン引数
+        payload = operation.Arguments;
+
+        // コマンドラインから起動された時に行う処理があればここに
+
+        // 終了コードを設定する例
+        operation.ExitCode = payload.Length;
       }
 
       rootFrame.Navigate(typeof(MainPage), payload);

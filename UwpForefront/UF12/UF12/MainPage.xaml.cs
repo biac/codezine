@@ -46,6 +46,11 @@ namespace UF12
           ParamText.Text = naviParam;
           FlyoutText.Text = $"再起動しました。";
         }
+        else if (currentApp.IsCommandLineLaunch)
+        {
+          string taskId = naviParam;
+          FlyoutText.Text = $"コマンドラインから起動されました。\n引数=\"{naviParam}\"";
+        }
         else
         {
           FlyoutText.Text = $"通常起動しました。";

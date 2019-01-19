@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp uap5 rescap">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" 
+  IgnorableNamespaces="uap mp uap5 rescap">
   <Identity Name="09e33c42-5b41-49a9-9e9f-2cd41e88bf5f" Publisher="CN=biac" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="09e33c42-5b41-49a9-9e9f-2cd41e88bf5f" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
@@ -28,6 +30,13 @@
       <Extensions>
         <uap5:Extension Category="windows.startupTask" Executable="UF12.exe" EntryPoint="UF12.App">
           <uap5:StartupTask TaskId="UF12StartupId" Enabled="false" DisplayName="UF12 AutoStartup" />
+        </uap5:Extension>
+        <uap5:Extension Category="windows.appExecutionAlias"
+                        Executable="UF12.exe" EntryPoint="UF12.App">
+          <uap5:AppExecutionAlias>
+            <uap5:ExecutionAlias Alias="UF12.exe"/>
+            <uap5:ExecutionAlias Alias="UF12AnotherAlias.exe"/>
+          </uap5:AppExecutionAlias>
         </uap5:Extension>
       </Extensions>
     </Application>
