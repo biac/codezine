@@ -12,3 +12,4 @@ CodoZine 連載
 - UF09 = [第9回](https://codezine.jp/article/detail/11188): **急速に進化するUWPアプリのUI**　～Windows 10 1809の新コントロール／DataGrid／旧バージョンへのバックポート (2018/11/20)
 - UF10 = [第10回](https://codezine.jp/article/detail/11229): **クリップボードビューアを作ろう！**　～Windows 10 1809の新機能「クリップボード履歴」にアクセス (2018/12/07)
 - UF11 = [第11回](https://codezine.jp/article/detail/11282): **UWPアプリを作るとき、画面遷移やアーキテクチャで悩んだら!?**　～Windows Template Studioを使ってみよう (2019/01/09)
+- UF12 = [第12回](https://codezine.jp/article/detail/11325): **UWPアプリの自動起動／再起動／事前起動／コマンドラインから起動／終了キャンセル**　～コードからアプリの起動と終了を制御する (2019/01/30)
