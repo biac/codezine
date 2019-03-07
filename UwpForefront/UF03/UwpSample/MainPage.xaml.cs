@@ -36,7 +36,8 @@ namespace UwpSample
     {
       base.OnNavigatedTo(e);
 
-      // SQL Server からデータを取得
+      // SQL Server からデータを取得 (Windows 認証を使う)
+      // ※ SQL Server 認証を使うには、第2引数を false にする
       DataTable dt = UF03StdLib.Northwind.GetCategories(SqlClientFactory.Instance, true);
 
       // バイト配列を ImageSource に変換してテーブルに追加

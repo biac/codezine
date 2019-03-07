@@ -15,17 +15,12 @@ namespace XamarinFormsSample
     {
       base.OnAppearing();
 
-      // SQL Server にログオンする方法の使い分け:
-      // UWP のときは、エンタープライズ認証 (Windows 認証)
-      // それ以外のときは、SQL Server のユーザー認証
-      bool useEnterpriseAuthentication = (Device.RuntimePlatform == Device.UWP);
-
       //try
       //{
 
-      // SQL Server からデータを取得
+      // SQL Server からデータを取得 (SQL Server のユーザー認証を使う)
       var sqlClient = DependencyService.Get<ISqlClientFactoryDS>().Instance;
-      DataTable dt = UF03StdLib.Northwind.GetCategories(sqlClient, useEnterpriseAuthentication);
+      DataTable dt = UF03StdLib.Northwind.GetCategories(sqlClient);
 
       // バイト配列を ImageSource に変換してテーブルに追加
       dt.Columns.Add("ImageSource", typeof(ImageSource));

@@ -8,11 +8,12 @@ namespace UF03StdLib
     // SQL ユーザー認証用の接続文字列
     private const string CONN_STR_SQLSERVER
       = @"Data Source=Win10VM-RS3.corp.BluewaterSoft.jp\SQLEXPRESS;"
-        + "Initial Catalog=NORTHWIND;User ID=nwtestuser;Password=";
+        + "Initial Catalog=NORTHWIND;"
+        + "User ID=nwtestuser;Password=;Persist Security Info=False;";
     // ※ Android / iOS では DNS による名前解決ができる必要がある。
     //    Windows は、NetBIOS による名前解決でも OK のようだ。
     //    名前解決できないときは、ホスト指定を IP アドレスにする（例☟）。
-    //= @"Data Source=192.168.0.12\SQLEXPRESS;Initial Catalog=NORTHWIND;User ID=nwtestuser;Password=";
+    //= @"Data Source=192.168.0.12\SQLEXPRESS;Initial Catalog=NORTHWIND;User ID=nwtestuser;Password=;Persist Security Info=False;";
     //    なお、Windows ではローカルデータベースも使える☟ (Android / iOS は未確認)。
     // = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={AppContext.BaseDirectory}Database\northwind.mdf;Integrated Security=True;Connect Timeout=3";
 
@@ -20,11 +21,15 @@ namespace UF03StdLib
     private const string CONN_STR_ENTERPRISE
       = @"Data Source=Win10VM-RS3.corp.BluewaterSoft.jp\SQLEXPRESS;"
         + "Initial Catalog=NORTHWIND;Integrated Security=SSPI";
-    // ※ UWP は Windows 認証 (Active Directory によるユーザー認証) しか使えない。
+    // ※ Windows 認証 (Active Directory によるユーザー認証) を使う場合、
     //    SQL Server は、ドメインコントローラー以外のドメイン参加 PC 上で動いていること。
     //    また、アプリを動かす PC は同じドメインに参加していて、
     //    ユーザーはドメインにログオンしていること。
     //    なお、UWP は (デバッグ時を除いて) ループバック接続が不許可なので要注意。
+
+    // ※ UWP アプリでは、マニフェストで以下のケイパビリティの付与が必要
+    //    SQL ユーザー認証の場合: プライベートネットワーク
+    //    Windows 認証の場合: エンタープライズ認証
 
 
 
