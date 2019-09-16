@@ -86,8 +86,9 @@
                     Command="{x:Bind Model.PasteCommand}"/>
         </StackPanel>
 
-        <local:TitleBar Grid.Row="0" IsAlwaysOnTopMode="{x:Bind Model.IsAlwaysOnTop, Mode=OneWay}"
-                        AlwaysOnTopClick="TitleBarAlwaysOnTopButtonClick"/>
+        <local:TitleBar Grid.Row="0"
+                        AlwaysOnTopClick="TitleBarAlwaysOnTopButtonClick"
+                        IsAlwaysOnTopMode="{x:Bind Model.IsAlwaysOnTop, Mode=OneWay}"/>
 
         <Grid Grid.Row="1">
             <Border x:Name="CalcHolder">

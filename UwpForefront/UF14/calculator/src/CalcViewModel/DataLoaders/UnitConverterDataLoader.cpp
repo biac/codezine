@@ -180,6 +180,17 @@ void UnitConverterDataLoader::GetUnits(_In_ unordered_map<ViewMode, vector<Order
     bool usePyeong = m_currentRegionCode == L"KP" || m_currentRegionCode == L"KR";
 
     vector<OrderedUnit> areaUnits;
+
+    //bw20190911: 「坪」を追加
+    if (m_currentRegionCode == L"JP")
+    {
+        areaUnits.push_back(
+            OrderedUnit{    UnitConverterUnits::Area_Tsubo,
+                            GetLocalizedStringName(L"UnitName_Tsubo"),
+                            GetLocalizedStringName(L"UnitAbbreviation_Tsubo"),
+                            16 });
+    }
+
     areaUnits.push_back(
         OrderedUnit{ UnitConverterUnits::Area_Acre, GetLocalizedStringName(L"UnitName_Acre"), GetLocalizedStringName(L"UnitAbbreviation_Acre"), 9 });
     areaUnits.push_back(
@@ -787,6 +798,10 @@ void UnitConverterDataLoader::GetConversionData(_In_ unordered_map<ViewMode, uno
                                                    { ViewMode::Area, UnitConverterUnits::Area_SoccerField, 10869.66 },
                                                    { ViewMode::Area, UnitConverterUnits::Area_Castle, 100000 },
                                                    { ViewMode::Area, UnitConverterUnits::Area_Pyeong, 400.0 / 121.0 },
+
+                                                   //bw20190911: 「坪」を追加
+                                                   //※ 韓国では「ピョン（평）」(すぐ上に定義あり)、台湾では「ピン（拼音: píng）」として使われていた
+                                                   { ViewMode::Area, UnitConverterUnits::Area_Tsubo, 400.0 / 121.0 },
 
                                                    { ViewMode::Data, UnitConverterUnits::Data_Bit, 0.000000125 },
                                                    { ViewMode::Data, UnitConverterUnits::Data_Byte, 0.000001 },

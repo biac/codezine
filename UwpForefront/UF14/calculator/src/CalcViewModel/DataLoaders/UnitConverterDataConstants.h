@@ -164,7 +164,11 @@ namespace CalculatorApp
             Data_Zetabits = UnitStart + 163,
             Data_Zetabytes = UnitStart + 164,
             Area_Pyeong = UnitStart + 165,
-            UnitEnd = Area_Pyeong
+
+            //UnitEnd = Area_Pyeong
+            //bw20190911w 「坪」を追加
+            Area_Tsubo = UnitStart + 166,
+            UnitEnd = Area_Tsubo
         };
     }
 }

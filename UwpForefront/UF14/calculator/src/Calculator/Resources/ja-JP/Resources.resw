@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -2958,5 +2958,13 @@
   <data name="CalculationFailed" xml:space="preserve">
     <value>計算できませんでした</value>
     <comment>Text displayed when the application is not able to do a calculation</comment>
+  </data>
+  <data name="UnitAbbreviation_Tsubo" xml:space="preserve">
+    <value>坪</value>
+    <comment>bw20190911: 日本専用の面積単位</comment>
+  </data>
+  <data name="UnitName_Tsubo" xml:space="preserve">
+    <value>坪</value>
+    <comment>bw20190911: 日本専用の面積単位</comment>
   </data>
 </root>
