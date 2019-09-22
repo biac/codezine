@@ -52,5 +52,11 @@ namespace CalculatorApp
 
         Windows::Foundation::EventRegistrationToken m_dateCalcOptionChangedEventToken;
 
+
+
+        // bw:20190917 元号表示切替スイッチを追加
+        void DateDiffGrid_Loaded(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e);
+        void OnPropertyChangedEventHandler(_In_ Platform::Object ^ s, _In_ Windows::UI::Xaml::Data::PropertyChangedEventArgs ^ e);
+        void SetCalendarIdentifiers();
     };
 }

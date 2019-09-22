@@ -30,6 +30,9 @@ namespace
     StringReference StrDateResultPropertyName(L"StrDateResult");
     StringReference StrDateResultAutomationNamePropertyName(L"StrDateResultAutomationName");
     StringReference IsDiffInDaysPropertyName(L"IsDiffInDays");
+
+    // bw:20190917 元号表示切替スイッチを追加
+    StringReference UseJapaneseCalendarPropertyName(L"UseJapaneseCalendar");
 }
 
 DateCalculatorViewModel::DateCalculatorViewModel()
@@ -46,6 +49,17 @@ DateCalculatorViewModel::DateCalculatorViewModel()
     , m_StrDateResultAutomationName(L"")
 {
     const auto& localizationSettings = LocalizationSettings::GetInstance();
+
+
+    // bw:20190918 IsJapanプロパティを初期化
+    auto currentRegionCode = (ref new GeographicRegion())->CodeTwoLetter;
+    m_IsJapan = (currentRegionCode == L"JP");
+    // bw:20190920 CalendarIdentifierプロパティを初期化
+    m_CalendarIdentifier = localizationSettings.GetCalendarIdentifier();
+    // bw:20190920 UseJapaneseCalendarプロパティを初期化
+    m_UseJapaneseCalendar
+        = (CalendarIdentifier == Windows::Globalization::CalendarIdentifiers::Japanese);
+
 
     // Initialize Date Output format instances
     InitializeDateOutputFormats(localizationSettings.GetCalendarIdentifier());
@@ -105,6 +119,18 @@ void DateCalculatorViewModel::OnPropertyChanged(_In_ String ^ prop)
         prop != StrDateDiffResultAutomationNamePropertyName && prop != StrDateDiffResultInDaysPropertyName && prop != StrDateResultAutomationNamePropertyName
         && prop != IsDiffInDaysPropertyName)
     {
+        // bw:20190917 元号表示切替スイッチを追加
+        if (prop == UseJapaneseCalendarPropertyName)
+        {
+            // 和暦カレンダー⇔西暦カレンダー 切り替え
+            if (UseJapaneseCalendar)
+                CalendarIdentifier = Windows::Globalization::CalendarIdentifiers::Japanese;
+            else
+                CalendarIdentifier = Windows::Globalization::CalendarIdentifiers::Gregorian;
+
+            InitializeDateOutputFormats(CalendarIdentifier);
+        }
+
         OnInputsChanged();
     }
 }

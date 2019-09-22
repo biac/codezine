@@ -181,7 +181,7 @@ void UnitConverterDataLoader::GetUnits(_In_ unordered_map<ViewMode, vector<Order
 
     vector<OrderedUnit> areaUnits;
 
-    //bw20190911: 「坪」を追加
+    //bw:20190911 「坪」を追加
     if (m_currentRegionCode == L"JP")
     {
         areaUnits.push_back(
@@ -799,7 +799,7 @@ void UnitConverterDataLoader::GetConversionData(_In_ unordered_map<ViewMode, uno
                                                    { ViewMode::Area, UnitConverterUnits::Area_Castle, 100000 },
                                                    { ViewMode::Area, UnitConverterUnits::Area_Pyeong, 400.0 / 121.0 },
 
-                                                   //bw20190911: 「坪」を追加
+                                                   //bw:20190911: 「坪」を追加
                                                    //※ 韓国では「ピョン（평）」(すぐ上に定義あり)、台湾では「ピン（拼音: píng）」として使われていた
                                                    { ViewMode::Area, UnitConverterUnits::Area_Tsubo, 400.0 / 121.0 },
 

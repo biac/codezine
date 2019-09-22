@@ -79,7 +79,7 @@ DateCalculator::DateCalculator()
     DateDiff_ToDate->MaxDate = maxYear;
 
     // Set the PlaceHolderText for CalendarDatePicker
-    DateTimeFormatter^ dateTimeFormatter = LocalizationService::GetInstance()->GetRegionalSettingsAwareDateTimeFormatter(
+    DateTimeFormatter ^ dateTimeFormatter = LocalizationService::GetInstance()->GetRegionalSettingsAwareDateTimeFormatter(
         L"day month year",
         localizationSettings.GetCalendarIdentifier(),
         ClockIdentifiers::TwentyFourHour); // Clock Identifier is not used
@@ -158,7 +158,42 @@ void DateCalculator::OnCopyMenuItemClicked(_In_ Object ^ sender, _In_ RoutedEven
 
 void CalculatorApp::DateCalculator::OnLoaded(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
+    // bw:20190920 ViewModelのプロパティが変化したときのイベントハンドラーをセットする
+    auto dateCalcViewModel = safe_cast<DateCalculatorViewModel ^>(this->DataContext);
+    dateCalcViewModel->PropertyChanged +=
+        ref new Windows::UI::Xaml::Data::PropertyChangedEventHandler(this, &CalculatorApp::DateCalculator::OnPropertyChangedEventHandler);
 }
+
+// bw:20190920 ViewModelのプロパティが変化したときのイベントハンドラー
+void DateCalculator::OnPropertyChangedEventHandler(_In_ Platform::Object ^ s, _In_ Windows::UI::Xaml::Data::PropertyChangedEventArgs ^ e)
+{
+    auto propertyName = e->PropertyName;
+    if (propertyName == L"CalendarIdentifier")
+    {
+        // CalendarIdentifierは依存関係プロパティであるのにバインドが効かないようなので、
+        // コードビハインドからセットする
+        SetCalendarIdentifiers();
+    }
+}
+
+// bw:20190917 西暦⇔和暦表示切替
+void DateCalculator::SetCalendarIdentifiers()
+{
+    // CalendarIdentifierをバインドしても、表示が切り替わってくれない。(おそらくスタイル定義の問題)
+    // そのため、コードビハインドから切り替える。
+
+    auto dateCalcViewModel = safe_cast<DateCalculatorViewModel ^>(this->DataContext);
+    auto calendarIdentifier = dateCalcViewModel->CalendarIdentifier;
+
+    DateDiff_FromDate->CalendarIdentifier = calendarIdentifier;
+    DateDiff_ToDate->CalendarIdentifier = calendarIdentifier;
+    if (AddSubtract_FromDate != nullptr) // AddSubtractDateGridはLazy
+    {
+        AddSubtract_FromDate->CalendarIdentifier = calendarIdentifier;
+    }
+}
+
+
 
 void DateCalculator::CloseCalendarFlyout()
 {
@@ -189,6 +224,16 @@ void DateCalculator::DateCalcOption_Changed(_In_ Platform::Object ^ sender, _In_
     DateCalculationOption->SelectionChanged -= m_dateCalcOptionChangedEventToken;
 }
 
+// bw:20190917 DateDiffGridがロードされた時のイベントハンドラー
+void CalculatorApp::DateCalculator::DateDiffGrid_Loaded(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e)
+{
+    // Date プロパティに何もセットされていないと、西暦／和暦の表示が変わらない。
+    // 既定値である今日の日付をセットする。
+    auto today = (ref new Windows::Globalization::Calendar())->GetDateTime();
+    DateDiff_FromDate->Date = today;
+    DateDiff_ToDate->Date = today;
+}
+
 void CalculatorApp::DateCalculator::AddSubtractDateGrid_Loaded(_In_ Platform::Object ^ sender, _In_ Windows::UI::Xaml::RoutedEventArgs ^ e)
 {
     const auto& localizationSettings = LocalizationSettings::GetInstance();
@@ -201,6 +246,14 @@ void CalculatorApp::DateCalculator::AddSubtractDateGrid_Loaded(_In_ Platform::Ob
     AddSubtract_FromDate->MinDate = DateDiff_FromDate->MinDate;
     AddSubtract_FromDate->MaxDate = DateDiff_FromDate->MaxDate;
     AddSubtract_FromDate->DateFormat = L"day month year";
+
+    // bw:20190917 CalendarDatePicker の不具合対策
+    // Date プロパティに何もセットされていないと、西暦／和暦の表示が変わらない。
+    // 既定値である今日の日付をセットする。
+    auto today = (ref new Windows::Globalization::Calendar())->GetDateTime();
+    AddSubtract_FromDate->Date = today;
+    // 西暦⇔和暦表示切替（AddSubtractDateGridはlazy loadなので、改めて設定する必要がある）
+    AddSubtract_FromDate->CalendarIdentifier = (safe_cast<DateCalculatorViewModel ^>(this->DataContext))->CalendarIdentifier;
 }
 
 void DateCalculator::ReselectCalendarDate(_In_ Windows::UI::Xaml::Controls::CalendarDatePicker ^ calendarDatePicker, Windows::Foundation::DateTime dateTime)
@@ -221,6 +274,13 @@ void DateCalculator::CalendarFlyoutClosed(_In_ Object ^ sender, _In_ Object ^ e)
 {
     auto dateCalcViewModel = safe_cast<DateCalculatorViewModel ^>(this->DataContext);
     RaiseLiveRegionChangedAutomationEvent(dateCalcViewModel->IsDateDiffMode);
+
+    //bw:20190922 CalendarDatePicker の不具合対策
+    // CalendarIdentifier を変更→ドロップダウン→また CalendarIdentifier を変更
+    // すると、次にカレンダードロップダウンを開くときにメモリーリークするとともに、
+    // ドロップダウンが正しく表示されない。
+    // そこで、ドロップダウンを1回開いたら、切り替えスイッチは無効とする。
+    UseJapaneseCalendarSwitch->IsEnabled = false;
 }
 
 void DateCalculator::RaiseLiveRegionChangedAutomationEvent(_In_ bool isDateDiffMode)

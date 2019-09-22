@@ -3425,10 +3425,22 @@
   </data>
   <data name="UnitAbbreviation_Tsubo" xml:space="preserve">
     <value>Tsubo</value>
-    <comment>bw20190911: measurement unit of area for Japan</comment>
+    <comment>bw:20190911: measurement unit of area for Japan</comment>
   </data>
   <data name="UnitName_Tsubo" xml:space="preserve">
     <value>Tsubo</value>
-    <comment>bw20190911: measurement unit of area for Japan</comment>
+    <comment>bw:20190911: measurement unit of area for Japan</comment>
+  </data>
+  <data name="UseJapaneseCalendarSwitch.Header" xml:space="preserve">
+    <value>Calendar type</value>
+    <comment>bw:20190921: header of AD/Japanese-Calender switch</comment>
+  </data>
+  <data name="UseJapaneseCalendarSwitch.OffContent" xml:space="preserve">
+    <value>Gregorian</value>
+    <comment>bw:20190921: display string when AD/Japanese-Calender switch is AD</comment>
+  </data>
+  <data name="UseJapaneseCalendarSwitch.OnContent" xml:space="preserve">
+    <value>Japanese</value>
+    <comment>bw:20190921: display string when AD/Japanese-Calender switch is Japanese</comment>
   </data>
 </root>

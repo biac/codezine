@@ -29,6 +29,15 @@ namespace CalculatorApp
             OBSERVABLE_PROPERTY_RW(int, MonthsOffset);
             OBSERVABLE_PROPERTY_RW(int, YearsOffset);
 
+
+            //bw:20190917 元号表示切替スイッチを追加
+            OBSERVABLE_PROPERTY_R(bool, IsJapan); // 日本専用機能のON/OFF
+            OBSERVABLE_PROPERTY_RW(bool, UseJapaneseCalendar);  // 切替スイッチのON/OFF
+            OBSERVABLE_PROPERTY_R(Platform::String ^, CalendarIdentifier); // CalendarDatePickerの表示形式
+
+
+
+
             // Read only property for offset values
             property Windows::Foundation::Collections::IVector<Platform::String^>^ OffsetValues
             {

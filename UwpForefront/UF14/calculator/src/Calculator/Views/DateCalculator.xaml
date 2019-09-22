@@ -382,28 +382,43 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <!-- ComboBox for Date Calculation options -->
-        <ComboBox x:Name="DateCalculationOption"
-                  x:Uid="DateCalculationOption"
-                  Grid.Row="1"
-                  Style="{ThemeResource DateCalculation_ComboStyle}"
-                  SelectedIndex="0">
-            <ComboBoxItem x:Uid="Date_DifferenceOption"
-                          MinWidth="276"
-                          ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
-                          IsSelected="{Binding IsDateDiffMode, Mode=TwoWay}"/>
-            <ComboBoxItem x:Uid="Date_AddSubtractOption"
-                          MinWidth="276"
-                          ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
-                          IsSelected="{Binding IsDateDiffMode, Converter={StaticResource BooleanNegationConverter}, Mode=TwoWay}"/>
-        </ComboBox>
+        <StackPanel Grid.Row="1">
+            <!-- //bw:20190917 ↑StackPanel追加 -->
+
+            <!-- //bw:20190917 ↓元号表示切替スイッチを追加 -->
+            <ToggleSwitch x:Name="UseJapaneseCalendarSwitch"
+                          x:Uid="UseJapaneseCalendarSwitch"
+                          Margin="0,0,0,10"
+                          IsOn="{Binding UseJapaneseCalendar, Mode=TwoWay}"
+                          Visibility="{Binding IsJapan, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"/>
+
+            <!-- ComboBox for Date Calculation options -->
+            <ComboBox x:Name="DateCalculationOption"
+                      x:Uid="DateCalculationOption"
+                      Grid.Row="1"
+                      Style="{ThemeResource DateCalculation_ComboStyle}"
+                      SelectedIndex="0">
+                <ComboBoxItem x:Uid="Date_DifferenceOption"
+                              MinWidth="276"
+                              ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
+                              IsSelected="{Binding IsDateDiffMode, Mode=TwoWay}"/>
+                <ComboBoxItem x:Uid="Date_AddSubtractOption"
+                              MinWidth="276"
+                              ContentTemplate="{StaticResource ComboBoxItemContentTemplate}"
+                              IsSelected="{Binding IsDateDiffMode, Converter={StaticResource BooleanNegationConverter}, Mode=TwoWay}"/>
+            </ComboBox>
+
+            <!-- //bw:20190917 ↓StackPanel追加 -->
+        </StackPanel>
 
         <!-- Grid to Calculate Difference between Two Dates -->
         <Grid x:Name="DateDiffGrid"
               Grid.Row="2"
+              Loaded="DateDiffGrid_Loaded"
               Visibility="{Binding IsDateDiffMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <!-- //bw:20190918 ↑Loadedイベントハンドラー追加 -->
             <Grid.RowDefinitions>
-				<RowDefinition Height="1*" MaxHeight="17"/>
+                <RowDefinition Height="1*" MaxHeight="17"/>
                 <RowDefinition Height="Auto" MinHeight="32"/>
                 <RowDefinition Height="1*" MaxHeight="24"/>
                 <RowDefinition Height="Auto" MinHeight="32"/>

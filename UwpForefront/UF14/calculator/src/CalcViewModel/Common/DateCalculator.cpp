@@ -14,13 +14,27 @@ DateCalculationEngine::DateCalculationEngine(_In_ String ^ calendarIdentifier)
     m_calendar = ref new Calendar();
     m_calendar->ChangeTimeZone("UTC");
     m_calendar->ChangeCalendarSystem(calendarIdentifier);
+
+
+    //bw:20190917 和暦が指定されたときはグレゴリオ暦で代用する
+    // ・和暦とグレゴリオ暦では、Calendarが保持する日付は同じ。計算結果も (本来は) 同じ。
+    // ・Calendarに和暦を設定した場合、元号をまたいだ日付の加減算でバグがある
+    //    → https://wpdev.uservoice.com/forums/110705-universal-windows-platform/suggestions/37659592-windows-globalization-calendar-addyears-returns
+    if (calendarIdentifier == CalendarIdentifiers::Japanese)
+    {
+        m_calendar->ChangeCalendarSystem(CalendarIdentifiers::Gregorian);
+
+        //※ 常に西暦… ではダメ。
+        //   ヒジュラとかでは、1年や1月の長さが西暦とは異なるので、年や月の加減算が狂う
+    }
 }
 
 // Adding Duration to a Date
 // Returns: True if function succeeds to calculate the date else returns False
 bool DateCalculationEngine::AddDuration(_In_ DateTime startDate, _In_ const DateDifference& duration, _Out_ DateTime* endDate)
 {
-    auto currentCalendarSystem = m_calendar->GetCalendarSystem();
+    //auto currentCalendarSystem = m_calendar->GetCalendarSystem();
+    // bw:20190917 ⇒ 処理中のカレンダーシステム変更は不要になった
 
     try
     {
@@ -32,10 +46,12 @@ bool DateCalculationEngine::AddDuration(_In_ DateTime startDate, _In_ const Date
         // in a date in Heisei 31. To provide the expected result across era boundaries, we first convert the Japanese era system to a Gregorian system, do date
         // math, and then convert back to the Japanese era system. This works because the Japanese era system maintains the same year/month boundaries and
         // durations as the Gregorian system and is only different in display value.
-        if (currentCalendarSystem == CalendarIdentifiers::Japanese)
-        {
-            m_calendar->ChangeCalendarSystem(CalendarIdentifiers::Gregorian);
-        }
+        //if (currentCalendarSystem == CalendarIdentifiers::Japanese)
+        //{
+        //    m_calendar->ChangeCalendarSystem(CalendarIdentifiers::Gregorian);
+        //}
+        // bw:20190917 ⇒この処理 (和暦のとき、強制的にグレゴリオ暦に変更) は、コンストラクターに移動した
+        _ASSERT(m_calendar->GetCalendarSystem() != CalendarIdentifiers::Japanese);
 
         if (duration.year != 0)
         {
@@ -54,14 +70,16 @@ bool DateCalculationEngine::AddDuration(_In_ DateTime startDate, _In_ const Date
     }
     catch (Platform::InvalidArgumentException ^ ex)
     {
-        // ensure that we revert to the correct calendar system
-        m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+        //// ensure that we revert to the correct calendar system
+        //m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+        // bw:20190917 ⇒ 処理中のカレンダーシステム変更は不要になった
 
         // Do nothing
         return false;
     }
 
-    m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+    //m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+    // bw:20190917 ⇒ 処理中のカレンダーシステム変更は不要になった
 
     return true;
 }
@@ -70,7 +88,8 @@ bool DateCalculationEngine::AddDuration(_In_ DateTime startDate, _In_ const Date
 // Returns: True if function succeeds to calculate the date else returns False
 bool DateCalculationEngine::SubtractDuration(_In_ DateTime startDate, _In_ const DateDifference& duration, _Out_ DateTime* endDate)
 {
-    auto currentCalendarSystem = m_calendar->GetCalendarSystem();
+    //auto currentCalendarSystem = m_calendar->GetCalendarSystem();
+    // bw:20190917 ⇒ 処理中のカレンダーシステム変更は不要になった
 
     // For Subtract the Algorithm is different than Add. Here the smaller units are subtracted first
     // and then the larger units.
@@ -84,10 +103,12 @@ bool DateCalculationEngine::SubtractDuration(_In_ DateTime startDate, _In_ const
         // in a date in Heisei 31. To provide the expected result across era boundaries, we first convert the Japanese era system to a Gregorian system, do date
         // math, and then convert back to the Japanese era system. This works because the Japanese era system maintains the same year/month boundaries and
         // durations as the Gregorian system and is only different in display value.
-        if (currentCalendarSystem == CalendarIdentifiers::Japanese)
-        {
-            m_calendar->ChangeCalendarSystem(CalendarIdentifiers::Gregorian);
-        }
+        //if (currentCalendarSystem == CalendarIdentifiers::Japanese)
+        //{
+        //    m_calendar->ChangeCalendarSystem(CalendarIdentifiers::Gregorian);
+        //}
+        //bw:20190917 ⇒この処理 (和暦のとき、強制的にグレゴリオ暦に変更) は、コンストラクターに移動した
+        _ASSERT(m_calendar->GetCalendarSystem() != CalendarIdentifiers::Japanese);
 
         if (duration.day != 0)
         {
@@ -105,14 +126,16 @@ bool DateCalculationEngine::SubtractDuration(_In_ DateTime startDate, _In_ const
     }
     catch (Platform::InvalidArgumentException ^ ex)
     {
-        // ensure that we revert to the correct calendar system
-        m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+        //// ensure that we revert to the correct calendar system
+        //m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+        // bw:20190917 ⇒ 処理中のカレンダーシステム変更は不要になった
 
         // Do nothing
         return false;
     }
 
-    m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+    //m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+    // bw:20190917 ⇒ 処理中のカレンダーシステム変更は不要になった
 
     // Check that the UniversalTime value is not negative
     return (endDate->UniversalTime >= 0);
@@ -332,11 +355,13 @@ DateTime DateCalculationEngine::AdjustCalendarDate(Windows::Foundation::DateTime
     // a date in Heisei 31. To provide the expected result across era boundaries, we first convert the Japanese era system to a Gregorian system, do date math,
     // and then convert back to the Japanese era system. This works because the Japanese era system maintains the same year/month boundaries and durations as
     // the Gregorian system and is only different in display value.
-    auto currentCalendarSystem = m_calendar->GetCalendarSystem();
-    if (currentCalendarSystem == CalendarIdentifiers::Japanese)
-    {
-        m_calendar->ChangeCalendarSystem(CalendarIdentifiers::Gregorian);
-    }
+    //auto currentCalendarSystem = m_calendar->GetCalendarSystem();
+    //if (currentCalendarSystem == CalendarIdentifiers::Japanese)
+    //{
+    //    m_calendar->ChangeCalendarSystem(CalendarIdentifiers::Gregorian);
+    //}
+    // bw:20190917 ⇒この処理 (和暦のとき、強制的にグレゴリオ暦に変更) は、コンストラクターに移動した
+    _ASSERT(m_calendar->GetCalendarSystem() != CalendarIdentifiers::Japanese);
 
     switch (dateUnit)
     {
@@ -351,7 +376,8 @@ DateTime DateCalculationEngine::AdjustCalendarDate(Windows::Foundation::DateTime
         break;
     }
 
-    m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+    // m_calendar->ChangeCalendarSystem(currentCalendarSystem);
+    // bw:20190917 ⇒ 処理中のカレンダーシステム変更は不要になった
 
     return m_calendar->GetDateTime();
 }

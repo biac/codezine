@@ -166,7 +166,7 @@ namespace CalculatorApp
             Area_Pyeong = UnitStart + 165,
 
             //UnitEnd = Area_Pyeong
-            //bw20190911w 「坪」を追加
+            //bw:20190911 「坪」を追加
             Area_Tsubo = UnitStart + 166,
             UnitEnd = Area_Tsubo
         };
