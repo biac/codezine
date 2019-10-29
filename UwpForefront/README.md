@@ -13,6 +13,6 @@ CodoZine 連載
 - [UF10](./UF10/) = [第10回](https://codezine.jp/article/detail/11229): **クリップボードビューアを作ろう！**　～Windows 10 1809の新機能「クリップボード履歴」にアクセス (2018/12/07)
 - [UF11](./UF11/) = [第11回](https://codezine.jp/article/detail/11282): **UWPアプリを作るとき、画面遷移やアーキテクチャで悩んだら!?**　～Windows Template Studioを使ってみよう (2019/01/09)
 - [UF12](./UF12/) = [第12回](https://codezine.jp/article/detail/11325): **UWPアプリの自動起動／再起動／事前起動／コマンドラインから起動／終了キャンセル**　～コードからアプリの起動と終了を制御する (2019/01/30)
-- UF13 (サンプルコードなし) : [第13回](https://codezine.jp/article/detail/11538): **Windows電卓の中はどうなっているのだろう？（後編）**　～オープンソースのコードを見てみよう (2019/07/26)
+- UF13 (サンプルコードなし) : [第13回](https://codezine.jp/article/detail/11538): **Windows電卓の中はどうなっているのだろう？（前編）**　～オープンソースのコードを見てみよう (2019/07/26)
 - [UF14](./UF14/) = [第14回](https://codezine.jp/article/detail/11706): **Windows電卓の中はどうなっているのだろう？（後編）**　～オープンソースのコードを改造してみよう (2019/09/xx)
 
