@@ -1,0 +1,64 @@
+#
+# Release
+# This pipeline builds a version of the app in a production configuration to be released to the
+# Store and the Windows image. This pipeline relies on Microsoft-internal resources to run.
+#
+
+trigger: none
+pr: none
+
+variables:
+  versionMajor: 10
+  versionMinor: 1907
+  versionBuild: $[counter('10.1907.*', 0)]
+  versionPatch: 0
+
+name: '$(versionMajor).$(versionMinor).$(versionBuild).$(versionPatch)'
+
+jobs:
+- template: ./templates/build-app-internal.yaml
+  parameters:
+    platform: x64
+
+- template: ./templates/build-app-internal.yaml
+  parameters:
+    platform: x86
+    condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+
+- template: ./templates/build-app-internal.yaml
+  parameters:
+    platform: ARM
+    condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+
+- template: ./templates/build-app-internal.yaml
+  parameters:
+    platform: ARM64
+    condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+
+- template: ./templates/run-ui-tests.yaml
+  parameters:
+    platform: x64
+    runsettingsFileName: CalculatorUITests.release.runsettings
+
+- template: ./templates/run-ui-tests.yaml
+  parameters:
+    platform: x86
+    runsettingsFileName: CalculatorUITests.release.runsettings
+
+- template: ./templates/run-unit-tests.yaml
+  parameters:
+    platform: x64
+    reimageServiceConnection: macool-sandbox-interactiveDesktopRS5
+    reimageSubscriptionId: 012a8008-c00f-45b3-9828-41ebba30141d
+    reimageResourceGroup: interactiveDesktopRS5
+
+- template: ./templates/run-unit-tests.yaml
+  parameters:
+    platform: x86
+    reimageServiceConnection: macool-sandbox-interactiveDesktopRS5
+    reimageSubscriptionId: 012a8008-c00f-45b3-9828-41ebba30141d
+    reimageResourceGroup: interactiveDesktopRS5
+
+- template: ./templates/package-appxbundle.yaml
+
+- template: ./templates/prepare-release-internalonly.yaml

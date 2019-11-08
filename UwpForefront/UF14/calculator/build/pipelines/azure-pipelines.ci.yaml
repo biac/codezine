@@ -1,0 +1,55 @@
+#
+# Continuous Integration (CI)
+# This pipeline builds and validate the app in all supported configurations. If the build was
+# queued to validate a pull request, we build and test only x64.
+#
+
+trigger:
+- master
+- servicing/*
+pr:
+- master
+- servicing/*
+
+name: 0.$(Date:yyMM).$(DayOfMonth)$(Rev:rr).0
+
+jobs:
+- template: ./templates/build-app-public.yaml
+  parameters:
+    platform: x64
+
+- template: ./templates/build-app-public.yaml
+  parameters:
+    platform: x86
+    condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+
+- template: ./templates/build-app-public.yaml
+  parameters:
+    platform: ARM
+    condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+
+- template: ./templates/build-app-public.yaml
+  parameters:
+    platform: ARM64
+    condition: not(eq(variables['Build.Reason'], 'PullRequest'))
+
+- template: ./templates/run-ui-tests.yaml
+  parameters:
+    platform: x64
+    runsettingsFileName: CalculatorUITests.ci.runsettings
+
+- template: ./templates/run-unit-tests.yaml
+  parameters:
+    platform: x64
+    reimageServiceConnection: essential-experiences-interactive-reimage
+    reimageSubscriptionId: a8f5eb47-e59c-44b4-8e42-e70811a047b5
+    reimageResourceGroup: EETestPublic
+
+- template: ./templates/run-unit-tests.yaml
+  parameters:
+    platform: x86
+    reimageServiceConnection: essential-experiences-interactive-reimage
+    reimageSubscriptionId: a8f5eb47-e59c-44b4-8e42-e70811a047b5
+    reimageResourceGroup: EETestPublic
+
+- template: ./templates/package-appxbundle.yaml

@@ -1,0 +1,20 @@
+<Page x:Class="CalendarDatePickerTest.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:CalendarDatePickerTest"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      Loaded="Page_Loaded"
+      mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+            <ComboBox x:Name="CalendarSelector" SelectionChanged="CalendarSelector_SelectionChanged"/>
+            <CalendarDatePicker x:Name="DatePicker" Grid.Row="1"/>
+            <TextBlock HorizontalAlignment="Right" Text="{x:Bind DatePicker.Date, Mode=OneWay}"/>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
 ################################################################################
 
@@ -20,10 +20,32 @@ AppPackages/
 work/
 
 
+
+/201602_ComponentOneUwp
+/201806_バーコードコントロール
+/BuildProcessTemplates
 /C#でTDD
-/UwpForefront/UF03/XamarinFormsSample.sln
+/common
+/ComponentOneBarcord
+/Core3で始めるWPF入門
+/cz
+/Metroスタイルアプリの開発者が知るべき3つのこと
+/Pex：Visual Studio 2015のユニットテスト自動生成機能を探る
+/Properties
+/TechnicalWriting/TW05
+/UwpForefront/UF13
+/Uwp最前線
+/VS11βの単体テスト機能
+/テクニカルライティング作法・外伝
+
+/*.png
+/*.txt
+/*.config
+/*.sln
+/*.suo
+/*.URL
+/Thumbs.db
+
 /ComponentOneBarcord/ComponentOneBarcordSample/QrUwp/License.cs
 /ComponentOneBarcord/ComponentOneBarcordSample/IsbnUwp/License.cs
-UwpForefront/UF13
-/テクニカルライティング作法・外伝
-/TechnicalWriting/TW05
+/UwpForefront/UF03/XamarinFormsSample.sln
