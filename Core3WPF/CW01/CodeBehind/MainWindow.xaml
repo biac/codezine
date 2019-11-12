@@ -7,12 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
   <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
     <TextBlock x:Name="Text1" FontSize="64">Hello, WPF !</TextBlock>
-    <Button Click="Button_Click"
+    <Button Click="Button_Click" Grid.Row="1"
             Background="ForestGreen" Foreground="#fff"
-            HorizontalAlignment="Center" VerticalAlignment="Bottom"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
             Margin="0,0,0,20" Padding="20,0"
             FontSize="32" FontWeight="Bold"
-             >Click</Button>
+            >Click</Button>
   </Grid>
 </Window>
