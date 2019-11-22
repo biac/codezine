@@ -25,6 +25,10 @@ namespace UF16.Droid
     public Application(IntPtr javaReference, JniHandleOwnership transfer)
       : base(new App(), javaReference, transfer)
     {
+      ///
+      SQLiteSample.MovieDatabase.InitForAndroid();
+
+
       ConfigureUniversalImageLoader();
     }
 

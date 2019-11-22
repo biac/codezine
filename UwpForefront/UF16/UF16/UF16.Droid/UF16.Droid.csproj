@@ -88,6 +88,12 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\Styles.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SQLiteSample\SQLiteSample.csproj">
+      <Project>{9b739eeb-d5e7-43da-bc57-2ada9711a813}</Project>
+      <Name>SQLiteSample</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\UF16.Shared\UF16.Shared.projitems" Label="Shared" Condition="Exists('..\UF16.Shared\UF16.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- This will force the generation of the APK when not buildig inside visual studio -->

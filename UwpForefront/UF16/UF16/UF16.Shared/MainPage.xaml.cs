@@ -26,5 +26,12 @@ namespace UF16
     {
       this.InitializeComponent();
     }
+
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
+    {
+      base.OnNavigatedTo(e);
+
+      await SQLiteSample.MovieDatabase.Run();
+    }
   }
 }

@@ -6,36 +6,49 @@
     <WasmHead>true</WasmHead>
     <DefineConstants>$(DefineConstants);__WASM__</DefineConstants>
     <NoWarn>NU1701</NoWarn>
-  </PropertyGroup>
+    <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
+    <WasmShellGenerateCompressedFiles Condition="'$(Configuration)'=='Debug'">false</WasmShellGenerateCompressedFiles>
+	</PropertyGroup>
   <ItemGroup>
     <Content Include="..\UF16.UWP\Assets\*.png" Link="Assets\%(FileName)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WasmCSS\Fonts.css" />
-    <EmbeddedResource Include="WasmScripts\AppManifest.js" />
+    <EmbeddedResource Include="WasmScripts\*.js" />
+    <EmbeddedResource Include="mono-sdk\*.dll" />
   </ItemGroup>
   <ItemGroup>
     <LinkerDescriptor Include="LinkerConfig.xml" />
   </ItemGroup>
   <ItemGroup>
-    <!-- 
-    This item group is required by the project templace because of the
-    new SDK-Style project, otherwise some files are not aded automatically.
-    
-    You can safely remove this ItemGroup completely.
-    -->
-    <Compile Remove="Program.cs" />
-    <Compile Include="Program.cs" />
-    <Content Include="LinkerConfig.xml" />
-    <Content Include="wwwroot/web.config" />
-  </ItemGroup>
+    <PackageReference Include="Uno.sqlite-wasm" Version="1.0.0-dev.942" />
+    <PackageReference Include="Uno.SQLitePCLRaw.provider.wasm" Version="2.0.0-dev.6" />
+    <PackageReference Include="Uno.UI" Version="1.45.0-dev.1422" />
+    <PackageReference Include="Uno.UI.Sample.Banner" Version="1.44.0-dev.16" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.265" />
+    <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.265" />
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore">
+			<Version>2.1.3</Version>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+			<Version>2.1.3</Version>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
+			<Version>2.1.3</Version>
+		</PackageReference>
+		
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0-preview2-35157" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="2.8.2" />
+		<PackageReference Include="Microsoft.TypeScript.Compiler" Version="2.8.3" />
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="2.8.3" />
+
+	</ItemGroup>
   <ItemGroup>
-    <!-- Note that for WebAssembly version 1.1.1 of the console logger required -->
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
-    <PackageReference Include="Uno.UI" Version="1.45.0" />
-    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0" />
-    <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.244" />
+    <ProjectReference Include="..\..\SQLiteSample\SQLiteSample.csproj" />
   </ItemGroup>
   <Import Project="..\UF16.Shared\UF16.Shared.projitems" Label="Shared" Condition="Exists('..\UF16.Shared\UF16.Shared.projitems')" />
 </Project>
