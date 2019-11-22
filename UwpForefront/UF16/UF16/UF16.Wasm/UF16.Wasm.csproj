@@ -23,7 +23,7 @@
   <ItemGroup>
     <PackageReference Include="Uno.sqlite-wasm" Version="1.0.0-dev.942" />
     <PackageReference Include="Uno.SQLitePCLRaw.provider.wasm" Version="2.0.0-dev.6" />
-    <PackageReference Include="Uno.UI" Version="1.45.0-dev.1422" />
+    <PackageReference Include="Uno.UI" Version="1.45.0" />
     <PackageReference Include="Uno.UI.Sample.Banner" Version="1.44.0-dev.16" />
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.265" />
     <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.265" />

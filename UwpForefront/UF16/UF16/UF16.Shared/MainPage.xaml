@@ -17,5 +17,6 @@
           win:Background="{ThemeResource SystemControlAcrylicWindowBrush}"
         toolkit:VisibleBoundsPadding.PaddingMask="All">
 		<TextBlock Text="Hello, world !" Margin="20" FontSize="30" />
-    </Grid>
+    <WebView Source="http://www.bluewatersoft.jp" Margin="0,80,0,0" />
+  </Grid>
 </Page>
