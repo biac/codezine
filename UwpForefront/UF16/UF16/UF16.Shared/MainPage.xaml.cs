@@ -32,6 +32,8 @@ namespace UF16
       base.OnNavigatedTo(e);
 
       await SQLiteSample.MovieDatabase.Run();
+
+      WebView1.Source = new Uri("http://www.bluewatersoft.jp");
     }
   }
 }
