@@ -1,9 +1,12 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace SQLiteSample
 {
@@ -16,6 +19,10 @@ namespace SQLiteSample
 
     // Entity Framework Core with Xamarin.Forms
     // https://xamarinhelp.com/entity-framework-core-xamarin-forms/
+
+
+    public static ObservableCollection<Movie> MoviesList { get; private set; }
+
 
     //internal static string DbPath { get; private set; }
     public static void InitForAndroid()
@@ -63,28 +70,154 @@ namespace SQLiteSample
     //  }
     //}
 
-    public static async Task Run()
+    //public static async Task Run()
+    //{
+    //  using (var db = new MovieContext())
+    //  {
+    //    db.Database.EnsureCreated();
+
+    //    Console.WriteLine("Database created");
+
+    //    db.Movies.Add(new Movie { Title = "TEST1", Url = "http://nowhere.com/?2" });
+    //    var count = await db.SaveChangesAsync(CancellationToken.None);
+
+    //    Console.WriteLine("{0} records saved to database", count);
+
+    //    Console.WriteLine();
+    //    Console.WriteLine("All blogs in database:");
+    //    foreach (var movie in db.Movies)
+    //    {
+    //      //Console.WriteLine(" - {0}", moview.Url);
+    //      Console.WriteLine($" [{movie.MovieId}] {movie.Title} {movie.Url}");
+    //    }
+    //  }
+    //}
+
+    public static async Task<IReadOnlyList<Movie>> LoadAsync()
     {
       using (var db = new MovieContext())
       {
+#if DEBUG
+        //// DB 削除
+        //db.Database.EnsureDeleted();
+#endif
+
         db.Database.EnsureCreated();
 
-        Console.WriteLine("Database created");
 
-        db.Movies.Add(new Movie { Title = "TEST1", Url = "http://nowhere.com/?2" });
-        var count = await db.SaveChangesAsync(CancellationToken.None);
 
-        Console.WriteLine("{0} records saved to database", count);
-
-        Console.WriteLine();
-        Console.WriteLine("All blogs in database:");
-        foreach (var movie in db.Movies)
+        if (await db.Movies.FirstOrDefaultAsync() == null)
         {
-          //Console.WriteLine(" - {0}", moview.Url);
-          Console.WriteLine($" [{movie.MovieId}] {movie.Title} {movie.Url}");
+          // set initial data
+          db.Movies.Add(new Movie
+          {
+            MovieId = 1,
+            Title = "UWPアプリを書けばiOS／Android／Webでも動く!?　～Uno Platform：クロスプラットフォーム開発環境",
+            Url = "https://codezine.jp/article/detail/11795"
+          });
+          db.Movies.Add(new Movie
+          {
+            MovieId = 2,
+            Title = "Uno Platform - Home",
+            Url = "https://platform.uno/"
+          });
+          db.Movies.Add(new Movie
+          {
+            MovieId = 3,
+            Title = "Uno Platform Team Blog",
+            Url = "https://platform.uno/blog/"
+          });
+          var count = await db.SaveChangesAsync(CancellationToken.None);
+#if DEBUG
+          Console.WriteLine("{0} records saved to database", count);
+#endif
+        }
+
+        MoviesList = new ObservableCollection<Movie>(await db.Movies.ToListAsync());
+        return MoviesList;
+      }
+    }
+
+    public static async Task DeleteAsync(Movie movie)
+    {
+      if (!MoviesList.Contains(movie))
+        throw new ArgumentException("No data to delete on memory");
+
+      if(movie.MovieId > 0)
+        using (var db = new MovieContext())
+        using (var tran = await db.Database.BeginTransactionAsync())
+        {
+          var targetItem = db.Movies.FirstOrDefault(m => m.MovieId == movie.MovieId);
+          if (targetItem == null)
+            throw new ArgumentException("No data to delete on DB");
+
+          db.Movies.Remove(targetItem);
+          int count = await db.SaveChangesAsync(CancellationToken.None);
+          if(count < 1)
+            throw new ApplicationException("Fail to delete on DB");
+
+          MoviesList.Remove(movie);
+          tran.Commit();
+        }
+    }
+
+    public static async Task<Movie> UpdateAsync(Movie originalMovie, Movie newMovie)
+    {
+      if (!MoviesList.Contains(originalMovie))
+        throw new ArgumentException("No data to update on memory");
+
+      if (originalMovie.Title == newMovie.Title && originalMovie.Url == newMovie.Url)
+        return originalMovie;
+
+      var updatedItem = MoviesList.FirstOrDefault(m => m.MovieId == originalMovie.MovieId);
+      int updatedItemPosition = MoviesList.IndexOf(updatedItem);
+
+      if (originalMovie.MovieId > 0)
+      {
+        // 既存データの更新
+        using (var db = new MovieContext())
+        using (var tran = await db.Database.BeginTransactionAsync())
+        {
+          var targetItem = db.Movies.FirstOrDefault(m => m.MovieId == originalMovie.MovieId);
+          if (targetItem == null)
+            throw new ArgumentException("No data to update on DB");
+
+          if (originalMovie.Title != targetItem.Title || originalMovie.Url != targetItem.Url)
+            throw new ApplicationException("The data has already been changed on DB");
+
+          targetItem.Title = newMovie.Title;
+          targetItem.Url = newMovie.Url;
+          var modifiedEntry = db.Movies.Update(targetItem);
+          int count = await db.SaveChangesAsync(CancellationToken.None);
+          if (count < 1)
+            throw new ApplicationException("Fail to update on DB");
+
+          MoviesList.RemoveAt(updatedItemPosition);
+          MoviesList.Insert(updatedItemPosition, modifiedEntry.Entity);
+
+          tran.Commit();
+        }
+      }
+      else
+      {
+        // 新規データ
+        using (var db = new MovieContext())
+        {
+          var newEntry = db.Movies.Add(new Movie
+          {
+            Title = newMovie.Title,
+            Url = newMovie.Url,
+          });
+          var count = await db.SaveChangesAsync(CancellationToken.None);
+          if (count < 1)
+            throw new ApplicationException("Fail to insert on DB");
+
+          MoviesList.RemoveAt(updatedItemPosition);
+          MoviesList.Insert(updatedItemPosition, newEntry.Entity);
         }
       }
 
+      return MoviesList.ElementAt(updatedItemPosition);
     }
   }
 
@@ -98,7 +231,7 @@ namespace SQLiteSample
     public string Url { get; set; }
   }
 
-  public class MovieContext : DbContext
+  internal class MovieContext : DbContext
   {
     public static string ConnectionString { get; set; } = "data source=uf16.db";
 

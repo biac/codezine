@@ -21,6 +21,8 @@
     <LinkerDescriptor Include="LinkerConfig.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="5.1.0-build.200.gf9c311b069" />
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid" Version="5.1.0-build.200.gf9c311b069" />
     <PackageReference Include="Uno.sqlite-wasm" Version="1.0.0-dev.942" />
     <PackageReference Include="Uno.SQLitePCLRaw.provider.wasm" Version="2.0.0-dev.6" />
     <PackageReference Include="Uno.UI" Version="2.0.512-dev.4073" />

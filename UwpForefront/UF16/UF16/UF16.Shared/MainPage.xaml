@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   
   xmlns:toolkit="using:Uno.UI.Toolkit"
+  xmlns:ctcontrol="using:Microsoft.Toolkit.Uwp.UI.Controls"
   
   xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:not_win="http:/uno.ui/not_win"
@@ -15,11 +16,121 @@
   
     mc:Ignorable="d not_win wasm">
 
-    <Grid not_win:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+  <Grid not_win:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
           win:Background="{ThemeResource SystemControlAcrylicWindowBrush}"
         toolkit:VisibleBoundsPadding.PaddingMask="All">
-		<TextBlock Text="Hello, world !!" Margin="20" FontSize="30" />
-    <not_wasm:WebView x:Name="WebView1" Margin="0,80,0,0" />
-    <wasm:WebAsmWebView x:Name="WebView1" Margin="0,80,0,0" />
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="0.5*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+
+    <Viewbox MaxWidth="432" HorizontalAlignment="Left">
+    <TextBlock Margin="20,10" 
+               FontSize="30" Foreground="#00a2e8" >
+      Articles about <Bold>Uno Platform</Bold>
+    </TextBlock>
+    </Viewbox>
+
+    <ListView x:Name="ListView1" Grid.Row="1" FontSize="16"
+              Loaded="ListView_Loaded"
+              SelectionChanged="ListView_SelectionChanged">
+      <ListView.ItemContainerStyle>
+        <Style TargetType="ListViewItem">
+          <Setter Property="Padding" Value="5,0"/>
+          <Setter Property="Margin" Value="0"/>
+          <Setter Property="BorderBrush" Value="LightGray"/>
+          <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+      </ListView.ItemContainerStyle>
+      <ListView.ItemTemplate>
+        <DataTemplate >
+          <Grid MinWidth="360">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="30" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding MovieId}" VerticalAlignment="Center" />
+            <StackPanel Grid.Column="1">
+            <TextBlock Grid.Column="1" Text="{Binding Title}"
+                       Margin="5,0,0,0" TextTrimming="CharacterEllipsis" />
+            <TextBlock Grid.Column="2" Text="{Binding Url}" FontSize="12"
+                       Margin="5,0,0,0" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </Grid>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+
+    <!--<ctcontrol:DataGrid x:Name="DataGrid1" Grid.Row="1" Background="Orange" 
+                        Height="200" AutoGenerateColumns="False"
+                        ItemsSource="{x:Bind _movies}"
+                        
+                        Loaded="DataGrid_Loaded"
+                        SelectionChanged="DataGrid_SelectionChanged"
+                        AlternatingRowBackground="LightGray"
+                        >
+      <ctcontrol:DataGrid.Columns>
+        <ctcontrol:DataGridTextColumn x:Name="IdColum" IsReadOnly="True" 
+          Header="ID" Width="SizeToHeader" Binding="{Binding MovieId}"
+          />
+        <ctcontrol:DataGridTextColumn IsReadOnly="True"
+          Header="Title"  Binding="{Binding Title}"
+          />
+        <ctcontrol:DataGridTextColumn IsReadOnly="True"
+          Header="URL"  Binding="{Binding Url}"
+          />
+      </ctcontrol:DataGrid.Columns>
+    </ctcontrol:DataGrid>-->
+
+    <Viewbox Grid.Row="2" MaxWidth="432" Margin="0,0,0,10" HorizontalAlignment="Left">
+      <Grid HorizontalAlignment="Stretch" Width="432">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="0,0,30,0" VerticalAlignment="Top">
+          <Button x:Name="AddButton" Click="AddButton_Click" Width="30" Height="30" 
+              FontSize="24" Padding="0,-5,0,0" BorderThickness="1" BorderBrush="Green"
+              >+</Button>
+          <Button x:Name="DeleteButton" Click="DeleteButton_Click" Width="30" Height="30" 
+              FontSize="30" Padding="0,-9,0,0" BorderThickness="1" BorderBrush="Red"
+              >-</Button>
+        </StackPanel>
+
+        <Grid x:Name="EditPanel" Grid.Column="1" Width="370" VerticalAlignment="Top">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <!--<TextBlock VerticalAlignment="Center">ID:</TextBlock>
+          <TextBlock x:Name="IdText" VerticalAlignment="Center" 
+                   MinWidth="15" Margin="0,0,5,0" FontWeight="Bold"
+                   TextAlignment="Right" />-->
+          <TextBox x:Name="IdText"  IsReadOnly="True" Background="Transparent"
+                   Grid.RowSpan="2" Margin="0,0,5,0" not_wasm:Padding="0,20,0,0" 
+                   MinWidth="40" TextAlignment="Center"
+                   FontWeight="Bold" BorderThickness="0" />
+          <TextBlock Grid.Column="1" Margin="0,5,3,0">Title</TextBlock>
+          <TextBox x:Name="TitleText" Grid.Column="2" Margin="0,0,5,0"  />
+          <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5,3,0">URL</TextBlock>
+          <TextBox x:Name="UrlText"  Grid.Row="1" Grid.Column="2" Margin="0,0,5,0"  />
+          <Button x:Name="UpdateButton" Grid.Row="1" Grid.Column="3" Click="UpdateButton_Click"
+                  Margin="0,0,0,5" Padding="2,0" VerticalAlignment="Bottom"
+            >Update</Button>
+        </Grid>
+      </Grid>
+    </Viewbox>
+
+    <not_wasm:WebView x:Name="WebView1" Grid.Row="3" Source="http://bluewatersoft.jp" />
+    <wasm:WebAsmWebView x:Name="WebView1" Grid.Row="3" />
   </Grid>
 </Page>
