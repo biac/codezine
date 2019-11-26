@@ -12,15 +12,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
-    <PackageReference Include="Uno.Core" Version="1.29.0-dev.103" />
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>5.1.0-build.200.gf9c311b069</Version>
-    </PackageReference>
-    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
-      <Version>5.1.0-build.200.gf9c311b069</Version>
-    </PackageReference>
+    <PackageReference Include="Uno.Core" Version="1.29.0" />
     <PackageReference Include="Uno.UI">
-      <Version>2.0.512-dev.4073</Version>
+      <Version>2.0.512-dev.4143</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
