@@ -36,6 +36,9 @@ namespace CodeBehind
     private void Button_Click(object sender, RoutedEventArgs e)
     {
       Text1.Text = $"クリックしたのは{DateTimeOffset.Now:HH:mm}";
+
+      //以前のC#では、↓このように書いていた。
+      //Text1.Text = string.Format("クリックしたのは{0:HH:mm}", DateTimeOffset.Now);
     }
   }
 }
