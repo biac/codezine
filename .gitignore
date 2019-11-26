@@ -8,6 +8,7 @@
 * - コピー
 * - コピー.*
 * - コピー (*
+Thumbs.db
 
 .vs/
 bin/
@@ -44,7 +45,6 @@ work/
 /*.sln
 /*.suo
 /*.URL
-/Thumbs.db
 
 /ComponentOneBarcord/ComponentOneBarcordSample/QrUwp/License.cs
 /ComponentOneBarcord/ComponentOneBarcordSample/IsbnUwp/License.cs

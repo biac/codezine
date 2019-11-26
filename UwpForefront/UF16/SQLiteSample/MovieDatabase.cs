@@ -100,13 +100,25 @@ namespace SQLiteSample
       if (!MoviesList.Contains(originalMovie))
         throw new ArgumentException("No data to update on memory");
 
+      if (originalMovie.MovieId != newMovie.MovieId)
+        throw new ArgumentException("Both parameters must have same MovieId");
+
       if (originalMovie.Title == newMovie.Title && originalMovie.Url == newMovie.Url)
         return originalMovie;
 
-      var updateItem = MoviesList.FirstOrDefault(m => m.MovieId == originalMovie.MovieId);
-      int updateItemPosition = MoviesList.IndexOf(updateItem);
-
+      Movie modifiedMovie;
       if (originalMovie.MovieId > 0)
+        modifiedMovie = await UpdateAsync();
+      else
+        modifiedMovie = await InsertAsync();
+
+      int updateItemPosition = MoviesList.IndexOf(originalMovie);
+      MoviesList.RemoveAt(updateItemPosition);
+      MoviesList.Insert(updateItemPosition, modifiedMovie);
+
+      return modifiedMovie;
+
+      async Task<Movie> UpdateAsync()
       {
         // 既存データの更新
         using (var db = new MovieContext())
@@ -126,15 +138,13 @@ namespace SQLiteSample
           if (count < 1)
             throw new ApplicationException("Fail to update on DB");
 
-          MoviesList.RemoveAt(updateItemPosition);
-          MoviesList.Insert(updateItemPosition, modifiedEntry.Entity);
-
           tran.Commit();
+          return modifiedEntry.Entity;
         }
       }
-      else
+      async Task<Movie> InsertAsync()
       {
-        // 新規データ
+        // 新規データを追加（自動採番）
         using (var db = new MovieContext())
         {
           var newEntry = db.Movies.Add(new Movie
@@ -146,12 +156,9 @@ namespace SQLiteSample
           if (count < 1)
             throw new ApplicationException("Fail to insert on DB");
 
-          MoviesList.RemoveAt(updateItemPosition);
-          MoviesList.Insert(updateItemPosition, newEntry.Entity);
+          return newEntry.Entity;
         }
       }
-
-      return MoviesList.ElementAt(updateItemPosition);
     }
 
     public static async Task DeleteAsync(Movie movie)
@@ -160,6 +167,7 @@ namespace SQLiteSample
         throw new ArgumentException("No data to delete on memory");
 
       if (movie.MovieId > 0)
+      {
         using (var db = new MovieContext())
         using (var tran = await db.Database.BeginTransactionAsync())
         {
@@ -172,11 +180,11 @@ namespace SQLiteSample
           if (count < 1)
             throw new ApplicationException("Fail to delete on DB");
 
-          MoviesList.Remove(movie);
           tran.Commit();
         }
-      else
-        MoviesList.Remove(movie); // 仮のデータはメモリ上から削除するだけ
+      }
+
+      MoviesList.Remove(movie);
     }
    }
 }

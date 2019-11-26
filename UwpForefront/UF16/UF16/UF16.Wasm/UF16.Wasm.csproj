@@ -40,5 +40,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\SQLiteSample\SQLiteSample.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
   <Import Project="..\UF16.Shared\UF16.Shared.projitems" Label="Shared" Condition="Exists('..\UF16.Shared\UF16.Shared.projitems')" />
 </Project>
