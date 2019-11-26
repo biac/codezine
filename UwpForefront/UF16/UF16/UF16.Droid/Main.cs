@@ -1,15 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Com.Nostra13.Universalimageloader.Core;
+using System;
 using Windows.UI.Xaml.Media;
 
 namespace UF16.Droid
@@ -25,9 +16,7 @@ namespace UF16.Droid
     public Application(IntPtr javaReference, JniHandleOwnership transfer)
       : base(new App(), javaReference, transfer)
     {
-      ///
       SQLiteSample.MovieDatabase.InitForAndroid();
-
 
       ConfigureUniversalImageLoader();
     }

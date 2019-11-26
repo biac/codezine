@@ -1,12 +1,9 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 
 namespace SQLiteSample
 {
@@ -24,90 +21,36 @@ namespace SQLiteSample
     public static ObservableCollection<Movie> MoviesList { get; private set; }
 
 
-    //internal static string DbPath { get; private set; }
     public static void InitForAndroid()
     {
-      //SQLitePCL.Batteries.Init();
-
-      string dbPath = Path.Combine(
-          Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-          "uf16.db");
-      MovieContext.ConnectionString = $"filename={dbPath}";
-      //if (!File.Exists(dbPath)) File.Create(dbPath);
-
-      //Connection = new SqliteConnection(dbPath);
+      MovieContext.InitConnectionStringForAndroid();
     }
-
 
     public static void InitForIOS()
     {
       SQLitePCL.Batteries.Init();
-
-      string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", "uf16.db");
-      MovieContext.ConnectionString = $"filename={dbPath}";
+      MovieContext.InitConnectionStringForIOS();
     }
 
-
-    //public static string qq()
-    //{
-    //  //return "skip";
-
-    //  using (var connection = new SqliteConnection("Data Source=local.db"))
-    //  {
-    //    connection.Open();
-
-    //    var command = connection.CreateCommand();
-    //    command.CommandText = "SELECT Url FROM Blogs";
-
-    //    using (var reader = command.ExecuteReader())
-    //    {
-    //      while (reader.Read())
-    //      {
-    //        var url = reader.GetString(0);
-    //      }
-    //    }
-    //    return "OK";
-    //  }
-    //}
-
-    //public static async Task Run()
-    //{
-    //  using (var db = new MovieContext())
-    //  {
-    //    db.Database.EnsureCreated();
-
-    //    Console.WriteLine("Database created");
-
-    //    db.Movies.Add(new Movie { Title = "TEST1", Url = "http://nowhere.com/?2" });
-    //    var count = await db.SaveChangesAsync(CancellationToken.None);
-
-    //    Console.WriteLine("{0} records saved to database", count);
-
-    //    Console.WriteLine();
-    //    Console.WriteLine("All blogs in database:");
-    //    foreach (var movie in db.Movies)
-    //    {
-    //      //Console.WriteLine(" - {0}", moview.Url);
-    //      Console.WriteLine($" [{movie.MovieId}] {movie.Title} {movie.Url}");
-    //    }
-    //  }
-    //}
-
-    public static async Task<IReadOnlyList<Movie>> LoadAsync()
+    public static async Task<ObservableCollection<Movie>> LoadAsync()
     {
       using (var db = new MovieContext())
       {
 #if DEBUG
-        //// DB 削除
-        //db.Database.EnsureDeleted();
+        //db.Database.EnsureDeleted(); // DB 削除
 #endif
 
         db.Database.EnsureCreated();
+        await EnsureInitialDataAsync();
 
+        MoviesList = new ObservableCollection<Movie>(await db.Movies.ToListAsync());
+        return MoviesList;
 
-
-        if (await db.Movies.FirstOrDefaultAsync() == null)
+        async Task EnsureInitialDataAsync()
         {
+          if (await db.Movies.FirstOrDefaultAsync() != null)
+            return;
+
           // set initial data
           db.Movies.Add(new Movie
           {
@@ -132,35 +75,26 @@ namespace SQLiteSample
           Console.WriteLine("{0} records saved to database", count);
 #endif
         }
-
-        MoviesList = new ObservableCollection<Movie>(await db.Movies.ToListAsync());
-        return MoviesList;
-      }
+      } //end using
     }
 
-    public static async Task DeleteAsync(Movie movie)
+    // 仮のデータを作成して、MoviesListに追加する。
+    // 仮のデータは、MovieIdが負の値で、TitleとURLは空。DBには追加しない。
+    public static Movie CreateTempData()
     {
-      if (!MoviesList.Contains(movie))
-        throw new ArgumentException("No data to delete on memory");
+      int tempIndex = -1;
+      int minId = MoviesList.Min(m => m.MovieId);
+      if (minId < 0)
+        tempIndex = minId - 1;
 
-      if(movie.MovieId > 0)
-        using (var db = new MovieContext())
-        using (var tran = await db.Database.BeginTransactionAsync())
-        {
-          var targetItem = db.Movies.FirstOrDefault(m => m.MovieId == movie.MovieId);
-          if (targetItem == null)
-            throw new ArgumentException("No data to delete on DB");
+      var tempData = new Movie { MovieId = tempIndex };
+      MoviesList.Add(tempData);
 
-          db.Movies.Remove(targetItem);
-          int count = await db.SaveChangesAsync(CancellationToken.None);
-          if(count < 1)
-            throw new ApplicationException("Fail to delete on DB");
-
-          MoviesList.Remove(movie);
-          tran.Commit();
-        }
+      return tempData;
     }
 
+    // DBへの登録・更新
+    // 仮のデータのupdateは、DBへの新規登録となり、MovieIdが採番される。
     public static async Task<Movie> UpdateAsync(Movie originalMovie, Movie newMovie)
     {
       if (!MoviesList.Contains(originalMovie))
@@ -169,8 +103,8 @@ namespace SQLiteSample
       if (originalMovie.Title == newMovie.Title && originalMovie.Url == newMovie.Url)
         return originalMovie;
 
-      var updatedItem = MoviesList.FirstOrDefault(m => m.MovieId == originalMovie.MovieId);
-      int updatedItemPosition = MoviesList.IndexOf(updatedItem);
+      var updateItem = MoviesList.FirstOrDefault(m => m.MovieId == originalMovie.MovieId);
+      int updateItemPosition = MoviesList.IndexOf(updateItem);
 
       if (originalMovie.MovieId > 0)
       {
@@ -192,8 +126,8 @@ namespace SQLiteSample
           if (count < 1)
             throw new ApplicationException("Fail to update on DB");
 
-          MoviesList.RemoveAt(updatedItemPosition);
-          MoviesList.Insert(updatedItemPosition, modifiedEntry.Entity);
+          MoviesList.RemoveAt(updateItemPosition);
+          MoviesList.Insert(updateItemPosition, modifiedEntry.Entity);
 
           tran.Commit();
         }
@@ -212,38 +146,37 @@ namespace SQLiteSample
           if (count < 1)
             throw new ApplicationException("Fail to insert on DB");
 
-          MoviesList.RemoveAt(updatedItemPosition);
-          MoviesList.Insert(updatedItemPosition, newEntry.Entity);
+          MoviesList.RemoveAt(updateItemPosition);
+          MoviesList.Insert(updateItemPosition, newEntry.Entity);
         }
       }
 
-      return MoviesList.ElementAt(updatedItemPosition);
+      return MoviesList.ElementAt(updateItemPosition);
     }
-  }
 
-
-
-
-  public class Movie
-  {
-    public int MovieId { get; set; }
-    public string Title { get; set; }
-    public string Url { get; set; }
-  }
-
-  internal class MovieContext : DbContext
-  {
-    public static string ConnectionString { get; set; } = "data source=uf16.db";
-
-    public DbSet<Movie> Movies { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public static async Task DeleteAsync(Movie movie)
     {
-      //if(Class1.DbPath != null)
-      //  optionsBuilder.UseSqlite($"filename={Class1.DbPath}");
-      //else
-      //  optionsBuilder.UseSqlite("data source=local.db");
-      optionsBuilder.UseSqlite(ConnectionString);
+      if (!MoviesList.Contains(movie))
+        throw new ArgumentException("No data to delete on memory");
+
+      if (movie.MovieId > 0)
+        using (var db = new MovieContext())
+        using (var tran = await db.Database.BeginTransactionAsync())
+        {
+          var targetItem = db.Movies.FirstOrDefault(m => m.MovieId == movie.MovieId);
+          if (targetItem == null)
+            throw new ArgumentException("No data to delete on DB");
+
+          db.Movies.Remove(targetItem);
+          int count = await db.SaveChangesAsync(CancellationToken.None);
+          if (count < 1)
+            throw new ApplicationException("Fail to delete on DB");
+
+          MoviesList.Remove(movie);
+          tran.Commit();
+        }
+      else
+        MoviesList.Remove(movie); // 仮のデータはメモリ上から削除するだけ
     }
-  }
+   }
 }
