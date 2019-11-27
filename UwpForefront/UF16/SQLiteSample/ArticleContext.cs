@@ -4,9 +4,9 @@ using System.IO;
 
 namespace SQLiteSample
 {
-  internal class MovieContext : DbContext
+  internal class ArticleContext : DbContext
   {
-    public DbSet<Movie> Movies { get; set; }
+    public DbSet<Article> Articles { get; set; }
 
     // 接続文字列（UWPとWebASM）
     const string DbName = "uf16.db";
@@ -30,7 +30,7 @@ namespace SQLiteSample
       _connectionString = $"filename={dbPath}";
     }
 
-    // EntityFrameworkの初期化（SQLiteを使用）
+    // DbContextの設定（SQLiteを使用）
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
       optionsBuilder.UseSqlite(_connectionString);

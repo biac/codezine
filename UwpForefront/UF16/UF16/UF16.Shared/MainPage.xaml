@@ -48,7 +48,7 @@
               <ColumnDefinition Width="30" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding MovieId}" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding ArticleId}" VerticalAlignment="Center" />
             <StackPanel Grid.Column="1">
               <TextBlock Grid.Column="1" Text="{Binding Title}"
                          Margin="5,0,0,0" TextTrimming="CharacterEllipsis" />

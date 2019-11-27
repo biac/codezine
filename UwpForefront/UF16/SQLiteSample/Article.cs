@@ -1,8 +1,8 @@
 ﻿namespace SQLiteSample
 {
-  public class Movie
+  public class Article
   {
-    public int MovieId { get; set; }
+    public int ArticleId { get; set; }  // 主キー
     public string Title { get; set; }
     public string Url { get; set; }
   }

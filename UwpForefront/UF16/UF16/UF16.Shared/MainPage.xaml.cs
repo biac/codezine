@@ -23,12 +23,12 @@ namespace UF16
     {
       base.OnNavigatedTo(e);
 
-      var movies = await SQLiteSample.MovieDatabase.LoadAsync();
-      ListView1.ItemsSource = movies;
+      var articles = await SQLiteSample.ArticleDatabase.LoadAsync();
+      ListView1.ItemsSource = articles;
       // ↑作った ObservableCollection をここで ItemsSource にセットしてやらないと、
       //   WebASMでは上手く動作しない
 
-      if (movies.Count > 0)
+      if (articles.Count > 0)
       {
         await Task.Yield();
         ListView1.SelectedIndex = 0;
@@ -37,24 +37,24 @@ namespace UF16
 
     private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      var selectedMovie = e.AddedItems.FirstOrDefault() as SQLiteSample.Movie;
+      var selectedArticle = e.AddedItems.FirstOrDefault() as SQLiteSample.Article;
 
       // update EditPanel
-      EditPanel.Visibility = (selectedMovie == null) ? Visibility.Collapsed : Visibility.Visible;
-      IdText.Text = (selectedMovie?.MovieId > 0) ? selectedMovie.MovieId.ToString() : string.Empty;
-      TitleText.Text = selectedMovie?.Title ?? string.Empty;
-      UrlText.Text = selectedMovie?.Url ?? string.Empty;
+      EditPanel.Visibility = (selectedArticle == null) ? Visibility.Collapsed : Visibility.Visible;
+      IdText.Text = (selectedArticle?.ArticleId > 0) ? selectedArticle.ArticleId.ToString() : string.Empty;
+      TitleText.Text = selectedArticle?.Title ?? string.Empty;
+      UrlText.Text = selectedArticle?.Url ?? string.Empty;
 
       // update WebView
       WebView1.Source = new Uri("about:blank");
       await Task.Delay(100);
-      if (selectedMovie?.Url?.ToLower().StartsWith("http") == true)
-        WebView1.Source = new Uri(selectedMovie.Url);
+      if (selectedArticle?.Url?.ToLower().StartsWith("http") == true)
+        WebView1.Source = new Uri(selectedArticle.Url);
     }
 
     private async void AddButton_Click(object sender, RoutedEventArgs e)
     {
-      var tempData = SQLiteSample.MovieDatabase.CreateTempData();
+      var tempData = SQLiteSample.ArticleDatabase.CreateTempData();
 
       await Task.Yield();
       ListView1.SelectedItem = tempData;
@@ -63,19 +63,19 @@ namespace UF16
 
     private async void DeleteButton_Click(object sender, RoutedEventArgs e)
     {
-      var deleteMovie = ListView1.SelectedItem as SQLiteSample.Movie;
-      if (deleteMovie == null)
+      var deleteArticle = ListView1.SelectedItem as SQLiteSample.Article;
+      if (deleteArticle == null)
         return;
 
       if (!await ConfirmAsync())
         return;
 
-      await SQLiteSample.MovieDatabase.DeleteAsync(deleteMovie);
+      await SQLiteSample.ArticleDatabase.DeleteAsync(deleteArticle);
       return;
 
       async Task<bool> ConfirmAsync()
       {
-        if (deleteMovie.MovieId < 1)
+        if (deleteArticle.ArticleId < 1)
           return true;
 
         var result = await (new ContentDialog()
@@ -91,29 +91,29 @@ namespace UF16
 
     private async void UpdateButton_Click(object sender, RoutedEventArgs e)
     {
-      var originalMovie = ListView1.SelectedItem as SQLiteSample.Movie;
-      if (originalMovie == null)
+      var originalArticle = ListView1.SelectedItem as SQLiteSample.Article;
+      if (originalArticle == null)
         return;
 
-      var newMovie = new SQLiteSample.Movie
+      var newArticle = new SQLiteSample.Article
       {
-        MovieId = originalMovie.MovieId,
+        ArticleId = originalArticle.ArticleId,
         Title = TitleText.Text?.Trim(),
         Url = UrlText.Text?.Trim(),
       };
       if (!await ValidateAndShowMessageWhenInvalidAsync())
         return;
 
-      var updatedMovie = await SQLiteSample.MovieDatabase.UpdateAsync(originalMovie, newMovie);
+      var updatedArticle = await SQLiteSample.ArticleDatabase.UpdateAsync(originalArticle, newArticle);
 
       await Task.Yield();
-      ListView1.SelectedItem = updatedMovie;
+      ListView1.SelectedItem = updatedArticle;
 
       return;
 
       async Task<bool> ValidateAndShowMessageWhenInvalidAsync()
       {
-        if (string.IsNullOrEmpty(newMovie.Title) || string.IsNullOrEmpty(newMovie.Url))
+        if (string.IsNullOrEmpty(newArticle.Title) || string.IsNullOrEmpty(newArticle.Url))
         {
           await (new ContentDialog()
           {
@@ -124,7 +124,7 @@ namespace UF16
           return false;
         }
 
-        if (!Uri.IsWellFormedUriString(newMovie.Url, UriKind.Absolute))
+        if (!Uri.IsWellFormedUriString(newArticle.Url, UriKind.Absolute))
         {
           await (new ContentDialog()
           {
