@@ -18,12 +18,18 @@
     <EmbeddedResource Include="mono-sdk\*.dll" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\SplashScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\SplashScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
     <LinkerDescriptor Include="LinkerConfig.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Uno.sqlite-wasm" Version="1.0.0-dev.942" />
     <PackageReference Include="Uno.SQLitePCLRaw.provider.wasm" Version="2.0.0-dev.6" />
-    <PackageReference Include="Uno.UI" Version="2.0.512-dev.4143" />
+    <PackageReference Include="Uno.UI" Version="2.0.512-dev.4178" />
     <PackageReference Include="Uno.UI.Sample.Banner" Version="1.44.0-dev.16" />
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.5" />
     <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.265" />
@@ -39,9 +45,6 @@
 	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SQLiteSample\SQLiteSample.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
   </ItemGroup>
   <Import Project="..\UF16.Shared\UF16.Shared.projitems" Label="Shared" Condition="Exists('..\UF16.Shared\UF16.Shared.projitems')" />
 </Project>
