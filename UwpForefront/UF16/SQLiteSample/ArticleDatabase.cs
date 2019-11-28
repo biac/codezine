@@ -48,21 +48,18 @@ namespace SQLiteSample
             return;
 
           // set initial data
-          context.Articles.Add(new Article
+          context.Articles.Add(new Article(1)
           {
-            ArticleId = 1,
             Title = "UWPアプリを書けばiOS／Android／Webでも動く!?　～Uno Platform：クロスプラットフォーム開発環境",
             Url = "https://codezine.jp/article/detail/11795"
           });
-          context.Articles.Add(new Article
+          context.Articles.Add(new Article(2)
           {
-            ArticleId = 2,
             Title = "Uno Platform - Home",
             Url = "https://platform.uno/"
           });
-          context.Articles.Add(new Article
+          context.Articles.Add(new Article(3)
           {
-            ArticleId = 3,
             Title = "Uno Platform Team Blog",
             Url = "https://platform.uno/blog/"
           });
@@ -79,11 +76,14 @@ namespace SQLiteSample
     public static Article CreateTempData()
     {
       int tempIndex = -1;
-      int minId = ArticlesList.Min(m => m.ArticleId);
-      if (minId < 0)
-        tempIndex = minId - 1;
+      if (ArticlesList.Count > 0)
+      { 
+        int minId = ArticlesList.Min(m => m.ArticleId);
+        if (minId < 0)
+          tempIndex = minId - 1;
+      }
 
-      var tempData = new Article { ArticleId = tempIndex };
+      var tempData = new Article(tempIndex);
       ArticlesList.Add(tempData);
 
       return tempData;

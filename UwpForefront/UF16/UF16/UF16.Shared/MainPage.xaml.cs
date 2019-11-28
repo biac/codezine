@@ -95,16 +95,16 @@ namespace UF16
       if (originalArticle == null)
         return;
 
-      var newArticle = new SQLiteSample.Article
+      var newArticle = new SQLiteSample.Article(originalArticle.ArticleId)
       {
-        ArticleId = originalArticle.ArticleId,
         Title = TitleText.Text?.Trim(),
         Url = UrlText.Text?.Trim(),
       };
       if (!await ValidateAndShowMessageWhenInvalidAsync())
         return;
 
-      var updatedArticle = await SQLiteSample.ArticleDatabase.UpdateAsync(originalArticle, newArticle);
+      var updatedArticle
+        = await SQLiteSample.ArticleDatabase.UpdateAsync(originalArticle, newArticle);
 
       await Task.Yield();
       ListView1.SelectedItem = updatedArticle;
