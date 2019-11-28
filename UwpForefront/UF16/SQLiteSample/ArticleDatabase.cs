@@ -30,43 +30,43 @@ namespace SQLiteSample
 
     public static async Task<ObservableCollection<Article>> LoadAsync()
     {
-      using (var db = new ArticleContext())
+      using (var context = new ArticleContext())
       {
 #if DEBUG
-        //db.Database.EnsureDeleted(); // DB 削除
+        //context.Database.EnsureDeleted(); // DB 削除
 #endif
 
-        db.Database.EnsureCreated();
+        context.Database.EnsureCreated();
         await EnsureInitialDataAsync();
 
-        ArticlesList = new ObservableCollection<Article>(await db.Articles.ToListAsync());
+        ArticlesList = new ObservableCollection<Article>(await context.Articles.ToListAsync());
         return ArticlesList;
 
         async Task EnsureInitialDataAsync()
         {
-          if (await db.Articles.FirstOrDefaultAsync() != null)
+          if (await context.Articles.FirstOrDefaultAsync() != null)
             return;
 
           // set initial data
-          db.Articles.Add(new Article
+          context.Articles.Add(new Article
           {
             ArticleId = 1,
             Title = "UWPアプリを書けばiOS／Android／Webでも動く!?　～Uno Platform：クロスプラットフォーム開発環境",
             Url = "https://codezine.jp/article/detail/11795"
           });
-          db.Articles.Add(new Article
+          context.Articles.Add(new Article
           {
             ArticleId = 2,
             Title = "Uno Platform - Home",
             Url = "https://platform.uno/"
           });
-          db.Articles.Add(new Article
+          context.Articles.Add(new Article
           {
             ArticleId = 3,
             Title = "Uno Platform Team Blog",
             Url = "https://platform.uno/blog/"
           });
-          var count = await db.SaveChangesAsync(CancellationToken.None);
+          var count = await context.SaveChangesAsync(CancellationToken.None);
 #if DEBUG
           Console.WriteLine("{0} records saved to database", count);
 #endif
@@ -104,7 +104,7 @@ namespace SQLiteSample
 
       Article modifiedArticle;
       if (originalArticle.ArticleId > 0)
-        modifiedArticle = await UpdateAsync();
+        modifiedArticle = await UpdateAsync(originalArticle, newArticle);
       else
         modifiedArticle = await InsertAsync(newArticle);
 
@@ -114,39 +114,44 @@ namespace SQLiteSample
 
       return modifiedArticle;
 
-      async Task<Article> UpdateAsync()
+      async Task<Article> UpdateAsync(Article original, Article newData)
       {
         // 既存データの更新
-        using (var db = new ArticleContext())
-        using (var tran = await db.Database.BeginTransactionAsync())
+        using (var context = new ArticleContext())
+        using (var tran = await context.Database.BeginTransactionAsync())
         {
-          var targetItem = db.Articles.FirstOrDefault(m => m.ArticleId == originalArticle.ArticleId);
+          // データベースから更新対象のデータを取ってくる
+          var targetItem 
+            = await context.Articles.SingleOrDefaultAsync(m => m.ArticleId == original.ArticleId);
+
+          // 前回取得時からデータが変更されていないかをチェック
           if (targetItem == null)
             throw new ArgumentException("No data to update on DB");
-
-          if (originalArticle.Title != targetItem.Title || originalArticle.Url != targetItem.Url)
+          if (original.Title != targetItem.Title || original.Url != targetItem.Url)
             throw new ApplicationException("The data has already been changed on DB");
 
-          targetItem.Title = newArticle.Title;
-          targetItem.Url = newArticle.Url;
-          var updatedEntry = db.Articles.Update(targetItem);
-          await db.SaveChangesAsync(CancellationToken.None);
+          // 更新対象のデータを書き換え
+          targetItem.Title = newData.Title;
+          targetItem.Url = newData.Url;
+
+          // データベースに反映
+          await context.SaveChangesAsync(CancellationToken.None);
 
           tran.Commit();
-          return updatedEntry.Entity;
+          return targetItem;
         }
       }
       async Task<Article> InsertAsync(Article article)
       {
         // 新規データを追加（自動採番）
-        using (var db = new ArticleContext())
+        using (var context = new ArticleContext())
         {
-          var newEntry = db.Articles.Add(new Article
+          var newEntry = context.Articles.Add(new Article
           {
             Title = article.Title,
             Url = article.Url,
           });
-          await db.SaveChangesAsync(CancellationToken.None);
+          await context.SaveChangesAsync(CancellationToken.None);
 
           return newEntry.Entity;
         }
@@ -160,17 +165,16 @@ namespace SQLiteSample
 
       if (article.ArticleId > 0)
       {
-        using (var db = new ArticleContext())
-        using (var tran = await db.Database.BeginTransactionAsync())
+        using (var context = new ArticleContext())
+        using (var tran = await context.Database.BeginTransactionAsync())
         {
-          var targetItem = db.Articles.FirstOrDefault(m => m.ArticleId == article.ArticleId);
+          var targetItem 
+            = await context.Articles.SingleOrDefaultAsync(m => m.ArticleId == article.ArticleId);
           if (targetItem == null)
             throw new ArgumentException("No data to delete on DB");
 
-          db.Articles.Remove(targetItem);
-          int count = await db.SaveChangesAsync(CancellationToken.None);
-          if (count < 1)
-            throw new ApplicationException("Fail to delete on DB");
+          context.Articles.Remove(targetItem);
+          await context.SaveChangesAsync(CancellationToken.None);
 
           tran.Commit();
         }
