@@ -94,10 +94,10 @@ namespace SQLiteSample
     public static async Task<Article> UpdateAsync(Article originalArticle, Article newArticle)
     {
       if (!ArticlesList.Contains(originalArticle))
-        throw new ArgumentException("No data to update on memory");
+        throw new ArgumentException("指定されたArticleオブジェクトはArticlesListに含まれていません。");
 
       if (originalArticle.ArticleId != newArticle.ArticleId)
-        throw new ArgumentException("Both parameters must have same ArticleId");
+        throw new ArgumentException("2つの引数でArticleIdが違います。");
 
       if (originalArticle.Title == newArticle.Title && originalArticle.Url == newArticle.Url)
         return originalArticle;
@@ -108,6 +108,7 @@ namespace SQLiteSample
       else
         modifiedArticle = await InsertAsync(newArticle);
 
+      // ObservableCollectionのデータを入れ替える（これでNotifyChangedが画面側に飛ぶ）
       int updateItemPosition = ArticlesList.IndexOf(originalArticle);
       ArticlesList.RemoveAt(updateItemPosition);
       ArticlesList.Insert(updateItemPosition, modifiedArticle);
@@ -118,17 +119,10 @@ namespace SQLiteSample
       {
         // 既存データの更新
         using (var context = new ArticleContext())
-        using (var tran = await context.Database.BeginTransactionAsync())
         {
           // データベースから更新対象のデータを取ってくる
           var targetItem 
-            = await context.Articles.SingleOrDefaultAsync(m => m.ArticleId == original.ArticleId);
-
-          // 前回取得時からデータが変更されていないかをチェック
-          if (targetItem == null)
-            throw new ArgumentException("No data to update on DB");
-          if (original.Title != targetItem.Title || original.Url != targetItem.Url)
-            throw new ApplicationException("The data has already been changed on DB");
+            = await context.Articles.SingleAsync(m => m.ArticleId == original.ArticleId);
 
           // 更新対象のデータを書き換え
           targetItem.Title = newData.Title;
@@ -137,7 +131,6 @@ namespace SQLiteSample
           // データベースに反映
           await context.SaveChangesAsync(CancellationToken.None);
 
-          tran.Commit();
           return targetItem;
         }
       }
@@ -161,22 +154,17 @@ namespace SQLiteSample
     public static async Task DeleteAsync(Article article)
     {
       if (!ArticlesList.Contains(article))
-        throw new ArgumentException("No data to delete on memory");
+        throw new ArgumentException("指定されたArticleオブジェクトはArticlesListに含まれていません。");
 
       if (article.ArticleId > 0)
       {
         using (var context = new ArticleContext())
-        using (var tran = await context.Database.BeginTransactionAsync())
         {
           var targetItem 
-            = await context.Articles.SingleOrDefaultAsync(m => m.ArticleId == article.ArticleId);
-          if (targetItem == null)
-            throw new ArgumentException("No data to delete on DB");
+            = await context.Articles.SingleAsync(m => m.ArticleId == article.ArticleId);
 
           context.Articles.Remove(targetItem);
           await context.SaveChangesAsync(CancellationToken.None);
-
-          tran.Commit();
         }
       }
 
