@@ -15,5 +15,6 @@ CodoZine 連載
 - [UF12](./UF12/) = [第12回](https://codezine.jp/article/detail/11325): **UWPアプリの自動起動／再起動／事前起動／コマンドラインから起動／終了キャンセル**　～コードからアプリの起動と終了を制御する (2019/01/30)
 - UF13 (サンプルコードなし) : [第13回](https://codezine.jp/article/detail/11538): **Windows電卓の中はどうなっているのだろう？（前編）**　～オープンソースのコードを見てみよう (2019/07/26)
 - [UF14](./UF14/) = [第14回](https://codezine.jp/article/detail/11706): **Windows電卓の中はどうなっているのだろう？（後編）**　～オープンソースのコードを改造してみよう (2019/09/24)
-- [UF15](./UF15/) = [第15回](https://codezine.jp/article/detail/11795): **UWPアプリを書けばiOS／Android／Webでも動く！？**　～Uno Platform：クロスプラットフォーム開発環境 (2019/11/13)
+- [UF15](./UF15/) = [第15回](https://codezine.jp/article/detail/11795): **UWPアプリを書けばiOS／Android／Webでも動く!?**　～Uno Platform：クロスプラットフォーム開発環境 (2019/11/13)
+- [UF16](./UF16/) = [第16回](https://codezine.jp/article/detail/11840): **SQLiteデータベースがWebアプリでも使える！**　～Uno Platformクロスプラットフォーム開発の可能性を探る (2019/12/xx)
 
