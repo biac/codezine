@@ -36,7 +36,7 @@ namespace SQLiteSample
         //context.Database.EnsureDeleted(); // DB 削除
 #endif
 
-        context.Database.EnsureCreated();
+        await context.Database.EnsureCreatedAsync(CancellationToken.None);
         await EnsureInitialDataAsync();
 
         ArticlesList = new ObservableCollection<Article>(await context.Articles.ToListAsync());
