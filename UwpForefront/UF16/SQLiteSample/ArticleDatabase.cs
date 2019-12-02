@@ -104,9 +104,9 @@ namespace SQLiteSample
 
       Article modifiedArticle;
       if (originalArticle.ArticleId > 0)
-        modifiedArticle = await UpdateAsync(originalArticle, newArticle);
+        modifiedArticle = await UpdateDataAsync(originalArticle, newArticle);
       else
-        modifiedArticle = await InsertAsync(newArticle);
+        modifiedArticle = await InsertDataAsync(newArticle);
 
       // ObservableCollectionのデータを入れ替える（これでNotifyChangedが画面側に飛ぶ）
       int updateItemPosition = ArticlesList.IndexOf(originalArticle);
@@ -115,7 +115,7 @@ namespace SQLiteSample
 
       return modifiedArticle;
 
-      async Task<Article> UpdateAsync(Article original, Article newData)
+      async Task<Article> UpdateDataAsync(Article original, Article newData)
       {
         // 既存データの更新
         using (var context = new ArticleContext())
@@ -134,7 +134,7 @@ namespace SQLiteSample
           return targetItem;
         }
       }
-      async Task<Article> InsertAsync(Article article)
+      async Task<Article> InsertDataAsync(Article article)
       {
         // 新規データを追加（自動採番）
         using (var context = new ArticleContext())
@@ -175,7 +175,7 @@ namespace SQLiteSample
 #if DEBUG
     // ADO.NETも利用可能（Microsoft.EntityFrameworkCore.Sqliteと一緒にMicrosoft.Data.Sqliteも入っている）
     public static async Task AdoDotNetSampleAsync()
-    { 
+    {
       using (var conn = new Microsoft.Data.Sqlite.SqliteConnection(ArticleContext._connectionString))
       {
         await conn.OpenAsync();

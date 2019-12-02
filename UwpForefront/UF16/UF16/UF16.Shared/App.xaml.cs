@@ -34,9 +34,9 @@ namespace UF16
     {
 #if DEBUG
       if (System.Diagnostics.Debugger.IsAttached)
-			{
-				// this.DebugSettings.EnableFrameRateCounter = true;
-			}
+      {
+        // this.DebugSettings.EnableFrameRateCounter = true;
+      }
 #endif
       Frame rootFrame = Windows.UI.Xaml.Window.Current.Content as Frame;
 
@@ -132,7 +132,7 @@ namespace UF16
 					}
         )
 #if DEBUG
-				.AddConsole(LogLevel.Debug);
+        .AddConsole(LogLevel.Debug);
 #else
         .AddConsole(LogLevel.Information);
 #endif

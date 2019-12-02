@@ -102,7 +102,7 @@
       </Grid>
     </Viewbox>
 
-    <not_wasm:WebView x:Name="WebView1" Grid.Row="3" Source="http://example.com" />
+    <not_wasm:WebView x:Name="WebView1" Grid.Row="3" Source="https://example.com" />
     <wasm:WebAsmWebView x:Name="WebView1" Grid.Row="3" />
   </Grid>
 </Page>
