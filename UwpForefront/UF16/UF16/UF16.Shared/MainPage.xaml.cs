@@ -33,6 +33,10 @@ namespace UF16
         await Task.Yield();
         ListView1.SelectedIndex = 0;
       }
+
+#if DEBUG
+      await SQLiteSample.ArticleDatabase.AdoDotNetSampleAsync();
+#endif
     }
 
     private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

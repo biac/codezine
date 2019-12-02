@@ -7,7 +7,6 @@
     public string Url { get; set; }
 
     public Article() { }
-    public Article(int articleId)
-      => ArticleId = articleId;
+    public Article(int articleId) => ArticleId = articleId;
   }
 }

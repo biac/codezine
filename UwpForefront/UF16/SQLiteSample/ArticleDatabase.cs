@@ -77,7 +77,7 @@ namespace SQLiteSample
     {
       int tempIndex = -1;
       if (ArticlesList.Count > 0)
-      { 
+      {
         int minId = ArticlesList.Min(m => m.ArticleId);
         if (minId < 0)
           tempIndex = minId - 1;
@@ -121,7 +121,7 @@ namespace SQLiteSample
         using (var context = new ArticleContext())
         {
           // データベースから更新対象のデータを取ってくる
-          var targetItem 
+          var targetItem
             = await context.Articles.SingleAsync(m => m.ArticleId == original.ArticleId);
 
           // 更新対象のデータを書き換え
@@ -160,7 +160,7 @@ namespace SQLiteSample
       {
         using (var context = new ArticleContext())
         {
-          var targetItem 
+          var targetItem
             = await context.Articles.SingleAsync(m => m.ArticleId == article.ArticleId);
 
           context.Articles.Remove(targetItem);
@@ -170,5 +170,23 @@ namespace SQLiteSample
 
       ArticlesList.Remove(article);
     }
-   }
+
+
+#if DEBUG
+    // ADO.NETも利用可能（Microsoft.EntityFrameworkCore.Sqliteと一緒にMicrosoft.Data.Sqliteも入っている）
+    public static async Task AdoDotNetSampleAsync()
+    { 
+      using (var conn = new Microsoft.Data.Sqlite.SqliteConnection(ArticleContext._connectionString))
+      {
+        await conn.OpenAsync();
+
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT * FROM Articles";
+        using (var reader = cmd.ExecuteReader())
+          while (await reader.ReadAsync())
+            Console.WriteLine($"{reader.GetInt32(0)} - {reader.GetString(1)}, {reader.GetString(2)}");
+      }
+    }
+#endif
+  }
 }

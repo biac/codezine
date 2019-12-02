@@ -10,7 +10,7 @@ namespace SQLiteSample
 
     // 接続文字列（UWPとWebASM）
     const string DbName = "uf16.db";
-    private static string _connectionString = $"data source={DbName}";
+    internal static string _connectionString = $"data source={DbName}";
 
     // 接続文字列（Android）
     public static void InitConnectionStringForAndroid()
