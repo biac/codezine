@@ -1,0 +1,171 @@
+﻿<Window
+  x:Class="Tetrahedron.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:Tetrahedron"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  Title="MainWindow"
+  Width="800"
+  Height="480"
+  ResizeMode="CanResizeWithGrip"
+  mc:Ignorable="d">
+  <Window.Resources>
+    <Storyboard x:Key="Rotate1" />
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <Grid Grid.Row="1" >
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="8*" />
+        <ColumnDefinition Width="1*" />
+      </Grid.ColumnDefinitions>
+      <Slider x:Name="HScroll" Grid.Column="1"
+              IsEnabled="{Binding ElementName=ManualToggle, Path=IsChecked}"
+              Minimum="-180" Maximum="180" Margin="0,5"
+              LargeChange="10" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
+    </Grid>
+    <Grid Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1*" />
+        <RowDefinition Height="8*" />
+        <RowDefinition Height="1*" />
+      </Grid.RowDefinitions>
+      <Slider x:Name="VScroll" Grid.Row="1" Orientation="Vertical" IsDirectionReversed="True"
+              IsEnabled="{Binding ElementName=ManualToggle, Path=IsChecked}"
+              Minimum="-180" Maximum="180" Margin="5,0" 
+              LargeChange="10" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
+    </Grid>
+
+    <Border>
+      <Border.Background>
+        <RadialGradientBrush GradientOrigin="0.5, 0.5">
+          <GradientStop Offset="0.0" Color="LightGray"/>
+          <GradientStop Offset="1.5" Color="Gray"/>
+        </RadialGradientBrush>
+      </Border.Background>
+    </Border>
+
+    <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+            Width="{Binding ElementName=ManualToggle, Path=ActualWidth}"
+            Height="{Binding ElementName=ManualToggle, Path=ActualHeight}"
+            BorderBrush="LightGray" BorderThickness="1" Background="#20000000"
+            Margin="10">
+      <Border.Effect>
+        <BlurEffect Radius="10" KernelType="Gaussian" RenderingBias="Quality"  />
+      </Border.Effect>
+    </Border>
+    <ToggleButton x:Name="ManualToggle" Content="手動" Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                  Margin="10" Padding="15,3" FontWeight="Bold" 
+                  >
+    </ToggleButton>
+
+    <Viewport3D
+      Grid.Row="0"
+      Grid.Column="0"
+      >
+      <ModelVisual3D>
+        <ModelVisual3D.Content>
+          <Model3DGroup>
+            <!--  Lights  -->
+            <AmbientLight Color="Gray" />
+            <DirectionalLight Direction=" 1,-1, 0" Color="Green" />
+            <DirectionalLight Direction="-1,-1, 0" Color="Red" />
+            <DirectionalLight Direction=" 0, 1,-1" Color="Blue" />
+
+            <GeometryModel3D>
+              <GeometryModel3D.Material>
+                <!--<DiffuseMaterial Brush="LightGray" />-->
+                <DiffuseMaterial>
+                  <DiffuseMaterial.Brush>
+                    <ImageBrush ImageSource="Assets/060.JPG" Stretch="UniformToFill" />
+                  </DiffuseMaterial.Brush>
+                </DiffuseMaterial>
+              </GeometryModel3D.Material>
+              <GeometryModel3D.Geometry>
+                <!--  Tetrahedron  -->
+                <MeshGeometry3D Positions="0, 0, 1.15470053837925150,
+                                           1, 0, -0.57735026918962584,
+                                           0, 1.6329931618554521, 0,
+
+                                           1, 0, -0.57735026918962584,
+                                          -1, 0, -0.57735026918962584,
+                                           0, 1.6329931618554521, 0,
+
+                                          -1, 0, -0.57735026918962584,
+                                           0, 0, 1.15470053837925150,
+                                           0, 1.6329931618554521, 0,
+    
+                                           0, 0, 1.15470053837925150,
+                                          -1, 0, -0.57735026918962584,
+                                           1, 0, -0.57735026918962584"
+                                TriangleIndices="0 1 2    3 4 5
+                                                 6 7 8    9 10 11"
+                                TextureCoordinates="0 0,  1 0,  0.5 1,
+                                                    0 0,  1 0,  0.5 1,
+                                                    0 0,  1 0,  0.5 1,
+                                                    0 0,  0.25 0,  0.5 0.25"
+                                />
+              </GeometryModel3D.Geometry>
+
+
+              <GeometryModel3D.Transform>
+                <Transform3DGroup>
+                <RotateTransform3D>
+                  <RotateTransform3D.Rotation>
+                    <AxisAngleRotation3D
+                      x:Name="axisAngleRotation3D1"
+                      Angle="{Binding ElementName=HScroll, Path=Value}"
+                      Axis="0.1, 1, 0.1" />
+                  </RotateTransform3D.Rotation>
+                </RotateTransform3D>
+                  <RotateTransform3D CenterY="0.5">
+                    <RotateTransform3D.Rotation>
+                      <AxisAngleRotation3D
+                      x:Name="axisAngleRotation3D2"
+                      Angle="{Binding ElementName=VScroll, Path=Value}"
+                      Axis="1, 0.1, 0.1" />
+                    </RotateTransform3D.Rotation>
+                  </RotateTransform3D>
+                </Transform3DGroup>
+              </GeometryModel3D.Transform>
+            </GeometryModel3D>
+          </Model3DGroup>
+        </ModelVisual3D.Content>
+      </ModelVisual3D>
+
+      <Viewport3D.Camera>
+        <PerspectiveCamera
+          FieldOfView="60"
+          LookDirection="-1.5, -2, -3"
+          Position="1.5, 2.5, 3"
+          UpDirection="0, 1, 0">
+          <!--<PerspectiveCamera.Transform>
+            <Transform3DGroup>
+              <RotateTransform3D>
+                <RotateTransform3D.Rotation>
+                  <AxisAngleRotation3D Angle="{Binding ElementName=HScroll, Path=Value}" Axis="0 1 0" />
+                </RotateTransform3D.Rotation>
+              </RotateTransform3D>
+              <RotateTransform3D>
+                <RotateTransform3D.Rotation>
+                  <AxisAngleRotation3D Angle="{Binding ElementName=VScroll, Path=Value}" Axis="1 0 0" />
+                </RotateTransform3D.Rotation>
+              </RotateTransform3D>
+            </Transform3DGroup>
+          </PerspectiveCamera.Transform>-->
+        </PerspectiveCamera>
+      </Viewport3D.Camera>
+    </Viewport3D>
+  </Grid>
+</Window>
