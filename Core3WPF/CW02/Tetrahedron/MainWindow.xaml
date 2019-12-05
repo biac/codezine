@@ -6,15 +6,33 @@
   xmlns:local="clr-namespace:Tetrahedron"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   Title="MainWindow"
-  Width="800"
-  Height="480"
+  Width="800" Height="480" MinWidth="200" MinHeight="160"
+  
   ResizeMode="CanResizeWithGrip"
-  mc:Ignorable="d">
+  WindowStyle="None"
+  AllowsTransparency="True"
+  Background="#8000a2e8"
+
+  mc:Ignorable="d"
+  >
   <Window.Resources>
-    <Storyboard x:Key="Rotate1" />
+    <Storyboard x:Key="RotateStoryY" RepeatBehavior="Forever" >
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="HScroll" Storyboard.TargetProperty="(RangeBase.Value)">
+        <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-180"/>
+        <EasingDoubleKeyFrame KeyTime="00:00:03.4" Value="180"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Key="RotateStoryX" RepeatBehavior="Forever" >
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="VScroll" Storyboard.TargetProperty="(RangeBase.Value)">
+        <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-180"/>
+        <EasingDoubleKeyFrame KeyTime="00:00:03.8" Value="180"/>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
   </Window.Resources>
-  <Grid>
+  
+  <Grid Margin="1">
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
       <RowDefinition />
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
@@ -23,7 +41,8 @@
       <ColumnDefinition Width="Auto" />
     </Grid.ColumnDefinitions>
 
-    <Grid Grid.Row="1" >
+    <!-- Y軸回りスライダー -->
+    <Grid Grid.Row="2" >
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*" />
         <ColumnDefinition Width="8*" />
@@ -34,7 +53,9 @@
               Minimum="-180" Maximum="180" Margin="0,5"
               LargeChange="10" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
     </Grid>
-    <Grid Grid.Column="1">
+
+    <!-- X軸回りスライダー -->
+    <Grid Grid.Row="1" Grid.Column="1">
       <Grid.RowDefinitions>
         <RowDefinition Height="1*" />
         <RowDefinition Height="8*" />
@@ -42,11 +63,12 @@
       </Grid.RowDefinitions>
       <Slider x:Name="VScroll" Grid.Row="1" Orientation="Vertical" IsDirectionReversed="True"
               IsEnabled="{Binding ElementName=ManualToggle, Path=IsChecked}"
-              Minimum="-180" Maximum="180" Margin="5,0" 
+              Minimum="-180" Maximum="180" Margin="5,0,0,0" 
               LargeChange="10" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
     </Grid>
 
-    <Border>
+    <!-- 3Dイメージ -->
+    <Border Grid.Row="1" Opacity="0.85">
       <Border.Background>
         <RadialGradientBrush GradientOrigin="0.5, 0.5">
           <GradientStop Offset="0.0" Color="LightGray"/>
@@ -54,26 +76,20 @@
         </RadialGradientBrush>
       </Border.Background>
     </Border>
-
-    <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-            Width="{Binding ElementName=ManualToggle, Path=ActualWidth}"
-            Height="{Binding ElementName=ManualToggle, Path=ActualHeight}"
-            BorderBrush="LightGray" BorderThickness="1" Background="#20000000"
-            Margin="10">
-      <Border.Effect>
-        <BlurEffect Radius="10" KernelType="Gaussian" RenderingBias="Quality"  />
-      </Border.Effect>
-    </Border>
-    <ToggleButton x:Name="ManualToggle" Content="手動" Background="Transparent"
-                  HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                  Margin="10" Padding="15,3" FontWeight="Bold" 
-                  >
-    </ToggleButton>
-
-    <Viewport3D
-      Grid.Row="0"
-      Grid.Column="0"
-      >
+    <Viewport3D Grid.Row="1">
+      <Viewport3D.Triggers>
+        <EventTrigger RoutedEvent="Viewport3D.Loaded">
+          <BeginStoryboard>
+            <Storyboard>
+              <BooleanAnimationUsingKeyFrames
+                Storyboard.TargetName="ManualToggle"
+                Storyboard.TargetProperty="IsChecked">
+                <DiscreteBooleanKeyFrame KeyTime="0" Value="False" />
+              </BooleanAnimationUsingKeyFrames>
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+      </Viewport3D.Triggers>
       <ModelVisual3D>
         <ModelVisual3D.Content>
           <Model3DGroup>
@@ -85,7 +101,6 @@
 
             <GeometryModel3D>
               <GeometryModel3D.Material>
-                <!--<DiffuseMaterial Brush="LightGray" />-->
                 <DiffuseMaterial>
                   <DiffuseMaterial.Brush>
                     <ImageBrush ImageSource="Assets/060.JPG" Stretch="UniformToFill" />
@@ -117,14 +132,11 @@
                                                     0 0,  0.25 0,  0.5 0.25"
                                 />
               </GeometryModel3D.Geometry>
-
-
               <GeometryModel3D.Transform>
                 <Transform3DGroup>
                 <RotateTransform3D>
                   <RotateTransform3D.Rotation>
                     <AxisAngleRotation3D
-                      x:Name="axisAngleRotation3D1"
                       Angle="{Binding ElementName=HScroll, Path=Value}"
                       Axis="0.1, 1, 0.1" />
                   </RotateTransform3D.Rotation>
@@ -132,7 +144,41 @@
                   <RotateTransform3D CenterY="0.5">
                     <RotateTransform3D.Rotation>
                       <AxisAngleRotation3D
-                      x:Name="axisAngleRotation3D2"
+                      Angle="{Binding ElementName=VScroll, Path=Value}"
+                      Axis="1, 0.1, 0.1" />
+                    </RotateTransform3D.Rotation>
+                  </RotateTransform3D>
+                </Transform3DGroup>
+              </GeometryModel3D.Transform>
+            </GeometryModel3D>
+            <GeometryModel3D>
+              <GeometryModel3D.Material>
+                <DiffuseMaterial Brush="#40ff0000"/>
+              </GeometryModel3D.Material>
+              <GeometryModel3D.Geometry>
+                <MeshGeometry3D Positions="
+                                   0, 1.4697, 0.115470053837925150,
+                                  -0.1, 1.4697, -0.057735026918962584,
+                                   0.1, 1.4697, -0.057735026918962584,
+                                   0, 1.6329931618554521, 0
+                                "
+                                TriangleIndices="
+                                   3 1 0    3 2 1
+                                   3 0 2    0 1 2
+                                " />
+              </GeometryModel3D.Geometry>
+              <GeometryModel3D.Transform>
+                <Transform3DGroup>
+                  <RotateTransform3D>
+                    <RotateTransform3D.Rotation>
+                      <AxisAngleRotation3D
+                      Angle="{Binding ElementName=HScroll, Path=Value}"
+                      Axis="0.1, 1, 0.1" />
+                    </RotateTransform3D.Rotation>
+                  </RotateTransform3D>
+                  <RotateTransform3D CenterY="0.5">
+                    <RotateTransform3D.Rotation>
+                      <AxisAngleRotation3D
                       Angle="{Binding ElementName=VScroll, Path=Value}"
                       Axis="1, 0.1, 0.1" />
                     </RotateTransform3D.Rotation>
@@ -150,22 +196,50 @@
           LookDirection="-1.5, -2, -3"
           Position="1.5, 2.5, 3"
           UpDirection="0, 1, 0">
-          <!--<PerspectiveCamera.Transform>
-            <Transform3DGroup>
-              <RotateTransform3D>
-                <RotateTransform3D.Rotation>
-                  <AxisAngleRotation3D Angle="{Binding ElementName=HScroll, Path=Value}" Axis="0 1 0" />
-                </RotateTransform3D.Rotation>
-              </RotateTransform3D>
-              <RotateTransform3D>
-                <RotateTransform3D.Rotation>
-                  <AxisAngleRotation3D Angle="{Binding ElementName=VScroll, Path=Value}" Axis="1 0 0" />
-                </RotateTransform3D.Rotation>
-              </RotateTransform3D>
-            </Transform3DGroup>
-          </PerspectiveCamera.Transform>-->
         </PerspectiveCamera>
       </Viewport3D.Camera>
     </Viewport3D>
+
+    <!-- 手動切替ボタン -->
+    <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+            Width="{Binding ElementName=ManualToggle, Path=ActualWidth}"
+            Height="{Binding ElementName=ManualToggle, Path=ActualHeight}"
+            BorderBrush="LightGray" BorderThickness="1" Background="#20000000"
+            Margin="10">
+      <Border.Effect>
+        <BlurEffect Radius="10" KernelType="Gaussian" RenderingBias="Quality"  />
+      </Border.Effect>
+    </Border>
+    <ToggleButton x:Name="ManualToggle" Grid.Row="1" Content="手動" Background="Transparent"
+                  HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                  Margin="10" Padding="15,3" FontWeight="Bold" IsChecked="True"
+                  >
+      <ToggleButton.Triggers>
+        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+          <BeginStoryboard x:Name="RotateY" Storyboard="{StaticResource RotateStoryY}" />
+          <BeginStoryboard x:Name="RotateX" Storyboard="{StaticResource RotateStoryX}" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ToggleButton.Checked">
+          <StopStoryboard BeginStoryboardName="RotateY" />
+          <StopStoryboard BeginStoryboardName="RotateX" />
+        </EventTrigger>
+      </ToggleButton.Triggers>
+    </ToggleButton>
+
+
+    <!-- タイトルバー -->
+    <Grid x:Name="TitleBar" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30"
+            Background="#00a2e8" Opacity="0.85"
+            >
+      <TextBlock FontSize="16" Margin="10,0,0,3" VerticalAlignment="Center"
+                 ><Span><Bold>CW02</Bold></Span> - Tetrahedron</TextBlock>
+      <!-- [×]（閉じる）ボタン -->
+      <Button Click="CloseButton_Click"
+              Content="X" FontSize="16" FontFamily="Arial"
+              Width="45" Height="30"
+              Background="#e81123" Foreground="White" BorderThickness="0"
+              HorizontalAlignment="Right"
+              />
+    </Grid>
   </Grid>
 </Window>

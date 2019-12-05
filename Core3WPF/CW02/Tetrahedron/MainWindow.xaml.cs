@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,6 +24,21 @@ namespace Tetrahedron
     public MainWindow()
     {
       InitializeComponent();
+
+      // ウィンドウをマウスのドラッグで移動できるようにする
+      this.MouseLeftButtonDown += (s, e) => this.DragMove();
+
+      // タイトルバーとウィンドウの背景にアクセントカラーを設定
+      if (SystemParameters.IsGlassEnabled)
+      {
+        TitleBar.Background = SystemParameters.WindowGlassBrush;
+        var accentBrush = SystemParameters.WindowGlassBrush.CloneCurrentValue();
+        accentBrush.Opacity = 0.5;
+        this.Background = accentBrush;
+      }
     }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+      => this.Close();
   }
 }
