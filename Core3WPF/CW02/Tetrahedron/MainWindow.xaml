@@ -94,10 +94,13 @@
         <ModelVisual3D.Content>
           <Model3DGroup>
             <!--  Lights  -->
-            <AmbientLight Color="Gray" />
-            <DirectionalLight Direction=" 1,-1, 0" Color="Green" />
-            <DirectionalLight Direction="-1,-1, 0" Color="Red" />
-            <DirectionalLight Direction=" 0, 1,-1" Color="Blue" />
+            <AmbientLight Color="Black" />
+            <DirectionalLight Direction=" 1.5, -1, -0.5" Color="Green" />
+            <DirectionalLight Direction="-1.5, -1, -0.5" Color="Red" />
+            <DirectionalLight Direction="   0,  1,  -0.5" Color="Blue" />
+            <SpotLight Position="0.0, 3.5, 0.0" Direction="0, -1, 0" Color="White"
+                       Range="5.0"  InnerConeAngle="15" OuterConeAngle="70"
+                        />
 
             <GeometryModel3D>
               <GeometryModel3D.Material>
@@ -126,9 +129,9 @@
                                            1, 0, -0.57735026918962584"
                                 TriangleIndices="0 1 2    3 4 5
                                                  6 7 8    9 10 11"
-                                TextureCoordinates="0 0,  1 0,  0.5 1,
-                                                    0 0,  1 0,  0.5 1,
-                                                    0 0,  1 0,  0.5 1,
+                                TextureCoordinates="0 1,  1    1,  0.5 0,
+                                                    0 1,  1    1,  0.5 0,
+                                                    0 1,  1    1,  0.5 0,
                                                     0 0,  0.25 0,  0.5 0.25"
                                 />
               </GeometryModel3D.Geometry>
