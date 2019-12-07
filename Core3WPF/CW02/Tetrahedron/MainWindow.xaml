@@ -16,6 +16,7 @@
   mc:Ignorable="d"
   >
   <Window.Resources>
+    <!-- アニメーション -->
     <Storyboard x:Key="RotateStoryY" RepeatBehavior="Forever" >
       <DoubleAnimationUsingKeyFrames Storyboard.TargetName="HScroll" Storyboard.TargetProperty="(RangeBase.Value)">
         <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-180"/>
@@ -196,9 +197,8 @@
 
 
     <!-- タイトルバー -->
-    <Grid x:Name="TitleBar" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30"
-            Background="#00a2e8" Opacity="0.85"
-            >
+    <Grid Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30">
+      <Border x:Name="TitleBar" Background="#00a2e8" Opacity="0.85" />
       <TextBlock FontSize="16" Margin="10,0,0,3" VerticalAlignment="Center"
                  ><Span><Bold>CW02</Bold></Span> - Tetrahedron</TextBlock>
       <!-- [×]（閉じる）ボタン -->
