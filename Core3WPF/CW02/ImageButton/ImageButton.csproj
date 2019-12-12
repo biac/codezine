@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ILoveChess01a.png" />
+    <None Remove="SecurityAndMaintenance.png" />
+    <None Remove="SecurityAndMaintenance_Alert.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\ILoveChess.png" />
+  </ItemGroup>
+
+</Project>

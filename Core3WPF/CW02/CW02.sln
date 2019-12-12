@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetrahedron", "Tetrahedron\Tetrahedron.csproj", "{69ED27B4-E177-4E82-8941-50C4AD1A538E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tetrahedron", "Tetrahedron\Tetrahedron.csproj", "{69ED27B4-E177-4E82-8941-50C4AD1A538E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlAndCode", "XamlAndCode\XamlAndCode.csproj", "{FD4A5EEC-3605-46DF-B771-438A70F61CCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageButton", "ImageButton\ImageButton.csproj", "{BF383913-E5C8-4662-8226-BF067EDE9112}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{69ED27B4-E177-4E82-8941-50C4AD1A538E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69ED27B4-E177-4E82-8941-50C4AD1A538E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69ED27B4-E177-4E82-8941-50C4AD1A538E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4A5EEC-3605-46DF-B771-438A70F61CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4A5EEC-3605-46DF-B771-438A70F61CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4A5EEC-3605-46DF-B771-438A70F61CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4A5EEC-3605-46DF-B771-438A70F61CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF383913-E5C8-4662-8226-BF067EDE9112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF383913-E5C8-4662-8226-BF067EDE9112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF383913-E5C8-4662-8226-BF067EDE9112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF383913-E5C8-4662-8226-BF067EDE9112}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,27 @@
+﻿<Window x:Class="XamlAndCode.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XamlAndCode"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+  <Grid>
+    <Grid x:Name="Grid1"
+          HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Button Grid.Row="0" Margin="0,0,0,5" Padding="10,5"
+              Click="Button1_Click"
+              >XAMLで定義したボタン</Button>
+      <!--<Button Grid.Row="1" Margin="0,0,0,5" Padding="10,5"
+              Click="Button2_Click"
+              >C#で組み立てたボタン</Button>-->
+      <TextBlock x:Name="Text1" Grid.Row="2" FontSize="18"
+                 HorizontalAlignment="Center" Height="30" />
+    </Grid>
+  </Grid>
+</Window>
