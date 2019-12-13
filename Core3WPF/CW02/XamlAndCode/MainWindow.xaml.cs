@@ -24,6 +24,7 @@ namespace XamlAndCode
     {
       InitializeComponent();
 
+      // オブジェクト初期化子を使った書き方
       var button2 = new Button // ボタンのインスタンス化
         {
           // プロパティを設定
@@ -31,7 +32,17 @@ namespace XamlAndCode
           Margin = new Thickness(  0.0, 0.0,  0.0, 5.0),
           Padding = new Thickness(10.0, 5.0, 10.0, 5.0),
         };
+      //// 従来の書き方
+      //var button2 = new Button(); // ボタンのインスタンス化
+      //// プロパティを設定
+      //button2.Content = "C#で組み立てたボタン";
+      //button2.Margin = new Thickness(  0.0, 0.0,  0.0, 5.0);
+      //button2.Padding = new Thickness(10.0, 5.0, 10.0, 5.0);
+
       button2.Click += Button2_Click; // イベントハンドラーを設定
+      // 次のようにラムダ式を使っていっぺんに書いてもよい（Button2_Clickメソッドは不要になる）
+      // button2.Click += (s,e) => Text1.Text = "C#";
+
       Grid1.Children.Add(button2); // Gridの中に配置
       Grid.SetRow(button2, 1); // Grid内で配置するRowを指定
     }
