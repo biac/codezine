@@ -1,0 +1,76 @@
+﻿<Window x:Class="XamlProperty.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XamlProperty"
+        mc:Ignorable="d"
+        Title="プロパティを設定する方法" Height="450" Width="800">
+  <Grid Margin="10,5">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Grid.Resources>
+      <Style TargetType="Border">
+        <Setter Property="Width" Value="120"/>
+        <Setter Property="Height" Value="120"/>
+        <Setter Property="Margin" Value="0,0,10,10" />
+        <Setter Property="VerticalAlignment" Value="Top"/>
+      </Style>
+      <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Lucida Console" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Padding" Value="0,2,0,0" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+      </Style>
+    </Grid.Resources>
+    
+    <!-- Background を属性で指定 -->
+    <Border Background="Red" />
+    <TextBlock Grid.Column="1" xml:space="preserve">&lt;!-- 属性に文字列で設定 --&gt;
+&lt;Border <Bold>Background</Bold>=&quot;Red&quot; /&gt;</TextBlock>
+
+    <!-- Background をプロパティ構文で指定 -->
+    <Border Grid.Row="1">
+      <Border.Background>
+        <SolidColorBrush Color="Red" />
+      </Border.Background>
+    </Border>
+    <TextBlock Grid.Row="1" Grid.Column="1" xml:space="preserve">&lt;!-- 上と同じ意味のプロパティ要素構文（＝属性でも書ける） --&gt;
+&lt;Border&gt;
+  &lt;<Bold>Border.Background</Bold>&gt;
+    &lt;SolidColorBrush Color=&quot;Red&quot; /&gt;
+  &lt;/Border.Background&gt;
+&lt;/Border&gt;</TextBlock>
+
+    <!-- プロパティ要素構文でしか書けないBackground -->
+    <Border Grid.Row="2">
+      <Border.Background>
+        <LinearGradientBrush StartPoint="0.1, 0.2" EndPoint="0.9, 0.8">
+          <GradientStop Color="Red" Offset="0.0" />
+          <GradientStop Color="Yellow" Offset="0.5" />
+          <GradientStop Color="LimeGreen"  Offset="1.0" />
+        </LinearGradientBrush>
+      </Border.Background>
+    </Border>
+    <TextBlock Grid.Row="2" Grid.Column="1" xml:space="preserve">&lt;!-- プロパティ要素構文でしか書けない --&gt;
+&lt;Border&gt;
+  &lt;<Bold>Border.Background</Bold>&gt;
+    &lt;LinearGradientBrush StartPoint=&quot;0.1,0.2&quot; EndPoint=&quot;0.9,0.8&quot;&gt;
+      &lt;GradientStop Color=&quot;Red&quot; Offset=&quot;0.0&quot; /&gt;
+      &lt;GradientStop Color=&quot;Yellow&quot; Offset=&quot;0.5&quot; /&gt;
+      &lt;GradientStop Color=&quot;LimeGreen&quot; Offset=&quot;1.0&quot; /&gt;
+    &lt;/LinearGradientBrush&gt;
+  &lt;/Border.Background&gt;
+&lt;/Border&gt;</TextBlock>
+
+
+  </Grid>
+</Window>

@@ -1,0 +1,35 @@
+﻿<Window x:Class="UserControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UserControl"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="540">
+  <Grid Margin="10,5">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.ColumnSpan="2" FontSize="15">SampleNamespace 名前空間に定義されている Rating コントロールを使う</TextBlock>
+
+    <Rating xmlns="clr-namespace:SampleNamespace" Margin="0,50,0,0" Stars="2" />
+    <TextBlock xml:space="preserve" Grid.Column="1" Margin="10,50,0,0" FontFamily="Lucida Console">&lt;!-- 要素内で名前空間を指定する --&gt;
+&lt;Rating <Bold>xmlns=&quot;clr-namespace:SampleNamespace&quot;</Bold>
+        Stars=&quot;2&quot;/&gt;</TextBlock>
+
+    <sample:Rating xmlns:sample="clr-namespace:SampleNamespace" Margin="0,30,0,0" 
+                   Grid.Row="1" Stars="5" />
+    <TextBlock xml:space="preserve" Grid.Row="1" Grid.Column="1" Margin="10,30,0,0" FontFamily="Lucida Console">&lt;!-- 名前空間にプレフィックスを付け、それを指定する --&gt;
+&lt;<Bold>sample:</Bold>Rating
+  xmlns:<Bold>sample</Bold>=&quot;clr-namespace:SampleNamespace&quot;
+  Stars=&quot;5&quot; /&gt;</TextBlock>
+
+  </Grid>
+</Window>
