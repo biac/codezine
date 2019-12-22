@@ -1,4 +1,4 @@
-﻿<Window
+﻿<Window x:Class="HamburgerMenu.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,15 +7,36 @@
 
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
 
-        x:Class="HamburgerMenu.MainWindow" 
         mc:Ignorable="d"
-        Title="ハンバーガーメニューの基本" Height="450" Width="800">
-  <Grid Background="Lime">
+        Title="ハンバーガーメニューの基本" Height="240" Width="540">
+  <Grid x:Name="MainGrid" Background="Lime">
+
     <!-- メインコンテンツ（ハンバーガーメニューのためにMarginで左側を空けておく） -->
-    <Grid Margin="30,0,0,0" Background="MintCream">
+    <Grid x:Name="ContentsGrid" Margin="30,0,0,0" Background="MintCream">
       <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                 FontSize="30">メインコンテンツ</TextBlock>
+                 FontSize="60">メインコンテンツ</TextBlock>
     </Grid>
+
+    <!-- ポップアップ（XAMLの記述順とは関係なく最前面に表示される） -->
+    <Popup x:Name="Popup1" Placement="Center" PopupAnimation="Fade" >
+      <Grid x:Name="PopupGrid" Width="300">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Grid.RowSpan="3" Background="White" BorderBrush="DarkRed" BorderThickness="1" />
+        <TextBlock x:Name="PopupTitle" Background="DarkRed" Foreground="White"
+                   FontSize="18" FontWeight="Bold" TextAlignment="Center" Padding="3"
+                   >(Title)</TextBlock>
+        <ScrollViewer Grid.Row="1" MinHeight="50" Padding="5"
+                      VerticalScrollBarVisibility="Auto" Focusable="False">
+          <TextBlock x:Name="PopupBody" TextWrapping="Wrap" >(Message)</TextBlock>
+        </ScrollViewer>
+        <Button Grid.Row="2" Click="OKButton_Click" Content="OK" 
+                HorizontalAlignment="Center" Margin="0,0,0,10" Padding="20,0"/>
+      </Grid>
+    </Popup>
 
     <!-- ハンバーガーメニュー（メインコンテンツの手前に表示される） -->
     <Grid x:Name="MenuGrid" Background="LightSkyBlue" Width="30" HorizontalAlignment="Left">
@@ -23,7 +44,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition />
       </Grid.RowDefinitions>
-      
+
       <!-- ハンバーガーボタン（汎用） -->
       <ToggleButton Width="30" Height="30" HorizontalAlignment="Left"
                     Background="Transparent" BorderThickness="0" >
@@ -65,7 +86,7 @@
           </b:EventTrigger>
         </b:Interaction.Triggers>
       </ToggleButton>-->
-      
+
       <!-- メニュー -->
       <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0"
                FontSize="15" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -75,5 +96,31 @@
         <ListBoxItem >3-MENU</ListBoxItem>
       </ListBox>
     </Grid>
+
+    <!-- メッセージ表示（一番手前に表示される） -->
+    <Border x:Name="MessagePanel" Background="#60808080" Visibility="Hidden">
+      <Grid Width="300" VerticalAlignment="Center" Margin="5"  >
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Grid.RowSpan="3" Background="White" BorderBrush="DarkGreen" BorderThickness="1" >
+          <Border.Effect>
+            <DropShadowEffect Color="MidnightBlue" Opacity="0.5"
+                              BlurRadius="10" ShadowDepth="5" Direction="315"  />
+          </Border.Effect>
+        </Border>
+        <TextBlock x:Name="MessageTitle" Background="DarkGreen" Foreground="White"
+                   FontSize="18" FontWeight="Bold" TextAlignment="Center" Padding="3"
+                   >(Title)</TextBlock>
+        <ScrollViewer Grid.Row="1" MinHeight="50" Padding="5"
+                      VerticalScrollBarVisibility="Auto" Focusable="False">
+          <TextBlock x:Name="MessageBody" TextWrapping="Wrap" >(Message)</TextBlock>
+        </ScrollViewer>
+        <Button Grid.Row="2" Click="OKButton_Click" Content="OK" 
+                HorizontalAlignment="Center" Margin="0,0,0,10" Padding="20,0"/>
+      </Grid>
+    </Border>
   </Grid>
 </Window>

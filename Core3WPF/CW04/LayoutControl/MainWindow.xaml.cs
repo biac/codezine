@@ -12,25 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
-
-namespace HamburgerMenu
+namespace LayoutControl
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : Window
+  public partial class MainWindow : MetroWindow
   {
     public MainWindow()
     {
       InitializeComponent();
     }
 
-    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-      var selectedItem = e.AddedItems.OfType<ListBoxItem>().FirstOrDefault();
-      if (selectedItem != null)
-        MessageBox.Show(this, $@"""{selectedItem.Content}"" が選択されました。", "ハンバーガーメニュー",MessageBoxButton.OK, MessageBoxImage.Information);
-    }
+    //private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+    //{
+    //  MenuButton.IsChecked = false;
+    //}
   }
 }

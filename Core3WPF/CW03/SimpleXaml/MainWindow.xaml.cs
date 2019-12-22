@@ -12,24 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MahApps.Metro.Controls;
 
-namespace LayoutControl
+namespace SimpleXaml
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : MetroWindow
+  public partial class MainWindow : Window
   {
+    internal Button CodeButton;
+
     public MainWindow()
     {
       InitializeComponent();
+
+      CodeButton = new Button {
+        Name = nameof(CodeButton),
+        Content = "コードで作ったボタン",
+        HorizontalAlignment = HorizontalAlignment.Center,
+        VerticalAlignment = VerticalAlignment.Center,
+        Width = 150.0,
+      };
+      RootGrid.Children.Add(CodeButton);
     }
-
-
-    //private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-    //{
-    //  MenuButton.IsChecked = false;
-    //}
   }
 }
