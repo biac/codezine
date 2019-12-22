@@ -1,0 +1,32 @@
+﻿<Window x:Class="AttachedProperty.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AttachedProperty"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="240" Width="560">
+  <Window.Resources>
+    <ContextMenu x:Key="SampleContextMenu">
+      <MenuItem Header="MENU-1" />
+      <MenuItem Header="MENU-2" />
+      <MenuItem Header="MENU-3" IsCheckable="True" />
+    </ContextMenu>
+  </Window.Resources>
+
+  <Grid>
+    <Ellipse Width="200" Height="100" Fill="Coral"
+
+             ToolTipService.ToolTip="ToolTipServiceによるツールチップ"
+             ToolTipService.Placement="Left" 
+             ToolTipService.HorizontalOffset="50"
+             ToolTipService.VerticalOffset="-10"
+
+             ContextMenuService.ContextMenu="{StaticResource SampleContextMenu}"
+             ContextMenuService.Placement="Center"
+             ContextMenuService.HorizontalOffset="80"
+             ContextMenuService.VerticalOffset="10"
+             ContextMenuService.HasDropShadow="True"
+             />
+  </Grid>
+</Window>

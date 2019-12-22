@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HamburgerMenu", "HamburgerMenu\HamburgerMenu.csproj", "{5043246F-3F26-4EA5-ACD8-618B1D5E8629}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LayoutControl", "LayoutControl\LayoutControl.csproj", "{96C4CD8B-ECCC-4093-B936-9C0A2A9EC0E6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamlProperty", "XamlProperty\XamlProperty.csproj", "{2DF0C84F-4550-4CFB-BEC5-D55D192DE323}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserControl", "UserControl\UserControl.csproj", "{BB153A17-797E-403F-9FC4-BF3739B18CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleXaml", "SimpleXaml\SimpleXaml.csproj", "{51B0C1E2-735D-4F65-AF21-87E1AD041017}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleXaml", "SimpleXaml\SimpleXaml.csproj", "{51B0C1E2-735D-4F65-AF21-87E1AD041017}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachedProperty", "AttachedProperty\AttachedProperty.csproj", "{26EDA431-F602-4D54-B361-65008796B68F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5043246F-3F26-4EA5-ACD8-618B1D5E8629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5043246F-3F26-4EA5-ACD8-618B1D5E8629}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5043246F-3F26-4EA5-ACD8-618B1D5E8629}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5043246F-3F26-4EA5-ACD8-618B1D5E8629}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96C4CD8B-ECCC-4093-B936-9C0A2A9EC0E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96C4CD8B-ECCC-4093-B936-9C0A2A9EC0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96C4CD8B-ECCC-4093-B936-9C0A2A9EC0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96C4CD8B-ECCC-4093-B936-9C0A2A9EC0E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DF0C84F-4550-4CFB-BEC5-D55D192DE323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DF0C84F-4550-4CFB-BEC5-D55D192DE323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DF0C84F-4550-4CFB-BEC5-D55D192DE323}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +29,10 @@ Global
 		{51B0C1E2-735D-4F65-AF21-87E1AD041017}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B0C1E2-735D-4F65-AF21-87E1AD041017}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B0C1E2-735D-4F65-AF21-87E1AD041017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26EDA431-F602-4D54-B361-65008796B68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26EDA431-F602-4D54-B361-65008796B68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26EDA431-F602-4D54-B361-65008796B68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26EDA431-F602-4D54-B361-65008796B68F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
