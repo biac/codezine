@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleXaml", "SimpleXaml\Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachedProperty", "AttachedProperty\AttachedProperty.csproj", "{26EDA431-F602-4D54-B361-65008796B68F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHandler", "EventHandler\EventHandler.csproj", "{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{26EDA431-F602-4D54-B361-65008796B68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26EDA431-F602-4D54-B361-65008796B68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26EDA431-F602-4D54-B361-65008796B68F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
