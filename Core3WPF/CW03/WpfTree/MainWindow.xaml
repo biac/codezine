@@ -1,0 +1,75 @@
+﻿<Window x:Class="WpfTree.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfTree"
+
+        ResizeMode="CanResizeWithGrip"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+
+    <!--<Border Opacity="0.5"
+            Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />-->
+
+    <Grid Grid.Row="1" Margin="10,5,10,15">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Grid.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="FontSize" Value="15" />
+          <Setter Property="HorizontalAlignment" Value="Center" />
+          <Setter Property="Margin" Value="0,5,0,3" />
+          <Setter Property="Padding" Value="15,0" />
+          <Setter Property="Background" Value="#ccFFFFFF" />
+        </Style>
+        <Style TargetType="TreeView" >
+          <Setter Property="FontSize" Value="12" />
+          <Setter Property="Background" Value="#ccFFFFFF" />
+        </Style>
+        <Style TargetType="{x:Type TreeViewItem}">
+          <Setter Property="IsExpanded" Value="True" />
+        </Style>
+      </Grid.Resources>
+
+      <TextBlock>ロジカルツリー</TextBlock>
+      <TreeView x:Name="LogicalTreeView" Grid.Row="1" Background="#ccFFFFFF" />
+
+      <TextBlock Grid.Column="3">ビジュアルツリー</TextBlock>
+      <TreeView x:Name="VisualTreeView" Grid.Row="1" Grid.Column="2" />
+      
+    </Grid>
+
+    <!-- タイトルバー -->
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30">
+      <Border x:Name="TitleBar"  />
+      <TextBlock FontSize="16" Margin="10,0,0,3" VerticalAlignment="Center"
+                 ><Span><Bold>CW03</Bold></Span> - WPF Tree</TextBlock>
+      <!-- [×]（閉じる）ボタン -->
+      <Button Click="CloseButton_Click"
+              Content="X" FontSize="16" FontFamily="Arial"
+              Width="45" Height="30"
+              Background="#e81123" Foreground="White" BorderThickness="0"
+              HorizontalAlignment="Right"
+              />
+    </Grid>
+  </Grid>
+  <Window.Resources>
+  </Window.Resources>
+</Window>
