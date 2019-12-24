@@ -17,10 +17,14 @@
         <Grid.ColumnDefinitions>
           <ColumnDefinition/>
           <ColumnDefinition/>
+          <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="Button1" Content="ボタン" Padding="30,5"
                 HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <TextBox x:Name="TextBox1" Grid.Column="1" Text="テキストボックス"
+        <TextBlock x:Name="TextBlock1" Grid.Column="1" Text="テキストブロック"
+                   Background="Pink" Padding="10,5"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBox x:Name="TextBox1" Grid.Column="2" Text="テキストボックス"
                  Padding="5,5" Width="100"
                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
       </Grid>

@@ -27,8 +27,7 @@ namespace EventHandler
       Button1.Click += Button1_Click;
       TextBox1.TextChanged += TextBox1_TextChanged;
 
-
-      foreach (var ctl in new UIElement[] { Border1, Grid1, Button1, TextBox1, })
+      foreach (var ctl in new UIElement[] { Border1, Grid1, Button1, TextBlock1, TextBox1, })
       {
         ctl.PreviewMouseDown += MouseButtonEventHandler;
         ctl.MouseDown += MouseButtonEventHandler;

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachedProperty", "Attache
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHandler", "EventHandler\EventHandler.csproj", "{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttachedEvent", "AttachedEvent\AttachedEvent.csproj", "{B4FB6B4B-1CF0-4F53-9A5F-2B3B99505879}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{629CB0FB-9B3B-4E20-B5AA-7F57207A6A3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4FB6B4B-1CF0-4F53-9A5F-2B3B99505879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4FB6B4B-1CF0-4F53-9A5F-2B3B99505879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4FB6B4B-1CF0-4F53-9A5F-2B3B99505879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4FB6B4B-1CF0-4F53-9A5F-2B3B99505879}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
