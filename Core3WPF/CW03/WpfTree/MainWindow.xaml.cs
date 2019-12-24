@@ -59,7 +59,6 @@ namespace WpfTree
 
 
 
-    // http://miteshsureja.blogspot.com/2011/09/how-to-get-visual-tree-using.html
     public void AddElementToVisualTree(DependencyObject parent, TreeViewItem treeViewItem)
     {
       TreeViewItem newTreeViewItem = new TreeViewItem
