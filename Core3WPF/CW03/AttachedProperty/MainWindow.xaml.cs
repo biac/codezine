@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AttachedProperty
 {
@@ -23,6 +11,13 @@ namespace AttachedProperty
     public MainWindow()
     {
       InitializeComponent();
+    }
+
+    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    {
+      var menuItem = e.Source as MenuItem;
+      MessageBox.Show($"{menuItem.Header as string} が選択されました",
+                      "Context Menu");
     }
   }
 }

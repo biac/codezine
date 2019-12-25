@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace SampleNamespace
@@ -34,8 +31,8 @@ namespace SampleNamespace
     [TypeConverter(typeof(Int32Converter))]
     public int Stars
     {
-      get { return (int)GetValue(StarsProperty); }
-      set { SetValue(StarsProperty, value); }
+      get => (int)GetValue(StarsProperty);
+      set => SetValue(StarsProperty, value);
     }
 
     private void SetStars(int stars)

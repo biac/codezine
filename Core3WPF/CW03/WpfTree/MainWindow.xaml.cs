@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using target = SimpleXaml;
 
@@ -22,7 +11,7 @@ namespace WpfTree
   /// </summary>
   public partial class MainWindow : Window
   {
-    target.MainWindow _targetWindow = new target.MainWindow();
+    target.MainWindow _targetWindow;
 
     public MainWindow()
     {
@@ -41,11 +30,15 @@ namespace WpfTree
       }
 
       // このウィンドウがロードされたときの処理
-      this.Loaded += (s,e) => {
+      this.Loaded += (s, e) =>
+      {
         // ターゲットのウィンドウを表示する
-        _targetWindow.Owner = this;
-        _targetWindow.Left = this.Left;
-        _targetWindow.Top = this.Top + 250.0;
+        _targetWindow = new target.MainWindow
+        {
+          Owner = this,
+          Left = this.Left,
+          Top = this.Top + 250.0,
+        };
         _targetWindow.Show();
 
         // ターゲットのウィンドウのツリー構造を表示する
@@ -59,7 +52,7 @@ namespace WpfTree
 
 
 
-    public void AddElementToVisualTree(DependencyObject parent, TreeViewItem treeViewItem)
+    private void AddElementToVisualTree(DependencyObject parent, TreeViewItem treeViewItem)
     {
       TreeViewItem newTreeViewItem = new TreeViewItem
       {
@@ -77,7 +70,7 @@ namespace WpfTree
       }
     }
 
-    public void AddElementToLogicalTree(DependencyObject parent, TreeViewItem treeViewItem)
+    private void AddElementToLogicalTree(DependencyObject parent, TreeViewItem treeViewItem)
     {
       TreeViewItem newTreeViewItem = new TreeViewItem
       {

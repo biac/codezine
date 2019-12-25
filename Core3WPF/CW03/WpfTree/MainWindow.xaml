@@ -18,9 +18,6 @@
       <RowDefinition />
     </Grid.RowDefinitions>
 
-    <!--<Border Opacity="0.5"
-            Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />-->
-
     <Grid Grid.Row="1" Margin="10,5,10,15">
       <Grid.ColumnDefinitions>
         <ColumnDefinition />
@@ -53,7 +50,6 @@
 
       <TextBlock Grid.Column="3">ビジュアルツリー</TextBlock>
       <TreeView x:Name="VisualTreeView" Grid.Row="1" Grid.Column="2" />
-      
     </Grid>
 
     <!-- タイトルバー -->
@@ -70,6 +66,4 @@
               />
     </Grid>
   </Grid>
-  <Window.Resources>
-  </Window.Resources>
 </Window>

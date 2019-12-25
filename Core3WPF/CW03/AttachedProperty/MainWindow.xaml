@@ -8,9 +8,9 @@
         Title="MainWindow" Height="240" Width="560">
   <Window.Resources>
     <ContextMenu x:Key="SampleContextMenu">
-      <MenuItem Header="MENU-1" />
-      <MenuItem Header="MENU-2" />
-      <MenuItem Header="MENU-3" IsCheckable="True" />
+      <MenuItem Header="MENU-1" Click="MenuItem_Click" />
+      <MenuItem Header="MENU-2" Click="MenuItem_Click" />
+      <MenuItem Header="MENU-3" IsCheckable="True" Click="MenuItem_Click" />
     </ContextMenu>
   </Window.Resources>
 

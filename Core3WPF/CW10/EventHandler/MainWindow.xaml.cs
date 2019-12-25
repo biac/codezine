@@ -67,7 +67,7 @@ namespace EventHandler
 
     private void KeyEventHandler(object sender, KeyEventArgs e)
     {
-      
+
       var t = sender.GetType();
       var org = e.OriginalSource.GetType();
       Text1.Text += $"{e.RoutedEvent.Name}: sender={t.Name}, OriginalSource={org.Name}, Key={e.Key}\r";
@@ -79,7 +79,7 @@ namespace EventHandler
       var org = e.OriginalSource.GetType();
       Text1.Text += $"{e.RoutedEvent.Name}: sender={t.Name}, OriginalSource={org.Name}\r";
 
-      if(HandleCheck.IsChecked == true)
+      if (HandleCheck.IsChecked == true)
         if (sender is Grid && e.RoutedEvent.Name == "PreviewMouseDown")
         {
           e.Handled = true;
