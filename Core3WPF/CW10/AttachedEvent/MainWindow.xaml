@@ -53,7 +53,7 @@
           <Border.Background>
             <RadialGradientBrush GradientOrigin="0.45,0.35">
               <GradientStop Offset="0.0" Color="White" />
-              <GradientStop Offset="0.85" Color="{Binding ElementName=border,Path= Background.(SolidColorBrush.Color)}" x:Name="gradientStop" />
+              <GradientStop Offset="0.85" Color="{Binding ElementName=border,Path=Background.(SolidColorBrush.Color)}" x:Name="gradientStop" />
             </RadialGradientBrush>
           </Border.Background>
         </Border>
