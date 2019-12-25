@@ -32,7 +32,11 @@ namespace SampleNamespace
     public int Stars
     {
       get => (int)GetValue(StarsProperty);
-      set => SetValue(StarsProperty, value);
+      set
+      {
+        if (Stars != value)
+          SetValue(StarsProperty, value);
+      }
     }
 
     private void SetStars(int stars)

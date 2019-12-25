@@ -7,13 +7,13 @@ CodoZine 連載
 alt="実行中のWpfTree" width="402" height="239">
 
 - [AttachedProperty](./AttachedProperty/)  
-「添付プロパティ」(p.4) のサンプルコード
+「添付プロパティ」(p.3) のサンプルコード
 - [SimpleXaml](./SimpleXaml/)  
-「ビジュアルツリー」(p.8) のサンプルコード（上の画像の手前）
+「ビジュアルツリー」(p.7) のサンプルコード（上の画像の手前）
 - [UserControl](./UserControl/)  
-「XAMLの名前空間と接頭辞」(p.7) のサンプルコード
+「XAMLの名前空間と接頭辞」(p.6) のサンプルコード
 - [WpfTree](./WpfTree/)  
-「ビジュアルツリー」(p.8) のサンプルコード（上の画像の奥）
+「ビジュアルツリー」(p.7) のサンプルコード（上の画像の奥）
 - [XamlProperty](./XamlProperty/)  
-「プロパティ要素構文」(p.3) のサンプルコード
+「プロパティ要素構文」(p.2) のサンプルコード
 

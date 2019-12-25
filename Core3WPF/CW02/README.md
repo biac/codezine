@@ -1,7 +1,7 @@
 CodoZine 連載  
 # [.NET Core 3で始めるWPFアプリ開発](https://codezine.jp/article/corner/805)
 
-## 第2回: [**.NET Core 3で始めるWPFアプリ開発――Hello, WPF!**](https://codezine.jp/article/detail/11854) (2019/12/XX)
+## 第2回: [**.NET Core 3で始めるWPFアプリ開発――Hello, WPF!**](https://codezine.jp/article/detail/11854) (2020/01/06)
 
 ![実行中のTetrahedron](./images/fig01.gif)
 
