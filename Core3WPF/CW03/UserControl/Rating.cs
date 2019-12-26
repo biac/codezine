@@ -6,17 +6,17 @@ using System.Windows.Media;
 
 namespace SampleNamespace
 {
-  public class Rating : TextBlock
+  public class Rating : System.Windows.Controls.UserControl
   {
     const int MaxStars = 5;
     const double DefaultFontSize = 30.0;
     static readonly SolidColorBrush DefaultBrush = new SolidColorBrush(Colors.DarkOrange);
 
-    public Rating() : base()
+    TextBlock _textBlock = new TextBlock();
+
+    public Rating()
     {
-      base.FontSize = DefaultFontSize;
-      base.Foreground = DefaultBrush;
-      SetStars(0);
+      BuildUp();
     }
 
     public static readonly DependencyProperty StarsProperty =
@@ -41,7 +41,16 @@ namespace SampleNamespace
 
     private void SetStars(int stars)
     {
-      base.Text = $"{new string('★', stars)}{new string('☆', MaxStars - stars)}";
+      _textBlock.Text = $"{new string('★', stars)}{new string('☆', MaxStars - stars)}";
+    }
+
+    private void BuildUp()
+    {
+      SetStars(0);
+      this.FontSize = DefaultFontSize;
+      this.Foreground = DefaultBrush;
+
+      base.AddChild(_textBlock);
     }
   }
 }

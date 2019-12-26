@@ -25,7 +25,15 @@
         Stars=&quot;2&quot;/&gt;</TextBlock>
 
     <sample:Rating xmlns:sample="clr-namespace:SampleNamespace" Margin="0,30,0,0" 
-                   Grid.Row="1" Stars="5" />
+                   Grid.Row="1" Stars="5" >
+      <sample:Rating.Foreground>
+        <!-- 上の書き方では、このようなコンテンツを書けない -->
+        <LinearGradientBrush StartPoint="0.0,0.0" EndPoint="1.0,1.0">
+          <GradientStop Offset="0.0" Color="Orange"/>
+          <GradientStop Offset="1.0" Color="Red"/>
+        </LinearGradientBrush>
+      </sample:Rating.Foreground>
+    </sample:Rating>
     <TextBlock xml:space="preserve" Grid.Row="1" Grid.Column="1" Margin="10,30,0,0" FontFamily="Lucida Console">&lt;!-- 名前空間にプレフィックスを付け、それを指定する --&gt;
 &lt;<Bold>sample:</Bold>Rating
   xmlns:<Bold>sample</Bold>=&quot;clr-namespace:SampleNamespace&quot;
