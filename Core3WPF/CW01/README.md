@@ -7,7 +7,8 @@ CodoZine 連載
 
 - [HelloWorldApp](./HelloWorldApp/)  
 今回の前半で作成したコード。"Hello, WPF !"と表示するだけのアプリです。  
-<img src="https://cz-cdn.shoeisha.jp/static/images/article/11809/Fig09s.png" width="180" height="76"/>  
+<img src="https://cz-cdn.shoeisha.jp/static/images/article/11809/Fig09s.png" width="180" height="76"/>
+
 - [CodeBehind](./CodeBehind/)  
 今回の後半で作成したコード。ボタンをクリックすると、そのときの時刻を表示します (トップの画像)。
 
