@@ -5,8 +5,8 @@ CodoZine 連載
 
 ![CodeBehind プロジェクトの実行例](https://cz-cdn.shoeisha.jp/static/images/article/11809/Fig16s.png)
 
-- [HelloWorldApp](./HelloWorldApp/) <img src="https://cz-cdn.shoeisha.jp/static/images/article/11809/Fig09s.png" width="180" height="76" style="float:right;">   
-今回の前半で作成したコード。"Hello, WPF !"と表示するだけのアプリです (右の画像)。
+- [HelloWorldApp](./HelloWorldApp/)  
+今回の前半で作成したコード。"Hello, WPF !"と表示するだけのアプリです (右の画像)。<img src="https://cz-cdn.shoeisha.jp/static/images/article/11809/Fig09s.png" width="180" height="76" style="float:right;">
 - [CodeBehind](./CodeBehind/)  
 今回の後半で作成したコード。ボタンをクリックすると、そのときの時刻を表示します (上の画像)。
 
