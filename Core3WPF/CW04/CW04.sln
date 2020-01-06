@@ -3,9 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayoutControl", "LayoutControl\LayoutControl.csproj", "{E16737D1-C3F1-4A15-B2B7-97EFA204A0AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LayoutControl", "LayoutControl\LayoutControl.csproj", "{E16737D1-C3F1-4A15-B2B7-97EFA204A0AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamburgerMenu", "HamburgerMenu\HamburgerMenu.csproj", "{9341B1DB-7A3C-4ED8-B243-E20CAC876588}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HamburgerMenu", "HamburgerMenu\HamburgerMenu.csproj", "{9341B1DB-7A3C-4ED8-B243-E20CAC876588}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarginAndPadding", "MarginAndPadding\MarginAndPadding.csproj", "{906F33C1-49DA-4864-8808-D5B19A02C6A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrowOrShrink", "GrowOrShrink\GrowOrShrink.csproj", "{32AF95CD-A60A-4850-98E3-0B952E3D07A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayEffects", "OverlayEffects\OverlayEffects.csproj", "{FBBF155E-D5C1-4B3D-ADFA-40E9E7C7D97F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSizeGroup", "SharedSizeGroup\SharedSizeGroup.csproj", "{564643DA-6212-40CE-8BD6-AC8B2E39B4D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Others", "Others\Others.csproj", "{D6671DB9-C767-498F-B883-BC3E7CA6D594}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{BE01F588-C731-4304-997D-6E9D4AD1F6DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +33,30 @@ Global
 		{9341B1DB-7A3C-4ED8-B243-E20CAC876588}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9341B1DB-7A3C-4ED8-B243-E20CAC876588}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9341B1DB-7A3C-4ED8-B243-E20CAC876588}.Release|Any CPU.Build.0 = Release|Any CPU
+		{906F33C1-49DA-4864-8808-D5B19A02C6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{906F33C1-49DA-4864-8808-D5B19A02C6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{906F33C1-49DA-4864-8808-D5B19A02C6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{906F33C1-49DA-4864-8808-D5B19A02C6A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32AF95CD-A60A-4850-98E3-0B952E3D07A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32AF95CD-A60A-4850-98E3-0B952E3D07A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32AF95CD-A60A-4850-98E3-0B952E3D07A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32AF95CD-A60A-4850-98E3-0B952E3D07A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBBF155E-D5C1-4B3D-ADFA-40E9E7C7D97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBBF155E-D5C1-4B3D-ADFA-40E9E7C7D97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBBF155E-D5C1-4B3D-ADFA-40E9E7C7D97F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBBF155E-D5C1-4B3D-ADFA-40E9E7C7D97F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{564643DA-6212-40CE-8BD6-AC8B2E39B4D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{564643DA-6212-40CE-8BD6-AC8B2E39B4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{564643DA-6212-40CE-8BD6-AC8B2E39B4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{564643DA-6212-40CE-8BD6-AC8B2E39B4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6671DB9-C767-498F-B883-BC3E7CA6D594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6671DB9-C767-498F-B883-BC3E7CA6D594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6671DB9-C767-498F-B883-BC3E7CA6D594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6671DB9-C767-498F-B883-BC3E7CA6D594}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE01F588-C731-4304-997D-6E9D4AD1F6DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE01F588-C731-4304-997D-6E9D4AD1F6DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE01F588-C731-4304-997D-6E9D4AD1F6DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE01F588-C731-4304-997D-6E9D4AD1F6DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

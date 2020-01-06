@@ -4,9 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HamburgerMenu"
-
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-
         mc:Ignorable="d"
         Title="ハンバーガーメニューの基本" Height="240" Width="540">
   <Grid x:Name="MainGrid" Background="Lime">
@@ -25,13 +23,15 @@
           <RowDefinition Height="*" />
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Border Grid.RowSpan="3" Background="White" BorderBrush="DarkRed" BorderThickness="1" />
+        <Border Grid.RowSpan="3" Background="White" BorderBrush="DarkRed"
+                BorderThickness="1" />
         <TextBlock x:Name="PopupTitle" Background="DarkRed" Foreground="White"
-                   FontSize="18" FontWeight="Bold" TextAlignment="Center" Padding="3"
-                   >(Title)</TextBlock>
+                   FontSize="18" FontWeight="Bold" TextAlignment="Center"
+                   Padding="3">(Title)</TextBlock>
         <ScrollViewer Grid.Row="1" MinHeight="50" Padding="5"
                       VerticalScrollBarVisibility="Auto" Focusable="False">
-          <TextBlock x:Name="PopupBody" TextWrapping="Wrap" >(Message)</TextBlock>
+          <TextBlock x:Name="PopupBody"
+                     TextWrapping="Wrap">(Message)</TextBlock>
         </ScrollViewer>
         <Button Grid.Row="2" Click="OKButton_Click" Content="OK" 
                 HorizontalAlignment="Center" Margin="0,0,0,10" Padding="20,0"/>
@@ -39,10 +39,11 @@
     </Popup>
 
     <!-- ハンバーガーメニュー（メインコンテンツの手前に表示される） -->
-    <Grid x:Name="MenuGrid" Background="LightSkyBlue" Width="30" HorizontalAlignment="Left">
+    <Grid x:Name="MenuGrid" Background="LightSkyBlue" Width="30"
+          HorizontalAlignment="Left">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
-        <RowDefinition />
+        <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
       <!-- ハンバーガーボタン（汎用） -->
@@ -72,8 +73,9 @@
         </b:Interaction.Triggers>
       </ToggleButton>
       <!-- ハンバーガーボタン（Win10専用） -->
-      <!--<ToggleButton Content="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="18"
-                    Width="30" Height="30" HorizontalAlignment="Left"
+      <!--<ToggleButton Content="&#xE700;" FontFamily="Segoe MDL2 Assets"
+                    FontSize="18" Width="30" Height="30"
+                    HorizontalAlignment="Left"
                     Background="Transparent" BorderThickness="0">
         <b:Interaction.Triggers>
           <b:EventTrigger EventName="Unchecked">
@@ -99,25 +101,32 @@
 
     <!-- メッセージ表示（一番手前に表示される） -->
     <Border x:Name="MessagePanel" Background="#60808080" Visibility="Hidden">
-      <Grid Width="300" VerticalAlignment="Center" Margin="5"  >
+      <!-- ↑この Border はクライアントエリア全体を覆う -->
+      <Grid Width="300" VerticalAlignment="Center" Margin="5">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto" />
           <RowDefinition Height="*" />
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Border Grid.RowSpan="3" Background="White" BorderBrush="DarkGreen" BorderThickness="1" >
+        <!-- メッセージボックスの外枠 -->
+        <Border Grid.RowSpan="3" Background="White" BorderBrush="DarkGreen"
+                BorderThickness="1" >
           <Border.Effect>
             <DropShadowEffect Color="MidnightBlue" Opacity="0.5"
                               BlurRadius="10" ShadowDepth="5" Direction="315"  />
           </Border.Effect>
         </Border>
-        <TextBlock x:Name="MessageTitle" Background="DarkGreen" Foreground="White"
-                   FontSize="18" FontWeight="Bold" TextAlignment="Center" Padding="3"
-                   >(Title)</TextBlock>
+        <!-- メッセージボックスのタイトル -->
+        <TextBlock x:Name="MessageTitle" Background="DarkGreen"
+                   Foreground="White" FontSize="18" FontWeight="Bold"
+                   TextAlignment="Center" Padding="3">(Title)</TextBlock>
+        <!-- メッセージボックスの本文 -->
         <ScrollViewer Grid.Row="1" MinHeight="50" Padding="5"
                       VerticalScrollBarVisibility="Auto" Focusable="False">
-          <TextBlock x:Name="MessageBody" TextWrapping="Wrap" >(Message)</TextBlock>
+          <TextBlock x:Name="MessageBody"
+                     TextWrapping="Wrap" >(Message)</TextBlock>
         </ScrollViewer>
+        <!-- ［OK］ボタン -->
         <Button Grid.Row="2" Click="OKButton_Click" Content="OK" 
                 HorizontalAlignment="Center" Margin="0,0,0,10" Padding="20,0"/>
       </Grid>

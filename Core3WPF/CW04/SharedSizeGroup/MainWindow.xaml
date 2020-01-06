@@ -1,0 +1,54 @@
+﻿<Window x:Class="SharedSizeGroup.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SharedSizeGroup"
+        mc:Ignorable="d"
+        Title="Grid 間で列幅を共有" Height="160" Width="560">
+  <StackPanel Grid.IsSharedSizeScope="True" UseLayoutRounding="True">
+    <Grid x:Name="Grid1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" SharedSizeGroup="FirstColumn" />
+        <ColumnDefinition Width="Auto" SharedSizeGroup="SecondColumn" />
+        <ColumnDefinition Width="Auto" SharedSizeGroup="ThirdColumn" />
+      </Grid.ColumnDefinitions>
+      <Label BorderThickness="1" BorderBrush="Red"
+             HorizontalContentAlignment="Center">項目1</Label>
+      <Label Grid.Column="1" BorderThickness="1" BorderBrush="Red"
+             Margin="-1,0,0,0" HorizontalContentAlignment="Center">項目2</Label>
+      <Label Grid.Column="2" BorderThickness="1" BorderBrush="Red"
+             Margin="-1,0,0,0" HorizontalContentAlignment="Center">項目3</Label>
+    </Grid>
+    <TextBlock Margin="5">上と下の Grid は、 列幅を共有しています。 下のテキストボックス (項目2) に長い文字列を入れてみてください。</TextBlock>
+    <Grid x:Name="Grid2" >
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" SharedSizeGroup="FirstColumn" />
+        <ColumnDefinition Width="Auto" SharedSizeGroup="SecondColumn" />
+        <ColumnDefinition Width="Auto" SharedSizeGroup="ThirdColumn" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Label BorderThickness="1" BorderBrush="Green">Item-1</Label>
+      <TextBox Grid.Column="1" BorderThickness="1" BorderBrush="Green"
+               Margin="-1,0,0,0" MinWidth="100"
+               VerticalContentAlignment="Center" />
+      <Border Grid.Column="2" BorderThickness="1" BorderBrush="Green"
+              Margin="-1,0,0,0">
+        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+
+      <Label Grid.Row="1" BorderThickness="1" BorderBrush="Green"
+             Margin="0,-1,0,0">Item-2</Label>
+      <TextBox Grid.Row="1" Grid.Column="1" BorderThickness="1"
+               BorderBrush="Green" Margin="-1,-1,0,0" MinWidth="100"
+               VerticalContentAlignment="Center" />
+      <Border Grid.Row="1" Grid.Column="2" BorderThickness="1"
+              BorderBrush="Green" Margin="-1,-1,0,0">
+        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </Border>
+    </Grid>
+  </StackPanel>
+</Window>

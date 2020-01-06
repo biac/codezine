@@ -1,0 +1,39 @@
+﻿<Window x:Class="MarginAndPadding.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MarginAndPadding"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="320" Width="560">
+  <Grid x:Name="RootGrid">
+    <Button x:Name="Button1" Margin="200,100,80,10" Padding="30,5"
+            Background="Yellow"
+            HorizontalAlignment="Left" VerticalAlignment="Top">
+      <TextBlock Background="Lime">Button1</TextBlock>
+    </Button>
+    <TextBlock Margin="50,60,0,0" HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               xml:space="preserve">HorizontalAlignment="Left" VerticalAlignment="Top"
+Margin="200,100,80,10" Padding="30,5"</TextBlock>
+
+    <Button x:Name="Button2" Margin="30,20,240,60" Padding="10,25,50,10"
+            Background="Yellow"
+            HorizontalAlignment="Right" VerticalAlignment="Bottom">
+      <TextBlock Background="Lime">Button2</TextBlock>
+    </Button>
+    <TextBlock x:Name="TextBlock2" Margin="0,0,50,20"
+               HorizontalAlignment="Right" VerticalAlignment="Bottom"
+               xml:space="preserve">HorizontalAlignment="Right" VerticalAlignment="Bottom"
+Margin="30,20,240,60" Padding="10,25,50,10"</TextBlock>
+
+    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+      <CheckBox Checked="Button2CheckBox_Changed"
+                Unchecked="Button2CheckBox_Changed"
+                Margin="5" IsChecked="True">Button2</CheckBox>
+      <CheckBox Checked="WidthCheckBox_Changed"
+                Unchecked="WidthCheckBox_Changed"
+                Margin="5,0,5,0">Fixed Width</CheckBox>
+    </StackPanel>
+  </Grid>
+</Window>

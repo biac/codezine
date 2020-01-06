@@ -1,0 +1,115 @@
+﻿<Window x:Class="OverlayEffects.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OverlayEffects"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="320" Width="560">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="30" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+
+    <TextBlock FontSize="18" VerticalAlignment="Bottom" TextAlignment="Center">
+      背景のα値
+    </TextBlock>
+    <Grid Grid.Row="1" VerticalAlignment="Top">
+      <Image Source="/Assets/061a.png" />
+      <Grid Background="#800044ff" Width="150" Height="120">
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Foreground="White" FontWeight="Bold"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   xml:space="preserve">Grid 背景のα値を下げた。
+表示している文字などは
+半透明にならない。</TextBlock>
+        <Ellipse Grid.Row="1" Fill="Lime" Width="80" Height="40" />
+      </Grid>
+    </Grid>
+
+    <TextBlock Grid.Column="1" FontSize="18" VerticalAlignment="Bottom"
+               TextAlignment="Center">
+      コントロールの不透明度
+    </TextBlock>
+    <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Top">
+      <!-- ↓一番奥の画像 -->
+      <Image Source="/Assets/061a.png" />
+      <!-- ↓Opacityを設定して半透明にしたGrid（背景色の指定は不透明） -->
+      <Grid Opacity="0.5" Background="#0044ff" Width="150" Height="120">
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <!-- 親のGridが半透明だと、子のコントロール↓も半透明になる -->
+        <TextBlock Foreground="White" FontWeight="Bold"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   xml:space="preserve">Grid の Opacity を下げた。
+表示している文字なども
+半透明になる。</TextBlock>
+        <Ellipse Grid.Row="1" Fill="Lime" Width="80" Height="40" />
+      </Grid>
+    </Grid>
+
+    <TextBlock Grid.Column="2" FontSize="18" VerticalAlignment="Bottom"
+               TextAlignment="Center">Effect</TextBlock>
+    <StackPanel Grid.Row="1" Grid.Column="2" Width="180" Height="237"
+                VerticalAlignment="Top">
+      <TextBlock HorizontalAlignment="Center" FontSize="20" FontWeight="Bold"
+                 Foreground="Red">
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="3" BlurRadius="5" />
+        </TextBlock.Effect>
+        ドロップシャドウ
+      </TextBlock>
+      <Button HorizontalAlignment="Center" Margin="0,5,0,0">
+        <Button.Effect>
+          <DropShadowEffect ShadowDepth="15" BlurRadius="10" Color="SkyBlue"
+                            Opacity="0.5" />
+        </Button.Effect>
+        ドロップシャドウ付きボタン
+      </Button>
+      <Button HorizontalAlignment="Center" Margin="0,20,0,0"
+              Background="Transparent">
+        <Button.Effect>
+          <DropShadowEffect ShadowDepth="2" BlurRadius="3" Color="Red"
+                            Opacity="0.5" />
+        </Button.Effect>
+        ドロップシャドウ付きボタン
+      </Button>
+      <TextBlock Background="Lime" HorizontalAlignment="Center" FontSize="15"
+                 Margin="0,20,0,0" Padding="3,2">
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="25"
+                            Color="GreenYellow" />
+        </TextBlock.Effect>
+        これもドロップシャドウ
+      </TextBlock>
+
+
+      <TextBlock HorizontalAlignment="Center" FontSize="30" FontWeight="Bold"
+                 Foreground="ForestGreen" Margin="0,25,0,0">
+        <TextBlock.Effect>
+          <BlurEffect KernelType="Gaussian" Radius="5" />
+        </TextBlock.Effect>
+        ぼかし効果
+      </TextBlock>
+
+      <Button HorizontalAlignment="Center" Margin="0,5,0,0" FontSize="18">
+        <Button.Effect>
+          <BlurEffect KernelType="Gaussian" Radius="3" />
+        </Button.Effect>
+        ぼかしたボタン
+      </Button>
+    </StackPanel>
+
+  </Grid>
+</Window>

@@ -1,0 +1,162 @@
+﻿<Window x:Class="GrowOrShrink.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GrowOrShrink"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="320" Width="560">
+  <Grid Background="DarkRed">
+    <Grid Margin="1" Background="LightYellow">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="1"/>
+        <ColumnDefinition />
+        <ColumnDefinition Width="1"/>
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition Height="1"/>
+        <RowDefinition />
+        <RowDefinition Height="1"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="HorizontalAlignment" Value="Center" />
+          <Setter Property="VerticalAlignment" Value="Bottom" />
+          <Setter Property="Foreground" Value="DeepSkyBlue" />
+          <Setter Property="Margin" Value="0,0,0,2" />
+        </Style>
+      </Grid.Resources>
+
+      <!-- セル間の境界線 -->
+      <Border Grid.Column="1" Grid.RowSpan="3" Background="DarkRed" />
+      <Border Grid.Column="3" Grid.RowSpan="3" Background="DarkRed" />
+      <Border Grid.Row="1" Grid.ColumnSpan="5" Background="DarkRed" />
+      <Border Grid.Row="3" Grid.ColumnSpan="5" Background="DarkRed" />
+
+      <!-- 1行目のコントロール -->
+      <Button x:Name="Button1">ボタン</Button>
+      <TextBox x:Name="TextBox1" Grid.Column="2" Background="AliceBlue">テキストボックス</TextBox>
+      <ListBox x:Name="ListBox1" Grid.Column="4" Background="PaleGreen" SelectedIndex="2">
+        <ListBoxItem>リストボックス</ListBoxItem>
+        <ListBoxItem>item-2</ListBoxItem>
+        <ListBoxItem>item-3</ListBoxItem>
+      </ListBox>
+
+      <!-- 2行目のコントロール -->
+      <CheckBox x:Name="CheckBox1" Grid.Row="2" Background="PaleTurquoise"
+                BorderBrush="Orange"
+                BorderThickness="1" >チェックボックス</CheckBox>
+      <Image x:Name="Image1" Grid.Row="2" Grid.Column="2"
+             Source="/Assets/109a.png" Stretch="UniformToFill" />
+      <Slider x:Name="Slider1" Grid.Row="2" Grid.Column="4"
+              Background="PaleVioletRed" Value="5" />
+
+      <!-- 1行目の状態表示 -->
+      <TextBlock>
+        HorizontalAlignment=<Run
+          Text="{Binding ElementName=Button1, Path=HorizontalAlignment}"
+          /><LineBreak/>
+        VerticalAlignment=<Run
+          Text="{Binding ElementName=Button1, Path=VerticalAlignment}" />
+      </TextBlock>
+      <TextBlock Grid.Column="2">
+        HorizontalAlignment=<Run
+          Text="{Binding ElementName=TextBox1, Path=HorizontalAlignment}"
+          /><LineBreak/>
+        VerticalAlignment=<Run
+          Text="{Binding ElementName=TextBox1, Path=VerticalAlignment}" />
+      </TextBlock>
+      <TextBlock Grid.Column="4">
+        HorizontalAlignment=<Run
+          Text="{Binding ElementName=ListBox1, Path=HorizontalAlignment}"
+          /><LineBreak/>
+        VerticalAlignment=<Run
+          Text="{Binding ElementName=ListBox1, Path=VerticalAlignment}" />
+      </TextBlock>
+
+      <!-- 2行目の状態表示 -->
+      <TextBlock Grid.Row="2">
+        HorizontalAlignment=<Run
+          Text="{Binding ElementName=CheckBox1, Path=HorizontalAlignment}"
+          /><LineBreak/>
+        VerticalAlignment=<Run
+          Text="{Binding ElementName=CheckBox1, Path=VerticalAlignment}" />
+      </TextBlock>
+      <TextBlock Grid.Row="2" Grid.Column="2">
+        HorizontalAlignment=<Run
+          Text="{Binding ElementName=Image1, Path=HorizontalAlignment}"
+          /><LineBreak/>
+        VerticalAlignment=<Run
+          Text="{Binding ElementName=Image1, Path=VerticalAlignment}" />
+      </TextBlock>
+      <TextBlock Grid.Row="2" Grid.Column="4">
+        HorizontalAlignment=<Run
+          Text="{Binding ElementName=Slider1, Path=HorizontalAlignment}"
+          /><LineBreak/>
+        VerticalAlignment=<Run
+          Text="{Binding ElementName=Slider1, Path=VerticalAlignment}" />
+      </TextBlock>
+
+      <TextBlock Grid.Row="2" Grid.Column="2"
+                 VerticalAlignment="Top">イメージ</TextBlock>
+      <TextBlock Grid.Row="2" Grid.Column="4"
+                 VerticalAlignment="Top">スライダー</TextBlock>
+
+
+
+      <!-- スタックパネルでの表示 -->
+      <StackPanel x:Name="StackPanel1" Background="LightYellow"
+                  Grid.ColumnSpan="5" Grid.RowSpan="3" Visibility="Collapsed">
+        <Button x:Name="Button2">ボタン</Button>
+        <TextBox x:Name="TextBox2"
+                 Background="AliceBlue">テキストボックス</TextBox>
+        <ListBox x:Name="ListBox2" Background="PaleGreen" SelectedIndex="2">
+          <ListBoxItem>リストボックス</ListBoxItem>
+          <ListBoxItem>item-2</ListBoxItem>
+          <ListBoxItem>item-3</ListBoxItem>
+        </ListBox>
+        <CheckBox x:Name="CheckBox2" Background="PaleTurquoise"
+                  BorderBrush="Orange"
+                  BorderThickness="1" >チェックボックス</CheckBox>
+        <Image x:Name="Image2" Source="/Assets/109a.png" Width="80" />
+        <Slider x:Name="Slider2" Background="PaleVioletRed" Value="5" />
+      </StackPanel>
+
+
+      <!-- 下端の操作パネル -->
+      <Grid Grid.Row="4" Grid.ColumnSpan="5" Background="White">
+        <Grid.Resources>
+          <Style TargetType="RadioButton">
+            <Setter Property="Margin" Value="0,0,15,0" />
+            <Setter Property="Foreground" Value="DeepSkyBlue" />
+          </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"
+                    Margin="0,10,0,0" RadioButton.Checked="RadioButton_Checked">
+          <RadioButton IsChecked="True" Tag="D">Default</RadioButton>
+          <RadioButton Tag="L">Left, Top</RadioButton>
+          <RadioButton Tag="C">Center</RadioButton>
+          <RadioButton Tag="R">Right, Bottom</RadioButton>
+        </StackPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center"
+                    Orientation="Horizontal" Margin="0,10,0,5"
+                    RadioButton.Checked="RadioButton2_Checked">
+          <RadioButton IsChecked="True" Tag="G">Grid</RadioButton>
+          <RadioButton Tag="H">StackPanel (Horizontal)</RadioButton>
+          <RadioButton Tag="V">StackPanel (Vertical)</RadioButton>
+          <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"
+                    Foreground="DeepSkyBlue"
+                    Margin="20,0,0,0">Min Height / Width</CheckBox>
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>
