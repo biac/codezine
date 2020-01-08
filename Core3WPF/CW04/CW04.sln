@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiveLayout", "ResponsiveLayout\ResponsiveLayout.csproj", "{0D39546F-7B43-46B9-A5B1-539E663811CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFunctionSample", "LocalFunctionSample\LocalFunctionSample.csproj", "{62361E27-2655-4ACF-A355-79CAEB66ED1C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,10 +63,6 @@ Global
 		{0D39546F-7B43-46B9-A5B1-539E663811CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D39546F-7B43-46B9-A5B1-539E663811CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D39546F-7B43-46B9-A5B1-539E663811CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
