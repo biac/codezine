@@ -11,13 +11,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarginAndPadding", "MarginA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrowOrShrink", "GrowOrShrink\GrowOrShrink.csproj", "{32AF95CD-A60A-4850-98E3-0B952E3D07A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OverlayEffects", "OverlayEffects\OverlayEffects.csproj", "{FBBF155E-D5C1-4B3D-ADFA-40E9E7C7D97F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OverlayEffects", "OverlayEffects\OverlayEffects.csproj", "{FBBF155E-D5C1-4B3D-ADFA-40E9E7C7D97F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedSizeGroup", "SharedSizeGroup\SharedSizeGroup.csproj", "{564643DA-6212-40CE-8BD6-AC8B2E39B4D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedSizeGroup", "SharedSizeGroup\SharedSizeGroup.csproj", "{564643DA-6212-40CE-8BD6-AC8B2E39B4D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Others", "Others\Others.csproj", "{D6671DB9-C767-498F-B883-BC3E7CA6D594}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Others", "Others\Others.csproj", "{D6671DB9-C767-498F-B883-BC3E7CA6D594}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{BE01F588-C731-4304-997D-6E9D4AD1F6DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{BE01F588-C731-4304-997D-6E9D4AD1F6DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponsiveLayout", "ResponsiveLayout\ResponsiveLayout.csproj", "{0D39546F-7B43-46B9-A5B1-539E663811CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFunctionSample", "LocalFunctionSample\LocalFunctionSample.csproj", "{62361E27-2655-4ACF-A355-79CAEB66ED1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{BE01F588-C731-4304-997D-6E9D4AD1F6DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE01F588-C731-4304-997D-6E9D4AD1F6DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE01F588-C731-4304-997D-6E9D4AD1F6DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D39546F-7B43-46B9-A5B1-539E663811CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D39546F-7B43-46B9-A5B1-539E663811CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D39546F-7B43-46B9-A5B1-539E663811CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D39546F-7B43-46B9-A5B1-539E663811CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62361E27-2655-4ACF-A355-79CAEB66ED1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

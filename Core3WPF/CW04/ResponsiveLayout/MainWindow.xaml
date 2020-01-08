@@ -1,0 +1,61 @@
+﻿<Window x:Class="ResponsiveLayout.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ResponsiveLayout"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="320" Width="560"
+        MinHeight="240" MinWidth="400"
+        SizeChanged="Window_SizeChanged">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <Border Background="DarkGray" >
+      <Image Source="/Assets/toaster01.png" Stretch="Uniform" />
+    </Border>
+
+    <Expander x:Name="DescriptionPanel" Grid.Column="1" ExpandDirection="Left"
+              Header="詳細" IsExpanded="True" Foreground="White"
+              BorderThickness="0">
+      <Expander.Background>
+        <RadialGradientBrush  RadiusX="0.75" RadiusY="0.75">
+          <GradientStop Offset="0" Color="#222" />
+          <GradientStop Offset="0.6" Color="Black" />
+        </RadialGradientBrush>
+      </Expander.Background>
+      <ScrollViewer x:Name="DescriptionScrollViewer" Width="200"
+                    VerticalScrollBarVisibility="Auto">
+          <ScrollViewer.Background>
+            <LinearGradientBrush StartPoint="0.5,0.0" EndPoint="1.0,1.0">
+              <GradientStop Offset="0.0" Color="DarkGreen" />
+              <GradientStop Offset="0.85" Color="ForestGreen" />
+            </LinearGradientBrush>
+          </ScrollViewer.Background>
+          <StackPanel Margin="10,5">
+          <StackPanel.Resources>
+            <Style TargetType="TextBlock">
+              <Setter Property="FontFamily" Value="UD Digi Kyokasho N-R" />
+              <Setter Property="Foreground" Value="White" />
+              <Setter Property="FontWeight" Value="Bold" />
+              <Setter Property="TextWrapping" Value="Wrap" />
+              <Setter Property="Margin" Value="0,0,0,5" />
+            </Style>
+          </StackPanel.Resources>
+          <TextBlock FontSize="15" FontWeight="Normal" TextDecorations="Underline">
+            昭和のオーブントースター</TextBlock>
+          <TextBlock>　年代物のこのオーブントースターは…… ○○○○○○ ○○○○○○○○○ ○○○○○○○○○○○○○○○○○ ○○○○○○○</TextBlock>
+          <TextBlock>　○○○○○○○ ○○○○○○ ○○○○○○○○○○ ○○○○○○○○○○○ ○○○○○○○○ ○○○○ ○○○○○○○○○○○○ ○○○○○○○○○○○○○○○○○○○○ ○○○○○○○○○○</TextBlock>
+        </StackPanel>
+      </ScrollViewer>
+    </Expander>
+
+  </Grid>
+</Window>
