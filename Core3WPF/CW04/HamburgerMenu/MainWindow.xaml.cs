@@ -23,7 +23,9 @@ namespace HamburgerMenu
       switch ((sender as ListBox).SelectedIndex)
       {
         case 0:
-          MessageBox.Show(this, $@"""{selectedItem.Content}"" が選択されました。", "ハンバーガーメニュー", MessageBoxButton.OK, MessageBoxImage.Information);
+          MessageBox.Show(this, $@"""{selectedItem.Content}"" が選択されました。",
+                          "ハンバーガーメニュー",
+                          MessageBoxButton.OK, MessageBoxImage.Information);
           break;
         case 1:
           ShowPopup($@"""{selectedItem.Content}"" が選択されました。", "ハンバーガーメニュー");
