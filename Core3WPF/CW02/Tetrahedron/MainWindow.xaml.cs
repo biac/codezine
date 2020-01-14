@@ -31,10 +31,19 @@ namespace Tetrahedron
       // タイトルバーとウィンドウの背景にアクセントカラーを設定
       if (SystemParameters.IsGlassEnabled)
       {
-        TitleBar.Background = SystemParameters.WindowGlassBrush;
-        var accentBrush = SystemParameters.WindowGlassBrush.CloneCurrentValue();
-        accentBrush.Opacity = 0.5;
-        this.Background = accentBrush;
+        SetWindowGlassBrush();
+        SystemParameters.StaticPropertyChanged += (s, e) => {
+          if (e.PropertyName == "WindowGlassBrush")
+            SetWindowGlassBrush(); 
+        };
+
+        void SetWindowGlassBrush()
+        {
+          TitleBar.Background = SystemParameters.WindowGlassBrush;
+          var accentBrush = SystemParameters.WindowGlassBrush.CloneCurrentValue();
+          accentBrush.Opacity = 0.5;
+          this.Background = accentBrush;
+        }
       }
     }
 
