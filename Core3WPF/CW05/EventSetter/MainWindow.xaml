@@ -1,0 +1,48 @@
+﻿<Window x:Class="EventSetter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventSetter"
+        mc:Ignorable="d"
+        Title="EventSetter" Height="180" Width="560">
+  <!--
+    Visual Studio 2019 16.4 には、
+    EventSetter の Handler プロパティで
+      エラー XDG0062 'EventSetter.Handler' に NULL 以外の値が必要です。
+    というエラーが報告されてしまう問題があります。
+    ビルドと実行は問題ありません。
+  
+    この問題は 16.5 Preview2 (2020/1/22 リリース) で修正されています。
+    https://developercommunity.visualstudio.com/content/problem/836014/bogus-xdg0062-on-use-of-eventsetter-in-net-core-30.html
+  -->
+  <Window.Resources>
+    <Style TargetType="Button">
+      <Setter Property="FontSize" Value="12pt"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Background" Value="Lime"/>
+      <EventSetter Event="Click" Handler="StandardButton_Click"/>
+      <Setter Property="Padding" Value="20,5"/>
+      <Setter Property="Margin" Value="0,0,10,10"/>
+      <Setter Property="MinWidth" Value="150"/>
+    </Style>
+    <Style TargetType="Button" x:Key="SpecialButtonStyle"
+           BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Background" Value="Red"/>
+      <!-- ↓Setterと違って、同じイベントを指定しても上書きされない（両方とも発生する） -->
+      <EventSetter Event="Click" Handler="SpecialButton_Click"/>
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+               Margin="10,10,0,0">
+      <Button>標準ボタン01</Button>
+      <Button>標準ボタン02</Button>
+      <!-- ↓コントロールに直接付けたイベントハンドラーとの併用も可能 -->
+      <Button Click="Button3_Click">標準ボタン03</Button>
+      <Button>標準ボタン04</Button>
+      <Button>標準ボタン05</Button>
+      <Button Style="{StaticResource SpecialButtonStyle}">特別なボタン</Button>
+    </WrapPanel>
+  </Grid>
+</Window>

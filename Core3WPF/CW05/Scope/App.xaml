@@ -1,0 +1,19 @@
+﻿<Application x:Class="Scope.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Scope"
+             StartupUri="MainWindow.xaml">
+  <Application.Resources>
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="MistyRose"/>
+      <Setter Property="Margin" Value="10" />
+      <Setter Property="BorderBrush" Value="Lime" />
+      <Setter Property="BorderThickness" Value="3" />
+    </Style>
+    <Style TargetType="TextBlock">
+      <Setter Property="FontSize" Value="12pt"/>
+      <Setter Property="Margin" Value="5"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+  </Application.Resources>
+</Application>

@@ -1,0 +1,25 @@
+﻿<Application x:Class="InheritableProperties.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:InheritableProperties"
+             StartupUri="MainWindow.xaml">
+  <Application.Resources>
+    <Style TargetType="Window">
+      <Setter Property="FontFamily" Value="Yu Mincho" />
+      <Setter Property="FontSize" Value="12pt" />
+      <Setter Property="FontStyle" Value="Italic"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Foreground" Value="Red"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DefaultFontStyle"
+           BasedOn="{StaticResource {x:Type TextBlock}}">
+      <!-- Win10ではYu Gothic UIが既定のフォント -->
+      <Setter Property="FontFamily" Value="Yu Gothic UI" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontStyle" Value="Normal"/>
+      <Setter Property="FontWeight" Value="Normal"/>
+      <Setter Property="Foreground" Value="Black" />
+    </Style>
+  </Application.Resources>
+</Application>

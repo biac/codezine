@@ -1,0 +1,50 @@
+﻿<Window x:Class="BuiltinThemes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BuiltinThemes"
+        mc:Ignorable="d"
+        Title="{StaticResource AppName}" Height="220" Width="560">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <ListView x:Name="ThemeListView" Margin="5"
+              SelectionChanged="ThemeListView_SelectionChanged">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding Description}" />
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+    <Grid Grid.Column="1" >
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <StackPanel>
+        <TextBlock x:Name="TitleText" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Theme: <Run Text="{Binding ElementName=ThemeListView, Path=SelectedItem.Description}" /></TextBlock>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
+          FontFamily=&quot;<Run Text="{Binding RelativeSource={RelativeSource Self},Path=FontFamily}"/>&quot;, FontSize=<Run Text="{Binding RelativeSource={RelativeSource Self},Path=FontSize}"/>
+        </TextBlock>
+      </StackPanel>
+      <WrapPanel Grid.Row="1">
+        <Button Margin="5">Button</Button>
+        <ToggleButton IsChecked="True" Margin="5">ToggleButton</ToggleButton>
+        <ProgressBar Value="50" MinWidth="100" Margin="5"/>
+        <ProgressBar IsIndeterminate="True" MinWidth="100" Margin="5"/>
+        <ScrollBar Orientation="Horizontal" MinWidth="100" Value="0.5" Margin="5"/>
+        <TextBox Text="TextBox" Margin="5"/>
+        <CheckBox Content="CheckBox" IsChecked="True" Margin="5"/>
+        <RadioButton Content="RadioButton" IsChecked="True" Margin="5"/>
+        <ComboBox MinWidth="100" Margin="5" SelectedIndex="0">
+          <ComboBoxItem>ComboBoxItem01</ComboBoxItem>
+          <ComboBoxItem>ComboBoxItem02</ComboBoxItem>
+        </ComboBox>
+        <Button Style="{DynamicResource SampleButtonStyle}">Styleで赤くしたボタン</Button>
+      </WrapPanel>
+    </Grid>
+  </Grid>
+</Window>

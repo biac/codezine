@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ResourceDictionaryFile"
+                    x:Class="ResourceDictionaryFile.ResourceDictionary2"
+                    >
+  <SolidColorBrush x:Key="Brush2">LimeGreen</SolidColorBrush>
+  <SolidColorBrush x:Key="Brush3">LimeGreen</SolidColorBrush>
+
+  <Style TargetType="TextBlock" x:Key="Style1">
+    <Setter Property="Background" Value="LimeGreen"/>
+  </Style>
+</ResourceDictionary>

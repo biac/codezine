@@ -1,0 +1,27 @@
+﻿<Application x:Class="ResourceDictionaryFile.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ResourceDictionaryFile"
+             StartupUri="MainWindow.xaml">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <!--
+          ResourceDictionaryのMergedDictionariesプロパティには、
+          複数のResourceDictionaryを入れられる。
+        -->
+        <ResourceDictionary Source="/ResourceDictionary1.xaml" />
+        <ResourceDictionary Source="/ResourceDictionary2.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+
+      <!-- 以下は「プライマリーディクショナリー」と呼ばれる -->
+
+      <SolidColorBrush x:Key="Brush3">SkyBlue</SolidColorBrush>
+
+      <Style TargetType="TextBlock" x:Key="Style1">
+        <Setter Property="FontSize" Value="12pt"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

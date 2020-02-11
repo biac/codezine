@@ -1,0 +1,34 @@
+﻿<Window x:Class="InheritableProperties.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InheritableProperties"
+        mc:Ignorable="d"
+        Title="継承されるプロパティ" Height="224" Width="560" 
+        Style="{StaticResource {x:Type Window}}">
+  <Grid>
+    <WrapPanel>
+      <TextBlock Margin="5" VerticalAlignment="Bottom">TextBlockではForegroundプロパティの継承も有効です</TextBlock>
+      <Button Margin="5" VerticalAlignment="Bottom">Button</Button>
+      <ToggleButton IsChecked="True" Margin="5" VerticalAlignment="Bottom">ToggleButton</ToggleButton>
+      <TextBox Text="TextBox" Margin="5" VerticalAlignment="Bottom"/>
+      <CheckBox Content="CheckBox" IsChecked="True" Margin="5" VerticalAlignment="Bottom"/>
+      <RadioButton Content="RadioButton" IsChecked="True" Margin="5" VerticalAlignment="Bottom"/>
+      <Label Content="Label" Margin="5" VerticalAlignment="Bottom"/>
+      <ComboBox MinWidth="100" Margin="5" SelectedIndex="0" VerticalAlignment="Bottom">
+        <ComboBoxItem>ComboBox アイテム1</ComboBoxItem>
+        <ComboBoxItem>ComboBox アイテム2</ComboBoxItem>
+      </ComboBox>
+      <ListBox SelectedIndex="1" Margin="5" VerticalAlignment="Bottom">
+        <ListBoxItem>ListBox 項目1</ListBoxItem>
+        <ListBoxItem>ListBox 項目2</ListBoxItem>
+      </ListBox>
+      <DatePicker Margin="5" VerticalAlignment="Bottom"/>
+      <TextBlock Style="{StaticResource DefaultFontStyle}"
+                 VerticalAlignment="Bottom" Margin="5">
+       これが既定のフォントです
+      </TextBlock>
+    </WrapPanel>
+  </Grid>
+</Window>

@@ -49,3 +49,4 @@ work/
 /ComponentOneBarcord/ComponentOneBarcordSample/QrUwp/License.cs
 /ComponentOneBarcord/ComponentOneBarcordSample/IsbnUwp/License.cs
 /UwpForefront/UF03/XamarinFormsSample.sln
+*.url

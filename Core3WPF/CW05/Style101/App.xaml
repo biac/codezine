@@ -1,0 +1,56 @@
+﻿<Application x:Class="Style101.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Style101"
+             StartupUri="MainWindow.xaml">
+  <!-- ここにスタイル定義を書くと、このアプリ全体に適用される -->
+  <!--<Application.Resources>
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="Gold" />
+    </Style>
+  </Application.Resources>-->
+
+  <!-- ResourcesプロパティはResourceDictionary型なので、
+       省略せずに書くと次のようになる -->
+  <!--<Application.Resources>
+    <ResourceDictionary>
+      <Style TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="MistyRose" />
+      </Style>
+    </ResourceDictionary>
+  </Application.Resources>-->
+
+  <!-- TargetTypeまたはx:Keyが必須
+      （x:KeyがないときはTargetTypeがリソースディクショナリのキーになる） -->
+  <!--<Application.Resources>
+    <Style x:Key="SpecialButtonStyle">
+      <Setter Property="Button.Background" Value="Gold" />
+    </Style>
+  </Application.Resources>-->
+
+  <!-- ↓こうすると、GridからでもStackPanelからでも参照できる -->
+  <!--<Application.Resources>
+    <Style TargetType="Panel" x:Key="SpecialPanelStyle">
+      <Setter Property="Background" Value="LightGoldenrodYellow" />
+    </Style>
+  </Application.Resources>-->
+
+  <!--<Application.Resources>
+    <Style TargetType="Window" x:Key="QQ">
+      <Setter Property="TextBlock.FontFamily" Value="Yu Mincho"/>
+      <Setter Property="Control.FontFamily" Value="Yu Mincho"/>
+      <Setter Property="TextBlock.Foreground" Value="Violet"/>
+      <Setter Property="Control.Foreground" Value="Violet"/>
+      <Setter Property="TextElement.Foreground" Value="Violet"/>
+      <Setter Property="TextBlock.FontStyle" Value="Italic"/>
+      <Setter Property="FontSize" Value="30"/>
+    </Style>
+  </Application.Resources>-->
+
+  <Application.Resources>
+    <!--<ResourceDictionary Source="/presentationframework.Aero2;component/themes/aero2.normalcolor.xaml" />-->
+    <!--<ResourceDictionary Source="/presentationframework.Luna;component/themes/luna.homestead.xaml" />-->
+    <!--<ResourceDictionary Source="/presentationframework.Classic;component/themes/classic.xaml" />-->
+  </Application.Resources>
+  
+</Application>

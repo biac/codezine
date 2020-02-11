@@ -1,0 +1,19 @@
+﻿<Application x:Class="SignalButtons.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SignalButtons"
+             StartupUri="MainWindow.xaml">
+  <Application.Resources>
+    <!--
+      ↓同じキー名のスタイル定義がMainWindowのリソースにもある。
+        リソースディクショナリが違えば、キー名が重複してもエラーにはならない。
+        実際の適用は、コントロールに近い方が使われる（このスタイルは使われていない）。
+    -->
+    <Style TargetType="Button" x:Key="SignalButtonBaseStyle">
+      <Setter Property="Foreground" Value="Black" />
+      <Setter Property="FontSize" Value="72" />
+      <Setter Property="MinWidth" Value="200" />
+      <Setter Property="MinHeight" Value="200" />
+    </Style>
+  </Application.Resources>
+</Application>

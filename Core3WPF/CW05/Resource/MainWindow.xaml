@@ -1,0 +1,65 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Resource"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:Controls="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls.WebView"
+        x:Class="Resource.MainWindow"
+        mc:Ignorable="d"
+        Title="{StaticResource TitleString}" Height="240" Width="560">
+  <Window.Resources>
+
+    <!-- プリミティブな型 -->
+    <system:String x:Key="SampleString">文字列のXAMLリソース</system:String>
+    <system:Double x:Key="FontSizeDouble">36.0</system:Double>
+    <system:Int32 x:Key="WebViewGridRow">2</system:Int32>
+    <system:String x:Key="UrlString">https://codezine.jp/</system:String>
+
+    <!-- デフォルトコンストラクターを持つ型 -->
+    <Color x:Key="StartColor" A="0xFF" R="0" G="0xFF" B="0" />
+    <Color x:Key="StopColor" A="0xFF" R="0xFF" G="0" B="0" />
+    <LinearGradientBrush x:Key="BrandingBrush"
+                         StartPoint="0.5,0.0" EndPoint="0.5,1.0">
+      <!-- ↓先に定義があるリソースなら、リソースディクショナリ内でも参照可 -->
+      <GradientStop Offset="0.0" Color="{StaticResource StartColor}"/>
+      <GradientStop Offset="1.0" Color="{StaticResource StopColor}"/>
+    </LinearGradientBrush>
+
+    <!-- デフォルトコンストラクターを持たない型で、型コンバーターのサポートがないものはエラー -->
+    <!--<system:Version x:Key="Foo">16.5</system:Version>-->
+
+    <!-- 型コンバーターのサポートがある型 -->
+    <system:Uri x:Key="Uri">https://codezine.jp/</system:Uri>
+    <HorizontalAlignment x:Key="StringHorizontalAlignment">Center</HorizontalAlignment>
+    <VerticalAlignment x:Key="StringVerticalAlignment">Center</VerticalAlignment>
+    <GridLength x:Key="WebViewGridRowHeight">2*</GridLength>
+    <Thickness x:Key="WebViewBorderThickness">5,3</Thickness>
+
+    <!-- スタイル -->
+    <Style TargetType="{x:Type TextBlock}">
+      <Setter Property="HorizontalAlignment" Value="{StaticResource StringHorizontalAlignment}"/>
+      <Setter Property="VerticalAlignment" Value="{StaticResource StringVerticalAlignment}"/>
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="{StaticResource WebViewGridRowHeight}" />
+    </Grid.RowDefinitions>
+    <TextBlock Text="{StaticResource SampleString}"
+               Foreground="{StaticResource BrandingBrush}"
+               FontSize="{StaticResource FontSizeDouble}"/>
+    <Border Grid.Row="{StaticResource WebViewGridRow}" BorderBrush="{StaticResource BrandingBrush}" 
+            BorderThickness="{StaticResource WebViewBorderThickness}">
+      <!--
+        WebView control
+        https://docs.microsoft.com/ja-jp/windows/communitytoolkit/controls/wpf-winforms/webview
+      -->
+      <Controls:WebView x:Name="WebView1" Source="{StaticResource Uri}"/>
+      <!-- ↓リソースを参照する場合は型コンバーターが働かないので、これはエラーになる -->
+      <!--<Controls:WebView x:Name="WebView1" Source="{StaticResource UrlString}" />-->
+    </Border>
+  </Grid>
+</Window>

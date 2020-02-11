@@ -1,0 +1,78 @@
+﻿<Window x:Class="StaticVSDynamic.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StaticVSDynamic"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="180" Width="560">
+  <!-- 
+  .NET Framework 時代は↓こうだった
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+  .NET Core では、↓こう。
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+  実際には、mscorlibでも警告は出るが動く。
+  -->
+  <Window.Resources>
+    <!-- コードビハインドから変更するリソース -->
+    <system:String x:Key="Message">ただいま HH:mm:ss です</system:String>
+    <system:Double x:Key="RandomFontSize">21.0</system:Double>
+    <SolidColorBrush x:Key="RandomColorBrush" Color="Red"/>
+
+    <!-- TextBlock に適用する共通スタイル -->
+    <Style TargetType="TextBlock" x:Key="TextBaseStyle">
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="0,0,0,20" />
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="FontWeight" Value="Bold" />
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <!-- TextBlock に適用するスタイル：静的リソース参照 -->
+    <Style TargetType="TextBlock" x:Key="StaticStyle" BasedOn="{StaticResource TextBaseStyle}">
+      <Setter Property="Text" Value="{StaticResource Message}" />
+      <Setter Property="FontSize" Value="{StaticResource RandomFontSize}" />
+      <Setter Property="Foreground" Value="{StaticResource RandomColorBrush}" />
+    </Style>
+
+    <!-- TextBlock に適用するスタイル：動的リソース参照 -->
+    <Style TargetType="TextBlock" x:Key="DynamicStyle" BasedOn="{StaticResource TextBaseStyle}">
+      <Setter Property="Text" Value="{DynamicResource Message}" />
+      <Setter Property="FontSize" Value="{DynamicResource RandomFontSize}" />
+      <Setter Property="Foreground" Value="{DynamicResource RandomColorBrush}" />
+    </Style>
+  </Window.Resources>
+  
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+
+    <GroupBox Header="StaticResource" BorderThickness="3"
+              BorderBrush="{StaticResource WindowGlassBrush}" >
+      <Grid>
+        <TextBlock x:Name="TextBlock1" Style="{StaticResource StaticStyle}" />
+        <!--
+          ↓ここだけ動的リソース参照にしてもダメ。
+            StaticStyle自体が自動的に更新されないため。
+            ※コードビハインドからStaticStyleを更新すると、反映される。
+        -->
+        <!--<TextBlock Margin="0,30,0,0" Style="{DynamicResource StaticStyle}" />-->
+        <Button Click="UpdateButton_Click" Margin="0,0,0,5" Padding="10,2.5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom">Update</Button>
+      </Grid>
+    </GroupBox>
+
+    <GroupBox Grid.Column="1" Header="DynamicResource" BorderThickness="3"
+              BorderBrush="{DynamicResource WindowGlassBrush}"
+              >
+      <TextBlock Style="{DynamicResource DynamicStyle}" />
+    </GroupBox>
+  </Grid>
+</Window>

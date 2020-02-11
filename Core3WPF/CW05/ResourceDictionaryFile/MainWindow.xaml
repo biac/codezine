@@ -1,0 +1,82 @@
+﻿<Window x:Class="ResourceDictionaryFile.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ResourceDictionaryFile"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="240" Width="560">
+  <Window.Resources>
+    <Style TargetType="TextBlock" x:Key="DescriptionTextStyle">
+      <Setter Property="FontSize" Value="9pt"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="Padding" Value="5"/>
+      <Setter Property="Background" Value="AliceBlue" />
+    </Style>
+    <Style TargetType="ScrollViewer" x:Key="DescriptionScrollStyle">
+      <Setter Property="Grid.Column" Value="1"/>
+      <Setter Property="Margin" Value="10,0,0,0"/>
+      <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+      <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition Width="2*" />
+    </Grid.ColumnDefinitions>
+    <StackPanel VerticalAlignment="Center">
+      <StackPanel.Resources>
+        <Style TargetType="Border">
+          <Setter Property="Width" Value="160"/>
+          <Setter Property="Height" Value="50"/>
+        </Style>
+      </StackPanel.Resources>
+      <TextBlock Style="{StaticResource Style1}"
+                 HorizontalAlignment="Center">リソースディクショナリを使う</TextBlock>
+      <Border Background="{StaticResource Brush1}"/>
+      <Border Background="{StaticResource Brush2}"/>
+      <Border Background="{StaticResource Brush3}"/>
+    </StackPanel>
+    <ScrollViewer x:Name="ScrollViewer1" Style="{StaticResource DescriptionScrollStyle}">
+      <TextBlock xml:space="preserve"
+                 Style="{StaticResource DescriptionTextStyle}">&lt;!-- ResourceDictionary1.xaml --&gt;
+&lt;SolidColorBrush x:Key=&quot;Brush1&quot;&gt;Red&lt;/SolidColorBrush&gt;
+&lt;SolidColorBrush x:Key=&quot;Brush2&quot;&gt;Red&lt;/SolidColorBrush&gt;
+&lt;SolidColorBrush x:Key=&quot;Brush3&quot;&gt;Red&lt;/SolidColorBrush&gt;
+&lt;Style TargetType=&quot;TextBlock&quot; x:Key=&quot;Style1&quot;&gt;
+  &lt;Setter Property=&quot;Foreground&quot; Value=&quot;Red&quot;/&gt;
+&lt;/Style&gt;
+
+&lt;!-- ResourceDictionary2.xaml --&gt;
+&lt;SolidColorBrush x:Key=&quot;Brush2&quot;&gt;LimeGreen&lt;/SolidColorBrush&gt;
+&lt;SolidColorBrush x:Key=&quot;Brush3&quot;&gt;LimeGreen&lt;/SolidColorBrush&gt;
+&lt;Style TargetType=&quot;TextBlock&quot; x:Key=&quot;Style1&quot;&gt;
+  &lt;Setter Property=&quot;Background&quot; Value=&quot;LimeGreen&quot;/&gt;
+&lt;/Style&gt;
+
+&lt;!-- App.xaml --&gt;
+&lt;ResourceDictionary&gt;
+  &lt;ResourceDictionary.MergedDictionaries&gt;
+    &lt;ResourceDictionary Source=&quot;/ResourceDictionary1.xaml&quot; /&gt;
+    &lt;ResourceDictionary Source=&quot;/ResourceDictionary2.xaml&quot; /&gt;
+  &lt;/ResourceDictionary.MergedDictionaries&gt;
+  &lt;SolidColorBrush x:Key=&quot;Brush3&quot;&gt;SkyBlue&lt;/SolidColorBrush&gt;
+  &lt;Style TargetType=&quot;TextBlock&quot; x:Key=&quot;Style1&quot;&gt;
+    &lt;Setter Property=&quot;FontSize&quot; Value=&quot;12pt&quot;/&gt;
+    &lt;Setter Property=&quot;FontWeight&quot; Value=&quot;Bold&quot;/&gt;
+  &lt;/Style&gt;
+&lt;/ResourceDictionary&gt;
+
+&lt;!-- このWindow --&gt;
+&lt;TextBlock Style=&quot;{StaticResource Style1}&quot;
+           HorizontalAlignment=&quot;Center&quot;
+           &gt;リソースディクショナリを使う&lt;/TextBlock&gt;
+&lt;Border Background=&quot;{StaticResource Brush1}&quot;/&gt;
+&lt;Border Background=&quot;{StaticResource Brush2}&quot;/&gt;
+&lt;Border Background=&quot;{StaticResource Brush3}&quot;/&gt;
+</TextBlock>
+    </ScrollViewer>
+  </Grid>
+</Window>

@@ -1,0 +1,117 @@
+﻿<Controls:MetroWindow x:Class="MaterialDesign.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MaterialDesign"
+
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        TitleCaps="False"
+        WindowTitleBrush="{DynamicResource PrimaryHueMidBrush}"
+        
+        mc:Ignorable="d"
+        Title="MainWindow" Height="360" Width="560">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Grid>
+      <Grid.Resources>
+        <Style TargetType="TextBlock">
+          <Setter Property="FontSize" Value="10" />
+          <Setter Property="Margin" Value="5,10,0,-5" />
+        </Style>
+        <DataTemplate x:Key="ColorListViewDataTemplate">
+          <TextBlock Text="{Binding}" Margin="0,-3" />
+        </DataTemplate>
+      </Grid.Resources>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+        <TextBlock Margin="5,0" VerticalAlignment="Center">Dark theme</TextBlock>
+        <ToggleButton Checked="DarkToggleButton_Checked"
+                      Unchecked="DarkToggleButton_Unchecked"/>
+      </StackPanel>
+      <TextBlock Grid.Row="1">Primary color</TextBlock>
+      <ListView x:Name="PrimaryColorListView" Grid.Row="2" Margin="5"
+              ItemTemplate="{StaticResource ColorListViewDataTemplate}"
+              SelectionChanged="PrimaryColorListView_SelectionChanged" />
+      <TextBlock Grid.Row="3">Secondary color</TextBlock>
+      <ListView x:Name="SecondaryColorListView" Grid.Row="4" Margin="5"
+              ItemTemplate="{StaticResource ColorListViewDataTemplate}"
+              SelectionChanged="SecondaryColorListView_SelectionChanged" />
+    </Grid>
+    <Grid Grid.Column="1" >
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <StackPanel>
+        <TextBlock x:Name="TitleText" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold">Theme: MaterialDesignThemes.Wpf</TextBlock>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
+          FontFamily=&quot;<Run Text="{Binding RelativeSource={RelativeSource Self},Path=FontFamily}"/>&quot;, FontSize=<Run Text="{Binding RelativeSource={RelativeSource Self},Path=FontSize}"/>
+        </TextBlock>
+      </StackPanel>
+      <WrapPanel Grid.Row="1">
+        <Button Margin="5">Button</Button>
+        <ToggleButton IsChecked="True" Margin="5"
+                      materialDesign:ToggleButtonAssist.SwitchTrackOnBackground="Aqua"
+                      materialDesign:ToggleButtonAssist.SwitchTrackOffBackground="Red"
+                      >ToggleButton</ToggleButton>
+        <ProgressBar Value="50" MinWidth="100" Margin="5"/>
+        <ProgressBar IsIndeterminate="True" MinWidth="100" Margin="5"/>
+        <ScrollBar Orientation="Horizontal" MinWidth="100" Value="0.5" Margin="5"/>
+        <TextBox Text="TextBox" Margin="5"/>
+        <CheckBox Content="CheckBox" IsChecked="True" Margin="5"/>
+        <RadioButton Content="RadioButton" IsChecked="True" Margin="5"/>
+        <ComboBox MinWidth="100" Margin="5" SelectedIndex="0">
+          <ComboBoxItem>ComboBoxItem01</ComboBoxItem>
+          <ComboBoxItem>ComboBoxItem02</ComboBoxItem>
+        </ComboBox>
+        <TextBox MinWidth="150" AcceptsReturn="True"
+                 materialDesign:TextFieldAssist.HasClearButton="True"
+                 materialDesign:TextFieldAssist.RippleOnFocusEnabled="True"
+                 materialDesign:TextFieldAssist.TextFieldCornerRadius="5">日本語フォントのサンプル・123～ABCxyz</TextBox>
+
+        <materialDesign:ColorZone Mode="Inverted" Margin="5">
+          <GroupBox Header="ColorZone: Inverted">
+            <StackPanel>
+              <TextBlock>テキストブロック</TextBlock>
+              <CheckBox>CheckBox</CheckBox>
+              <ProgressBar IsIndeterminate="True" MinWidth="100" Margin="5"
+                           Height="10"/>
+              <Button>ボタン</Button>
+            </StackPanel>
+          </GroupBox>
+        </materialDesign:ColorZone>
+        <materialDesign:ColorZone Mode="Accent" Margin="5">
+          <GroupBox Header="ColorZone: Accent">
+            <StackPanel>
+              <TextBlock>テキストブロック</TextBlock>
+              <CheckBox>CheckBox</CheckBox>
+              <ProgressBar IsIndeterminate="True" MinWidth="100" Margin="5"
+                           Height="10"/>
+              <Button>ボタン</Button>
+            </StackPanel>
+          </GroupBox>
+        </materialDesign:ColorZone>
+
+      </WrapPanel>
+    </Grid>
+  </Grid>
+</Controls:MetroWindow>

@@ -1,0 +1,125 @@
+﻿<Window x:Class="SetterForContent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SetterForContent"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="320" Width="560">
+  <Window.Resources>
+    <Style TargetType="ScrollViewer">
+      <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+      <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="DescriptionTextStyle">
+      <Setter Property="FontFamily" Value="Consolas" />
+      <Setter Property="FontSize" Value="9pt" />
+      <Setter Property="Background" Value="AliceBlue"/>
+    </Style>
+  </Window.Resources>
+
+  <Grid>
+    <TabControl>
+      <TabItem Header="Content">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="2.5*" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <StackPanel.Resources>
+              <Style TargetType="Button" x:Shared="False">
+                <Setter Property="Content" >
+                  <Setter.Value>
+                    <Border BorderBrush="Orange" BorderThickness="5"
+                            CornerRadius="20" Background="LemonChiffon">
+                      <TextBlock HorizontalAlignment="Center"
+                                 Foreground="Green" FontWeight="Bold" FontSize="12pt"
+                                 Margin="10,5" Text="BUTTON"/>
+                    </Border>
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+              </Style>
+            </StackPanel.Resources>
+            <Button HorizontalAlignment="Center" Margin="0,20,0,0"/>
+            <Button HorizontalAlignment="Center" Margin="0,20,0,0"/>
+          </StackPanel>
+          <ScrollViewer Grid.Column="1">
+            <TextBlock Style="{StaticResource DescriptionTextStyle}" xml:space="preserve">&lt;Style TargetType=&quot;Button&quot; <Bold>x:Shared=&quot;False&quot;</Bold>&gt;
+  &lt;Setter Property=&quot;<Bold>Content</Bold>&quot; &gt;
+    &lt;Setter.Value&gt;
+      &lt;Border BorderBrush=&quot;Orange&quot; BorderThickness=&quot;5&quot;
+              CornerRadius=&quot;20&quot; Background=&quot;LemonChiffon&quot;&gt;
+        &lt;TextBlock HorizontalAlignment=&quot;Center&quot;
+                   Foreground=&quot;Green&quot; FontWeight=&quot;Bold&quot;
+                   FontSize=&quot;12pt&quot; Margin=&quot;10,5&quot;
+                   Text=&quot;BUTTON&quot;/&gt;
+      &lt;/Border&gt;
+    &lt;/Setter.Value&gt;
+  &lt;/Setter&gt;
+  &lt;Setter Property=&quot;BorderThickness&quot; Value=&quot;0&quot; /&gt;
+  &lt;Setter Property=&quot;Background&quot; Value=&quot;Transparent&quot; /&gt;
+&lt;/Style&gt;</TextBlock>
+          </ScrollViewer>
+        </Grid>
+      </TabItem>
+
+      <TabItem Header="ControlTemplate">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="2.5*" />
+          </Grid.ColumnDefinitions>
+          <StackPanel>
+            <StackPanel.Resources>
+              <Style TargetType="Button">
+                <Setter Property="Template" >
+                  <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                      <Border BorderBrush="Orange" BorderThickness="5"
+                              CornerRadius="20" Background="LemonChiffon">
+                        <TextBlock HorizontalAlignment="Center"
+                                   Foreground="Green" FontWeight="Bold" FontSize="12pt"
+                                   Margin="10,5" Text="{TemplateBinding Content}"/>
+                      </Border>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+              </Style>
+            </StackPanel.Resources>
+            <Button HorizontalAlignment="Center" Margin="0,20,0,0"
+                    >BUTTON</Button>
+            <Button HorizontalAlignment="Center" Margin="0,20,0,0"
+                    >ボタン</Button>
+          </StackPanel>
+          <ScrollViewer Grid.Column="1">
+            <TextBlock Style="{StaticResource DescriptionTextStyle}" xml:space="preserve">&lt;Style TargetType=&quot;Button&quot;&gt;
+  &lt;Setter Property=&quot;Template&quot; &gt;
+    &lt;Setter.Value&gt;
+      &lt;<Bold>ControlTemplate</Bold> TargetType=&quot;Button&quot;&gt;
+        &lt;Border BorderBrush=&quot;Orange&quot;
+                BorderThickness=&quot;5&quot;
+                CornerRadius=&quot;20&quot;
+                Background=&quot;LemonChiffon&quot;&gt;
+          &lt;TextBlock HorizontalAlignment=&quot;Center&quot;
+                     Foreground=&quot;Green&quot;
+                     FontWeight=&quot;Bold&quot;
+                     FontSize=&quot;12pt&quot; Margin=&quot;10,5&quot;
+                     Text=&quot;{TemplateBinding Content}&quot;/&gt;
+        &lt;/Border&gt;
+      &lt;/ControlTemplate&gt;
+    &lt;/Setter.Value&gt;
+  &lt;/Setter&gt;
+  &lt;Setter Property=&quot;BorderThickness&quot; Value=&quot;0&quot; /&gt;
+  &lt;Setter Property=&quot;Background&quot; Value=&quot;Transparent&quot; /&gt;
+&lt;/Style&gt;</TextBlock>
+          </ScrollViewer>
+        </Grid>
+      </TabItem>
+    </TabControl>
+  </Grid>
+</Window>

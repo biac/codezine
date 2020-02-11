@@ -1,0 +1,127 @@
+﻿<Window x:Class="SignalButtons.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SignalButtons"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="320" Width="560">
+  <Window.Resources>
+    <Style TargetType="Button" x:Key="SignalButtonBaseStyle">
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="FontSize" Value="36" />
+      <Setter Property="MinWidth" Value="100" />
+      <Setter Property="MinHeight" Value="100" />
+    </Style>
+
+    <Style TargetType="ScrollViewer">
+      <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+      <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+    <Style TargetType="TextBlock">
+      <Setter Property="FontFamily" Value="Consolas" />
+      <Setter Property="FontSize" Value="9pt" />
+      <Setter Property="Background" Value="AliceBlue"/>
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <TabControl>
+      <TabItem Header="継承なし">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="1.5*" />
+          </Grid.ColumnDefinitions>
+          <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Resources>
+              <Style TargetType="Button" x:Key="GoButtonStyle">
+                <Setter Property="Background" Value="LimeGreen" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="36" />
+                <Setter Property="MinWidth" Value="100" />
+                <Setter Property="MinHeight" Value="100" />
+              </Style>
+              <Style TargetType="Button" x:Key="StopButtonStyle">
+                <Setter Property="Background" Value="Crimson" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="36" />
+                <Setter Property="MinWidth" Value="100" />
+              </Style>
+            </StackPanel.Resources>
+            <Button Style="{StaticResource GoButtonStyle}">GO</Button>
+            <Button Style="{StaticResource StopButtonStyle}">STOP</Button>
+          </StackPanel>
+          <ScrollViewer Grid.Column="1">
+            <TextBlock xml:space="preserve">&lt;!-- スタイル定義 --&gt;
+&lt;Style TargetType=&quot;Button&quot; <Bold>x:Key=&quot;GoButtonStyle&quot;</Bold>&gt;
+  &lt;Setter Property=&quot;Background&quot;
+          Value=&quot;LimeGreen&quot; /&gt;
+  &lt;Setter Property=&quot;Foreground&quot; Value=&quot;White&quot;/&gt;
+  ……省略……
+&lt;/Style&gt;
+&lt;Style TargetType=&quot;Button&quot; <Bold>x:Key=&quot;StopButtonStyle&quot;</Bold>&gt;
+  &lt;Setter Property=&quot;Background&quot;
+          Value=&quot;Crimson&quot; /&gt;
+  &lt;Setter Property=&quot;Foreground&quot; Value=&quot;White&quot;/&gt;
+  ……省略……
+&lt;/Style&gt;
+
+&lt;!-- コントロール --&gt;
+&lt;Button Style=&quot;{StaticResource <Bold>GoButtonStyle</Bold>}&quot;
+        &gt;GO&lt;/Button&gt;
+&lt;Button Style=&quot;{StaticResource <Bold>StopButtonStyle</Bold>}&quot;
+        &gt;STOP&lt;/Button&gt;</TextBlock>
+          </ScrollViewer>
+        </Grid>
+      </TabItem>
+      <TabItem Header="継承あり">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="1.5*" />
+          </Grid.ColumnDefinitions>
+          <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Resources>
+              <Style TargetType="Button" x:Key="GoButtonStyle"
+                     BasedOn="{StaticResource SignalButtonBaseStyle}">
+                <Setter Property="Background" Value="LimeGreen" />
+              </Style>
+              <Style TargetType="Button" x:Key="StopButtonStyle"
+                     BasedOn="{StaticResource SignalButtonBaseStyle}">
+                <Setter Property="Background" Value="Crimson" />
+              </Style>
+            </StackPanel.Resources>
+            <Button Style="{StaticResource GoButtonStyle}"
+                    >GO</Button>
+            <Button Style="{StaticResource StopButtonStyle}"
+                    >STOP</Button>
+          </StackPanel>
+          <ScrollViewer Grid.Column="1">
+            <TextBlock xml:space="preserve">&lt;!-- スタイル定義 --&gt;
+&lt;Style TargetType=&quot;Button&quot;
+       <Bold>x:Key=&quot;SignalButtonBaseStyle&quot;</Bold>&gt;
+  &lt;Setter Property=&quot;Foreground&quot; Value=&quot;White&quot;/&gt;
+  ……省略……
+&lt;/Style&gt;
+&lt;Style TargetType=&quot;Button&quot; <Bold>x:Key=&quot;GoButtonStyle&quot;</Bold>
+  <Bold>BasedOn=&quot;{StaticResource SignalButtonBaseStyle}&quot;</Bold>&gt;
+  &lt;Setter Property=&quot;Background&quot; Value=&quot;LimeGreen&quot;/&gt;
+&lt;/Style&gt;
+&lt;Style TargetType=&quot;Button&quot; <Bold>x:Key=&quot;StopButtonStyle&quot;</Bold>
+  <Bold>BasedOn=&quot;{StaticResource SignalButtonBaseStyle}&quot;</Bold>&gt;
+  &lt;Setter Property=&quot;Background&quot; Value=&quot;Crimson&quot;/&gt;
+&lt;/Style&gt;
+
+&lt;!-- コントロール --&gt;
+&lt;Button Style=&quot;{StaticResource <Bold>GoButtonStyle</Bold>}&quot;
+        &gt;GO&lt;/Button&gt;
+&lt;Button Style=&quot;{StaticResource <Bold>StopButtonStyle</Bold>}&quot;
+        &gt;STOP&lt;/Button&gt;</TextBlock>
+          </ScrollViewer>
+        </Grid>
+      </TabItem>
+    </TabControl>
+  </Grid>
+</Window>

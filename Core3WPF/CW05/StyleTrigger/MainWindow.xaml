@@ -1,0 +1,68 @@
+﻿<Window x:Class="StyleTrigger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StyleTrigger"
+        mc:Ignorable="d"
+        FontSize="24"
+        Title="MainWindow" Height="180" Width="560">
+  <Window.Resources>
+    <Style TargetType="ToggleButton">
+      <!-- コントロールの状態に関係なく、常に適用されるスタイル -->
+      <Style.Setters>
+        <Setter Property="Margin" Value="0,5,0,0" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="BorderThickness" Value="5" />
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+      </Style.Setters>
+
+      <!-- コントロールの状態によって、適用されることがあるスタイル -->
+      <Style.Triggers>
+        <Trigger Property="IsChecked" Value="True">
+          <!-- トグルボタンがオンのときに適用されるスタイル -->
+          <Setter Property="FontWeight" Value="Bold" />
+          <Setter Property="Foreground" Value="Orange"/>
+          <Setter Property="RenderTransform">
+            <Setter.Value>
+              <TransformGroup>
+                <!-- 85%に縮小 -->
+                <ScaleTransform ScaleX="0.85" ScaleY="0.85" />
+              </TransformGroup>
+            </Setter.Value>
+          </Setter>
+        </Trigger>
+
+        <MultiTrigger>
+          <MultiTrigger.Conditions>
+            <Condition Property="IsMouseOver" Value="True" />
+            <Condition Property="IsChecked" Value="False" />
+          </MultiTrigger.Conditions>
+          <!-- トグルボタンがオフで、かつ、マウスがいるときに適用されるスタイル -->
+          <Setter Property="Foreground" Value="Lime"/>
+        </MultiTrigger>
+
+        <MultiTrigger>
+          <MultiTrigger.Conditions>
+            <Condition Property="IsMouseOver" Value="true" />
+            <Condition Property="IsChecked" Value="true" />
+          </MultiTrigger.Conditions>
+          <!-- トグルボタンがオンで、かつ、マウスがいるときに適用されるスタイル -->
+          <!-- 衝突するSetterがあるときは、後ろのTriggerのものが優先 -->
+          <Setter Property="Foreground" Value="Red"/>
+        </MultiTrigger>
+        
+      </Style.Triggers>
+    </Style>
+  </Window.Resources>
+  <Grid>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <TextBlock HorizontalAlignment="Center" FontSize="18">TriggerとMultiTriggerの例</TextBlock>
+      <ToggleButton Grid.Row="1">トグルボタン</ToggleButton>
+    </Grid>
+  </Grid>
+</Window>

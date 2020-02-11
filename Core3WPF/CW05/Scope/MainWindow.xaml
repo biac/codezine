@@ -1,0 +1,33 @@
+﻿<Window x:Class="Scope.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Scope"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="320" Width="560">
+  <Grid>
+    <Button x:Name="Button1">
+      <StackPanel>
+        <TextBlock>Appでのスタイル：背景色=MistyRose</TextBlock>
+        <Button x:Name="Button2" Grid.Row="1">
+          <Button.Resources>
+            <Style TargetType="Button">
+              <!-- Appのスタイルを継承したいときは次のようにBasedOnを指定する -->
+              <!-- Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" -->
+              <Setter Property="Background" Value="AliceBlue"/>
+            </Style>
+          </Button.Resources>
+          <StackPanel>
+            <TextBlock>このButtonでのスタイル：背景色=AliceBlue<LineBreak />
+            ※スタイルを定義したコントロール自体にも適用されていることに注意<LineBreak />
+              ※Appでのスタイル（緑色の境界線とか）は無効になっている</TextBlock>
+            <Button x:Name="Button3" Grid.Row="1" BorderThickness="3" BorderBrush="Orange">
+              <TextBlock>このButtonの背景色は1つ上のButtonに定義したスタイル</TextBlock>
+            </Button>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </Button>
+  </Grid>
+</Window>
